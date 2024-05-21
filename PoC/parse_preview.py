@@ -2,6 +2,7 @@ import pygraphviz as pgv
 from datetime import datetime
 from isoduration import parse_duration
 import yaml
+from lxml import etree
 
 
 # =======
@@ -81,6 +82,7 @@ class WcCycle():
 class WcGraph():
 
     edge_gv_kw = {'color': '#77767B'}
+    cluster_kw = {'bgcolor': '#e7f2e6', 'color': None, 'fontsize': 16}
 
     def __init__(self, start_date, end_date, cycles, tasks, data,
                  *args, **kwargs):
@@ -270,7 +272,7 @@ class WcGraph():
             self.graph.add_subgraph(cluster, name=f'cluster_{cycle.name}_{k}',
                                     clusterrank='global',
                                     label=f"{cycle.name} {self.cycling_date.isoformat()}",
-                                    bgcolor = '#DEDDDA', color=None, fontsize=16)
+                                    **self.cluster_kw)
             # Continue cycling
             if not p:
                 do_parsing = False
@@ -281,7 +283,20 @@ class WcGraph():
 
     def draw(self, **kwargs):
         self.graph.layout(prog='dot')
-        self.graph.draw(path=f'./{self.graph.name}.svg', **kwargs)
+        file_path = f'./{self.graph.name}.svg'
+        self.graph.draw(path=file_path, **kwargs)
+
+        # Add interactive capabilities to the svg graph thanks to
+        # https://github.com/BartBrood/dynamic-SVG-from-Graphviz
+        parser = etree.XMLParser(strip_cdata=False)
+        svg = etree.parse(file_path, parser=parser)
+        svg_root = svg.getroot()
+        svg_root.set('onload', 'addInteractivity(evt)')
+        script = etree.parse('svg-script.xml', parser=parser).getroot()
+        svg_root.extend(script)
+        svg.write(file_path)
+
+
 
 
 # ============
