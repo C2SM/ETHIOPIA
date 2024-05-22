@@ -10,9 +10,9 @@ scheduling:
           output:
             - extpar file
     icon:
-      # period: 'P2M'
+      period: 'P2M'
       # period: 'P3M'
-      period: 'P4M'
+      # period: 'P4M'
       # period: 'P6M'
       tasks:
         preproc:
@@ -25,18 +25,18 @@ scheduling:
             - icon input
           depends:
             - ICON:
-                # lag: '-P4M'
+                lag: '-P4M'
                 # lag: '-P6M'
-                lag: '-P8M'
+                # lag: '-P8M'
                 # lag: '-P12M'
         ICON:
           input:
             - grid file
             - icon input
             - restart:
-                # lag: '-P2M'
+                lag: '-P2M'
                 # lag: '-P3M'
-                lag: '-P4M'
+                # lag: '-P4M'
                 # lag: '-P6M'
           output:
             - stream 1
@@ -60,9 +60,9 @@ scheduling:
         postproc 2:
           input:
             - stream 2:
-                # lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+                lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
                 # lag: ['P0M', 'P3M', 'P6M', 'P9M']
-                lag: ['P0M', 'P4M', 'P8M']
+                # lag: ['P0M', 'P4M', 'P8M']
                 # lag: ['P0M', 'P6M']
           output:
             - postout 2
@@ -70,9 +70,9 @@ scheduling:
           input:
             - postout 2
             - stream 2:
-                # lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+                lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
                 # lag: ['P0M', 'P3M', 'P6M', 'P9M']
-                lag: ['P0M', 'P4M', 'P8M']
+                # lag: ['P0M', 'P4M', 'P8M']
                 # lag: ['P0M', 'P6M']
           output:
             - stored data 2
