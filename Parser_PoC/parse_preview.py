@@ -94,7 +94,7 @@ class WcGraph():
         self.tasks_specs = tasks
         self.data_specs = data
         self.cycles = cycles
-        self.graph = pgv.AGraph(*args, **kwargs)
+        self.graph = pgv.AGraph(*args, fontname='Fira Sans', newrank=True, **kwargs)
 
         # Needed for date indexing
         self.data = {k: {} for k in data.keys()}
@@ -327,7 +327,7 @@ def main():
     # ====================
     WCG = WcGraph(*map(config['scheduling'].get, ('start_date', 'end_date', 'graph')),
                   *map(config['runtime'].get, ('tasks', 'data')),
-                  name='icon_flow', fontname='Fira Sans', newrank=True)
+                  name='icon_flow')
     WCG.prepare()
     WCG.draw(format='svg')
 
