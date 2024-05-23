@@ -11,12 +11,13 @@ from lxml import etree
 class WcTask():
 
     gv_kw = {'shape': 'box',
-             'style': 'filled',
+             'style': 'rounded, filled',
              'fontname': 'Fira Sans',
-             'fillcolor': '#fcbfc5',
-             'fontcolor': '#4F161D',
+             'fillcolor': '#ffd8dc',
+             'fontcolor': '#330005',
              'color': '#4F161D',
-             'fontsize': 14}
+             'fontsize': 14,
+             'penwidth': 2}
 
     def __init__(self, name, run_spec):
         self.name = name
@@ -31,10 +32,11 @@ class WcData():
     gv_kw = {'shape': 'ellipse',
              'style': 'filled',
              'fontname': 'Fira Sans',
-             'fillcolor': '#A6CDFC',
-             'fontcolor': '#0C3363',
-             'color': '#0C3363',
-             'fontsize': 14}
+             'fontcolor': '#001633',
+             'fillcolor': '#d8e9ff',
+             'color': '#001633',
+             'fontsize': 14,
+             'penwidth': 2}
 
     def __init__(self, name, run_spec):
         self.name = name
@@ -83,8 +85,11 @@ class WcCycle():
 
 class WcGraph():
 
-    edge_gv_kw = {'color': '#77767B'}
-    cluster_kw = {'bgcolor': '#e7f2e6', 'color': None, 'fontsize': 16}
+    edge_gv_kw = {'color': '#77767B',
+                  'penwidth': 1.5}
+    cluster_kw = {'bgcolor': '#F6F5F4',
+                  'color': None,
+                  'fontsize': 16}
 
     def __init__(self, start_date, end_date, cycles, tasks, data,
                  *args, **kwargs):
@@ -306,11 +311,15 @@ class WcGraph():
         svg = etree.parse(file_path, parser=parser)
         svg_root = svg.getroot()
         svg_root.set('onload', 'addInteractivity(evt)')
-        script = etree.parse('svg-script.xml', parser=parser).getroot()
-        svg_root.extend(script)
+        node = etree.Element('style')
+        with open('svg-interactive-style.css') as f:
+            node.text = f.read()
+        svg_root.append(node)
+        node = etree.Element('script')
+        with open('svg-interactive-script.js') as f:
+            node.text = etree.CDATA(f.read())
+        svg_root.append(node)
         svg.write(file_path)
-
-
 
 
 # ============

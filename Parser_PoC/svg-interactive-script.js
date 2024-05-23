@@ -1,79 +1,3 @@
-<root>
-
-<style>
-
-<!-- The first 2 styles are hiding longer description texts on
-     nodes and edges, that are shown when nodes are clicked
-.edge text{
-    opacity: 0;
-}
-.node text:not(:first-of-type){
-    opacity: 0;
-}-->
-.text-highlight-nodes text{
-    opacity: 1 !important;
-    stroke-width: 10;
-    font-size: 20px;
-    font-weight: bold;
-    fill: black;
-}
-.text-highlight-edges text{
-    opacity: 1 !important;
-    stroke-width: 10;
-    font-size: 20px;
-    font-weight: bold;
-    fill: Indigo;
-}
-.edge-highlight path{
-    opacity: 1;
-    stroke-width: 10;
-    stroke: crimson;
-}
-.edge-highlight polygon{
-    opacity: 1;
-    stroke-width: 10;
-    stroke: crimson;
-}
-.node-highlight polygon{
-    opacity: 1;
-    stroke-width: 10;
-    stroke: crimson;
-    z-index:99999;
-}
-.node-highlight ellipse{
-    opacity: 1;
-    stroke-width: 10;
-    stroke: crimson;
-    z-index:99999;
-}
-.node-highlight path{
-    opacity: 1;
-    stroke-width: 10;
-    stroke: crimson;
-    z-index:99999;
-}
- .compass {
-            fill: #fff;
-            stroke: #000;
-            stroke-width: 1;
-        }
- .button {
-            fill: #225EA8;
-            stroke: #0C2C84;
-            stroke-width: 0.5;
-            stroke-miterlimit:6;
-            stroke-linecap: round;
-        }
- .button:hover {
-            stroke-width: 1;
-        }
- .plus-minus {
-            fill: #fff;
-            pointer-events: none;
-        }
-</style>
-<script>
-<![CDATA[
 function addInteractivity(evt) {
 
 	var svg = evt.target;
@@ -99,6 +23,7 @@ function addInteractivity(evt) {
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].addEventListener('click', clickNode);
     }
+
     addToggleButtons(evt);
 
     function getMousePosition(evt) {
@@ -109,6 +34,7 @@ function addInteractivity(evt) {
             y: (evt.clientY - CTM.f) / CTM.d
         };
     }
+
     function startDrag(evt) {
         origmousepos = getMousePosition(evt);
         nodrag=true;
@@ -132,6 +58,7 @@ function addInteractivity(evt) {
             offset.y -= transform.matrix.f;
 		}
     }
+
     function drag(evt) {
         if (selectedElement) {
             evt.preventDefault();
@@ -139,6 +66,7 @@ function addInteractivity(evt) {
             transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
         }
     }
+
     function endDrag(evt) {
             <!-- comment out the following line if you wnat drags to stay in place, with this line they snap back to their original position after drag end -->
             //if statement to avoid the header section being affected of the translate (0,0)
@@ -158,6 +86,7 @@ function addInteractivity(evt) {
 		}
 
 	}
+
     function clickEdge() {
         if (nodrag) {
             if (this.classList.contains("edge-highlight")){
@@ -171,6 +100,7 @@ function addInteractivity(evt) {
             }
         }
     }
+
     function clickNode() {
         if (nodrag) {
             var nodeName = this.childNodes[1].textContent;
@@ -203,6 +133,7 @@ function addInteractivity(evt) {
             }
         }
     }
+
     function animateEdge(edge){
 		var path = edge.querySelector('path');
 		var polygon = edge.querySelector('polygon');
@@ -227,6 +158,7 @@ function addInteractivity(evt) {
         if (polygon){setTimeout(function(){polygon.style.opacity='1';},2000)};
 	}
 }
+
 var svg = document.querySelector('svg');
 var viewBox = svg.viewBox.baseVal;
 allShown=true;
@@ -360,8 +292,8 @@ function addToggleButtons(evt) {
     adjustViewBox(svg);
     svg.appendChild(buttonContainer);
     updateButton();
-
 }
+
 function nextClass() {
     currentClassIndex = (currentClassIndex + 1) % classArray.length;
     updateButton();
@@ -383,8 +315,8 @@ function updateButton() {
 	}
     else{
 	    button.setAttribute("fill", "#007bbf");};
-
 }
+
 function toggleVisibility(className) {
     var elements = document.getElementsByClassName(className);
 
@@ -399,6 +331,7 @@ function toggleVisibility(className) {
     }
     updateButton();
 }
+
 function toggleAll(){
 
     for (var i = 0; i < classArray.length; i++) {
@@ -426,8 +359,6 @@ function toggleAll(){
 }
 
 function adjustViewBox(svg) {
-
-
     var viewBoxParts = svg.getAttribute("viewBox").split(" ");
     var newYMin = parseFloat(viewBoxParts[1]) - 60; // Adjust this value as needed
     var newYMax = parseFloat(viewBoxParts[3]) + 60; // Adjust this value as needed
@@ -435,8 +366,3 @@ function adjustViewBox(svg) {
     var newViewBox = viewBoxParts[0] + " " + newYMin + " " + newXMax + " " + newYMax;
     svg.setAttribute("viewBox", newViewBox);
 }
-
-]]>
-</script>
-
-</root>
