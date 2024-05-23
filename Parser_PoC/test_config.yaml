@@ -94,7 +94,7 @@ runtime:
       nodes: 1
       walltime: '00:02:00'
     preproc:
-      plugin: ICON_tools
+      plugin: AiiDA Shell
       nodes: 4
       walltime: '00:02:00'
       config: path/to/config/dir
@@ -102,6 +102,7 @@ runtime:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
     ICON:
+      plugin: ICON
       nodes: 40
       walltime: '24:00:00'
       config: path/to/namelists/dir
@@ -110,6 +111,7 @@ runtime:
         mount_point: runtime/mount/point
       exe: path/to/icon
     postproc 1:
+      plugin: AiiDA Shell
       nodes: 2
       walltime: '00:05:00'
       src: path/to/src/dir
@@ -119,6 +121,7 @@ runtime:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
     postproc 2:
+      plugin: AiiDA Shell
       nodes: 4
       walltime: '00:05:00'
       src: path/to/src/dir
@@ -128,10 +131,12 @@ runtime:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
     store & clean 1:
+      plugin: AiiDA Shell
       nodes: 1
       walltime: '00:01:00'
       scipt: path/to/script
     store & clean 2:
+      plugin: AiiDA Shell
       nodes: 1
       walltime: '00:01:00'
       scipt: path/to/script

@@ -18,11 +18,12 @@ class WcTask():
              'color': '#4F161D',
              'fontsize': 14}
 
-    def __init__(self, name, spec):
+    def __init__(self, name, run_spec):
         self.name = name
-        self.input = spec.get('input', [])
-        self.output = spec.get('output', [])
-        self.depends = spec.get('depends', [])
+        self.run_spec = run_spec
+        self.input = []
+        self.output = []
+        self.depends = []
 
 
 class WcData():
@@ -35,10 +36,10 @@ class WcData():
              'color': '#0C3363',
              'fontsize': 14}
 
-    def __init__(self, name, spec):
+    def __init__(self, name, run_spec):
         self.name = name
-        rel_path = spec.get('rel_path')
-        abs_path = spec.get('abs_path')
+        rel_path = run_spec.get('rel_path')
+        abs_path = run_spec.get('abs_path')
         if rel_path is None and abs_path is None:
             raise ValueError(f"Error wheen trying to define data node {name}. "
                              f"Either rel_path or abs_path must be specified")
@@ -47,6 +48,7 @@ class WcData():
                              f"Only one of rel_path or abs_path must be specified")
         self.abs_path = abs_path
         self.rel_apth = rel_path
+        self.run_spec = run_spec
 
     def is_concrete(self):
         return self.abs_path is not None
@@ -113,7 +115,9 @@ class WcGraph():
         if self.cycling_date not in self.tasks[name]:
             task_node = WcTask(name, self.tasks_specs[name])
             self.tasks[name][self.cycling_date] = task_node
-            self.graph.add_node(task_node, label=name, **task_node.gv_kw)
+            self.graph.add_node(task_node, label=name,
+                                tooltip=yaml.dump(task_node.run_spec),
+                                **task_node.gv_kw)
 
     def add_data(self, name):
         if name not in self.data_specs:
@@ -122,10 +126,14 @@ class WcGraph():
         if data_node.is_concrete():
             if not self.data[name]:
                 self.data[name] = data_node
-                self.graph.add_node(data_node, label=name, **data_node.gv_kw)
+                self.graph.add_node(data_node, label=name,
+                                    tooltip=yaml.dump(data_node.run_spec),
+                                    **data_node.gv_kw)
         elif self.cycling_date not in self.data[name]:
             self.data[name][self.cycling_date] = data_node
-            self.graph.add_node(data_node, label=name, **data_node.gv_kw)
+            self.graph.add_node(data_node, label=name,
+                                tooltip=yaml.dump(data_node.run_spec),
+                                **data_node.gv_kw)
 
     def get_task(self, spec):
         if isinstance(spec, dict):
