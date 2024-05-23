@@ -277,9 +277,15 @@ class WcGraph():
                             task_node.depends.append(dep_node)
                         self.add_edge(dep_node, task_node)
             # Add clsuter
+            d1 = self.cycling_date
+            dates = d1.isoformat()
+            if p:
+                d2 = self.cycling_date + p
+                dates += f" -- {d2.isoformat()}"
+            label = f"{cycle.name}\n{dates}"
             self.graph.add_subgraph(cluster, name=f'cluster_{cycle.name}_{k}',
                                     clusterrank='global',
-                                    label=f"{cycle.name} {self.cycling_date.isoformat()}",
+                                    label=label, tooltip=label,
                                     **self.cluster_kw)
             # Continue cycling
             if not p:
