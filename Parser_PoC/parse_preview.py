@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pygraphviz as pgv
 from datetime import datetime
 from isoduration import parse_duration
@@ -5,6 +7,7 @@ import yaml
 from lxml import etree
 import webbrowser
 from pathlib import Path
+import argparse
 
 
 # =======
@@ -331,23 +334,31 @@ class WcGraph():
         # open in browser
         webbrowser.open(file_path.resolve().as_uri(), new=1)
 
+    @classmethod
+    def from_yaml(cls, config):
+        config_path = Path(config)
+        config = yaml.safe_load(config_path.read_text())
+        return cls(*map(config['scheduling'].get, ('start_date', 'end_date', 'graph')),
+                   *map(config['runtime'].get, ('tasks', 'data')))
 
 
 # ============
 # Main program
 # ============
-#
+
 def main():
-    # User input
-    # ==========
-    with open('test_config.yaml', mode='r') as f:
-        config = yaml.safe_load(f.read())
+
+    # Parse user input
+    # ================
+    parser = argparse.ArgumentParser(
+        description='draw the graph specified in a weather and climate yaml format')
+
+    parser.add_argument('config', help="path to yaml configuration file")
+    args = parser.parse_args()
 
     # Build and draw graph
     # ====================
-    WCG = WcGraph(*map(config['scheduling'].get, ('start_date', 'end_date', 'graph')),
-                  *map(config['runtime'].get, ('tasks', 'data')),
-                  name='icon_flow')
+    WCG = WcGraph.from_yaml(args.config)
     WCG.prepare()
     WCG.draw()
 
