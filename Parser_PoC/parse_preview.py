@@ -339,7 +339,8 @@ class WcGraph():
         config_path = Path(config)
         config = yaml.safe_load(config_path.read_text())
         return cls(*map(config['scheduling'].get, ('start_date', 'end_date', 'graph')),
-                   *map(config['runtime'].get, ('tasks', 'data')))
+                   *map(config['runtime'].get, ('tasks', 'data')),
+                   name=config_path.stem)
 
 
 # ============
