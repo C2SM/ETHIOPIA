@@ -3,6 +3,8 @@ from datetime import datetime
 from isoduration import parse_duration
 import yaml
 from lxml import etree
+import webbrowser
+from pathlib import Path
 
 
 # =======
@@ -11,7 +13,7 @@ from lxml import etree
 class WcTask():
 
     gv_kw = {'shape': 'box',
-             'style': 'rounded, filled',
+             'style': 'filled',
              'fontname': 'Fira Sans',
              'fillcolor': '#ffd8dc',
              'fontcolor': '#330005',
@@ -301,25 +303,34 @@ class WcGraph():
                 do_parsing = (self.cycling_date + p) <= cycle.end_date
 
     def draw(self, **kwargs):
+        # draw graphviz dot graph to svg file
         self.graph.layout(prog='dot')
-        file_path = f'./{self.graph.name}.svg'
-        self.graph.draw(path=file_path, **kwargs)
+        file_path = Path(f'./{self.graph.name}.svg')
+        self.graph.draw(path=file_path, format='svg', **kwargs)
 
         # Add interactive capabilities to the svg graph thanks to
         # https://github.com/BartBrood/dynamic-SVG-from-Graphviz
-        parser = etree.XMLParser(strip_cdata=False)
-        svg = etree.parse(file_path, parser=parser)
+
+        # Parse svg
+        svg = etree.parse(file_path)
         svg_root = svg.getroot()
+        # Add 'onload' tag
         svg_root.set('onload', 'addInteractivity(evt)')
-        node = etree.Element('style')
+        # Add css style for interactivity
         with open('svg-interactive-style.css') as f:
+            node = etree.Element('style')
             node.text = f.read()
-        svg_root.append(node)
-        node = etree.Element('script')
+            svg_root.append(node)
+        # Add scripts
         with open('svg-interactive-script.js') as f:
+            node = etree.Element('script')
             node.text = etree.CDATA(f.read())
-        svg_root.append(node)
+            svg_root.append(node)
+        # write svg again
         svg.write(file_path)
+        # open in browser
+        webbrowser.open(file_path.resolve().as_uri(), new=1)
+
 
 
 # ============
@@ -338,7 +349,7 @@ def main():
                   *map(config['runtime'].get, ('tasks', 'data')),
                   name='icon_flow')
     WCG.prepare()
-    WCG.draw(format='svg')
+    WCG.draw()
 
 
 if __name__ == '__main__':
