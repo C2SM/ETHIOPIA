@@ -15,7 +15,7 @@ cycles:
     tasks:
       preproc:
         input:
-          - grid_file
+          - grid_file # TODO(alex) check if only one instance is made
           - extpar_file:
               date: *root_start_date
           - ERA5
@@ -42,14 +42,14 @@ cycles:
           - stream_1
           - stream_2
           - icon_restart
-      postproc 1:
+      postproc_1:
         input:
           - stream_1
         argument:
           input: stream_1 
         output:
           - postout_1
-      store & clean 1:
+      store_and_clean_1:
         input:
           - postout_1
           - stream_1
@@ -63,7 +63,7 @@ cycles:
   yearly:
     period: 'P1Y'
     tasks:
-      postproc 2:
+      postproc_2:
         input:
           - stream_2:
               lag: 'P0M' 
@@ -75,7 +75,7 @@ cycles:
           input: stream_2
         output:
           - postout_2
-      store & clean 2:
+      store_and_clean_2:
         input:
           - postout_2
           - stream_2:
@@ -98,7 +98,7 @@ tasks:
     account: g110
   Extpar:
     plugin: extpar
-    command: /path/to/exe
+    command: $PWD/executables/extpar
     config: path/to/namelists/dir
     uenv:
       squashfs: path/to/squashfs
@@ -107,7 +107,7 @@ tasks:
     walltime: '00:02:00'
   preproc:
     plugin: AiiDA Shell
-    command: cleanup.sh
+    command: $PWD/executables/cleanup.sh
     nodes: 4
     walltime: '00:02:00'
     config: path/to/config/dir
@@ -116,6 +116,7 @@ tasks:
       mount_point: runtime/mount/point
   ICON:
     plugin: ICON
+    command: $PWD/executables/icon
     nodes: 40
     walltime: '24:00:00'
     config: path/to/namelists/dir
@@ -123,50 +124,52 @@ tasks:
       squashfs: path/to/squashfs
       mount_point: runtime/mount/point
     command: path/to/icon
-  postproc 1:
+  postproc_1:
     plugin: AiiDA Shell
+    command: $PWD/executables/main_script_ocn.sh
     nodes: 2
     walltime: '00:05:00'
     src: path/to/src/dir
-    command: "python3 main_script_ocn.py"
     conda_env: path/to/yaml/env/file
     uenv:
       squashfs: path/to/squashfs
       mount_point: runtime/mount/point
-  postproc 2:
+  postproc_2:
     plugin: AiiDA Shell
-    nodes: 4
+    command: $PWD/executables/main_script_atm.sh
+    nodes: 2
     walltime: '00:05:00'
     src: path/to/src/dir
-    command: "python3 main_script_atm.py"
     conda_env: path/to/yaml/env/file
     uenv:
       squashfs: path/to/squashfs
       mount_point: runtime/mount/point
-  store & clean 1:
+  store_and_clean_1:
     plugin: AiiDA Shell
-    command: post_clean.sh
+    command: $PWD/executables/post_clean.sh
     nodes: 1
     walltime: '00:01:00'
     scipt: path/to/script
-  store & clean 2:
+  store_and_clean_2:
     plugin: AiiDA Shell
-    command: post_clean.sh
+    command: $PWD/executables/post_clean.sh
     nodes: 1
     walltime: '00:01:00'
     scipt: path/to/script
 
 data:
   # Properties of data nodes
-  grid_file: {type: file, src: /home/alexgo/code/AiiDA_WC/files/file.ncdf}
-  obs_data: {type: dir, src: /home/alexgo/code/AiiDA_WC/files/}
-  ERA5: {type: dir, src: /some/where/else}
+  # TODO type dir is not working because of workgraph or maybe aiida shell
+  # @Matthieu: Should we use abs_path or rel_path as key words?
+  grid_file: {type: file, src: $PWD/files/file.ncdf}
+  obs_data: {type: file, src: $PWD/files/obs_data}
+  ERA5: {type: file, src: $PWD/files/era5}
   extpar_file: {type: file, src: output}
   icon_input: {type: file, src: output}
   icon_restart: {type: file, format: ncdf, src: restart}
   stream_1: {type: file, src: output_1}
   stream_2: {type: file, src: output_2}
-  postout_1: {type: file, src: output}
-  postout_2: {type: file, src: output}
-  stored_data_1: {type: dir, src: /store/some/where_1}
-  stored_data_2: {type: dir, src: /store/some/where_2}
+  postout_1: {type: file, src: postout}
+  postout_2: {type: file, src: postout}
+  stored_data_1: {type: file, src: stored_data}
+  stored_data_2: {type: file, src: stored_data}

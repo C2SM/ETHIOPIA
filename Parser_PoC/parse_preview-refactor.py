@@ -40,7 +40,7 @@ class Scheduler():
         # checks what data are outputs, so they are not available on initialization
         for cycle in self.cycles.values():
             if "period" in cycle:
-                cycle_period = parse_duration(cycle["period"]) 
+                cycle_period = parse_duration(cycle["period"])
             else:
                 cycle_period = self.end_date - self.start_date
             # create data nodes for all periods
@@ -57,7 +57,7 @@ class Scheduler():
         # unroll periodicity of cycles to create all required data nodes
         for cycle in self.cycles.values():
             if "period" in cycle:
-                cycle_period = parse_duration(cycle["period"]) 
+                cycle_period = parse_duration(cycle["period"])
             else:
                 cycle_period = self.end_date - self.start_date
             # create data nodes for all periods
@@ -113,6 +113,8 @@ class Scheduler():
                     #   ["-g", "{g}", "--parse", "{parse}"]
                     arguments = []
                     wg_input_nodes = {}
+                    if "argument" not in task_value:
+                        raise NotImplemented("Default arguments are not implemented yet.")
                     for key, value in task_value["argument"].items():
                         # resolving short and long options following unix standards
                         if value in self.data.keys():
@@ -126,9 +128,10 @@ class Scheduler():
 
                                 # COMMENT: This is to differ inputs that are outputs from tasks and inputs on initialization
                                 if isinstance(task_inputs[value], SinglefileData): # from initialization
-                                    wg_input_nodes[key] = task_inputs[value].filename
+                                    wg_input_nodes[key] = task_inputs[value]
                                 elif isinstance(task_inputs[value], FolderData):
-                                    wg_input_nodes[key] = "./" # TODO this is is hack, I don't know how to get the path that was inserted
+                                     # TODO was buggy, might work out but try it out, not sure if aiida-shell supports FolderNodes
+                                    wg_input_nodes[key] = task_inputs[value]
                                 elif isinstance(task_inputs[value], SocketGeneral): # COMMENT: NodeSocket might make more sense
                                     wg_input_nodes[key] = task_inputs[value]
                                 else:
@@ -139,10 +142,9 @@ class Scheduler():
                     # TODO: handle case when arguments are not given
 
                     #   ["g": "/path/to/grid/file.nc@<TIMESTAMP>", "--parse", "output@<TIMESTAMP>"]
-
                     wg_task_node = self.wg.nodes.new(
                         "ShellJob",
-                        name=task_key + f"@{current_date}".replace(' ', '_'),
+                        name=task_key + f"_{current_date}".replace(' ', '_').replace('-', '_').replace(':', '_'), # TODO make a valid label in a clean way with a regex
                         command=self.tasks[task_key]['command'],
                         #e.g. arguments=["--ERA5", "{ERA5}", "--extpar-file", "{extpar_file}", "--grid-file", "{grid_file}"],
                         arguments=arguments,
@@ -163,15 +165,20 @@ class Scheduler():
 
         return cls(name=config_path.stem, **config)
 
+    @classmethod
+    def from_dict(cls, name, **kwargs):
+        # COMMENT: this is only temporary constructor, I don't think it will be needed later on
+        return cls(name=name, **kwargs)
+
 
     @staticmethod
     def create_data_node(key: str, value: dict[str, str], date: datetime) -> aiida.orm.Node:
         # TODO date has become useless after discussion 
         """
         Processes an entry from data section in the yaml file. An entry has the form for example:
-        
+
         .. yaml::
-        
+
             my_file: {type: file, src: /scratch/user/project/input.txt}
 
         where `my_file` is the key and `{type: file, src: /scratch/user/project/input.txt}` the value
@@ -189,11 +196,27 @@ class Scheduler():
         else:
             raise ValueError(f'Data type {data_type!r} not supported. Please use \'file\' or \'dir\'.')
         return data_node
-        
+
         # COMMENT: I find this a bit dangerous, labels are in principle not unique.
         #          Here it should be unique, because otherwise we cannot map data to tasks unambigously
     def submit(self, **kwargs):
         self.wg.submit(**kwargs)
+
+    def run(self, **kwargs):
+        self.wg.run(**kwargs)
+
+def replace_env_variables(data):
+    import re
+    import os
+    # this is a bit hacky but simple and should work
+    if isinstance(data, dict):
+        return {key: replace_env_variables(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [replace_env_variables(item) for item in data]
+    elif isinstance(data, str):
+        return re.sub(r'\$([A-Z_]+)', lambda match: os.environ.get(match.group(1), match.group(0)), data)
+    else:
+        return data
 
 def main():
 
@@ -205,10 +228,15 @@ def main():
     parser.add_argument('config', help="path to yaml configuration file")
     args = parser.parse_args()
 
+    # to replace environment variables
+    config_path = Path(args.config)
+    config_yaml = yaml.safe_load(config_path.read_text())
+    config_yaml = replace_env_variables(config_yaml)
+
     # Build and draw graph
     # ====================
-    scheduler = Scheduler.from_yaml(args.config)
-    #scheduler.submit(wait=True, timeout=300)
+    scheduler = Scheduler.from_dict(config_path.stem, **config_yaml)
+    scheduler.run()
 
 
 if __name__ == '__main__':
