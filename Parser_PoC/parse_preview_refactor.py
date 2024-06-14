@@ -113,6 +113,8 @@ class Scheduler():
                     #   ["-g", "{g}", "--parse", "{parse}"]
                     arguments = []
                     wg_input_nodes = {}
+                    # COMMENT logic is not robust if we have outputs that are not
+                    #         specified by arguments
                     if "argument" not in task_value:
                         raise NotImplemented("Default arguments are not implemented yet.")
                     for key, value in task_value["argument"].items():
@@ -130,7 +132,7 @@ class Scheduler():
                                 if isinstance(task_inputs[value], SinglefileData): # from initialization
                                     wg_input_nodes[key] = task_inputs[value]
                                 elif isinstance(task_inputs[value], FolderData):
-                                     # TODO was buggy, might work out but try it out, not sure if aiida-shell supports FolderNodes
+                                     # TODO was buggy, might work now but need try it out, not sure if aiida-shell supports FolderNodes
                                     wg_input_nodes[key] = task_inputs[value]
                                 elif isinstance(task_inputs[value], SocketGeneral): # COMMENT: NodeSocket might make more sense
                                     wg_input_nodes[key] = task_inputs[value]
@@ -141,20 +143,28 @@ class Scheduler():
 
                     # TODO: handle case when arguments are not given
 
-                    #   ["g": "/path/to/grid/file.nc@<TIMESTAMP>", "--parse", "output@<TIMESTAMP>"]
+                    # retrieves actual filename for all registered outputs, these are required 
+                    task_output_src = [self.data[output_key]['src'] for output_key in task_value["output"]]
                     wg_task_node = self.wg.nodes.new(
                         "ShellJob",
                         name=task_key + f"_{current_date}".replace(' ', '_').replace('-', '_').replace(':', '_'), # TODO make a valid label in a clean way with a regex
                         command=self.tasks[task_key]['command'],
-                        #e.g. arguments=["--ERA5", "{ERA5}", "--extpar-file", "{extpar_file}", "--grid-file", "{grid_file}"],
+                        # e.g. ["g": "/path/to/grid/file.nc@<TIMESTAMP>", "--parse", "output@<TIMESTAMP>"]
                         arguments=arguments,
                         nodes=wg_input_nodes,
-                        outputs=task_value["output"],
+                        outputs=task_output_src,
                         #outputs=map(lambda x : x + f"@{current_date}", task_value["output"]) # does not work
                     )
                     # COMMENT: here might be the problem that outputs are overwritten, since we cannot really add the time stmp to the output
                     #          as the output name is determined by the command
-                    self.task_node_output_sockets.update({(key, current_date): wg_task_node.outputs[key] for key in task_value["output"]})
+
+                    # We have to store the output sockets for later tasks that might
+                    # take it is input. To access them from the workgraph task we need
+                    # the actual output name, but then we need to store it using the
+                    # output yaml key to make it accesible by future tasks since
+                    # multipe outputs can have the same name
+                    self.task_node_output_sockets.update({(output_key, current_date):
+                        wg_task_node.outputs[self.data[output_key]['src']] for output_key in task_value["output"]})
 
                 current_date = current_date + cycle_period
 
