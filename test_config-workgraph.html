@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rete.js with React in Vanilla JS</title>
+    <!-- Import React, ReactDOM, and Babel from CDN -->
+    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-is/18.2.0/umd/react-is.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/styled-components@5.3.6/dist/styled-components.min.js"></script>
+    <script src="https://unpkg.com/elkjs@0.8.2/lib/elk.bundled.js"></script>
+
+    <!-- Import Rete.js and its plugins from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/rete@2.0.3/rete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-area-plugin@2.0.3/rete-area-plugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-connection-plugin@2.0.2/rete-connection-plugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-render-utils@2.0.2/rete-render-utils.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-react-plugin@2.0.5/rete-react-plugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-auto-arrange-plugin@2.0.1/rete-auto-arrange-plugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rete-minimap-plugin@2.0.1/rete-minimap-plugin.min.js"></script>
+
+    <style>
+        .App {
+            font-family: sans-serif;
+            background: rgb(200, 190, 190);
+        }
+        .rete {
+          position: relative;
+          font-size: 1rem;
+          margin: 1em;
+          border-radius: 1em;
+          text-align: left;
+        }
+        #fullscreen-btn {
+            margin-left: 10px;
+        }
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const { useState, useRef, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { NodeEditor, ClassicPreset } = Rete;
+        const { AreaPlugin, AreaExtensions } = ReteAreaPlugin;
+        const { ConnectionPlugin, Presets: ConnectionPresets } = ReteConnectionPlugin;
+        const { ReactPlugin, Presets } = ReteReactPlugin;
+        const { AutoArrangePlugin, Presets: ArrangePresets, ArrangeAppliers} = ReteAutoArrangePlugin;
+        const { MinimapExtra, MinimapPlugin } = ReteMinimapPlugin;
+        const { RenderUtils } = ReteRenderUtils;
+        const styled = window.styled;
+
+        const workgraphData = {"name": "test_config", "uuid": "2e3884e0-2a5f-11ef-bbff-bc091bf30ef3", "state": "CREATED", "nodes": {"Extpar_2026_01_01_00_00_00": {"label": "Extpar_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e3d3ff8-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e3d1f3c-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}], "outputs": [{"name": "extpar_file"}, {"name": "extpar_file"}, {"name": "extpar_file"}, {"name": "extpar_file"}, {"name": "extpar_file"}, {"name": "extpar_file"}], "position": [30, 30]}, "preproc_2026_01_01_00_00_00": {"label": "preproc_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e42afa6-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e4293ea-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.p"}], "outputs": [{"name": "icon_input"}, {"name": "icon_input"}], "position": [60, 60]}, "ICON_2026_01_01_00_00_00": {"label": "ICON_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e472a90-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e470f56-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "stream_1"}, {"name": "stream_1"}, {"name": "icon_restart"}, {"name": "stream_2"}, {"name": "stream_2"}], "position": [90, 90]}, "postproc_1_2026_01_01_00_00_00": {"label": "postproc_1_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e4a4306-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e4a289e-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_1"}], "position": [120, 120]}, "store_and_clean_1_2026_01_01_00_00_00": {"label": "store_and_clean_1_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e4d19b4-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e4cff7e-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.stream"}, {"name": "nodes.icon_input"}], "outputs": [], "position": [150, 150]}, "preproc_2026_03_01_00_00_00": {"label": "preproc_2026_03_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e52f6cc-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e52ba0e-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.p"}], "outputs": [{"name": "icon_input"}, {"name": "icon_input"}], "position": [180, 180]}, "ICON_2026_03_01_00_00_00": {"label": "ICON_2026_03_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e577314-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e575776-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.restart"}], "outputs": [{"name": "stream_1"}, {"name": "stream_1"}, {"name": "icon_restart"}], "position": [210, 210]}, "postproc_1_2026_03_01_00_00_00": {"label": "postproc_1_2026_03_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e5a85e0-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e5a6c0e-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_1"}], "position": [240, 240]}, "store_and_clean_1_2026_03_01_00_00_00": {"label": "store_and_clean_1_2026_03_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e5d746c-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e5d546e-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.stream"}, {"name": "nodes.icon_input"}], "outputs": [], "position": [270, 270]}, "preproc_2026_05_01_00_00_00": {"label": "preproc_2026_05_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e62b9cc-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e629ed8-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.p"}], "outputs": [{"name": "icon_input"}, {"name": "icon_input"}], "position": [300, 300]}, "ICON_2026_05_01_00_00_00": {"label": "ICON_2026_05_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e670b30-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e66ef92-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.restart"}], "outputs": [{"name": "stream_1"}, {"name": "stream_1"}, {"name": "icon_restart"}], "position": [330, 330]}, "postproc_1_2026_05_01_00_00_00": {"label": "postproc_1_2026_05_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e6a1adc-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e69ff66-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_1"}], "position": [360, 360]}, "store_and_clean_1_2026_05_01_00_00_00": {"label": "store_and_clean_1_2026_05_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e6d428e-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e6d25ba-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.stream"}, {"name": "nodes.icon_input"}], "outputs": [], "position": [390, 390]}, "preproc_2026_07_01_00_00_00": {"label": "preproc_2026_07_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e728e24-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e7271d2-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.p"}], "outputs": [{"name": "icon_input"}, {"name": "icon_input"}], "position": [420, 420]}, "ICON_2026_07_01_00_00_00": {"label": "ICON_2026_07_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e76fb8a-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e76e046-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.restart"}], "outputs": [{"name": "stream_1"}, {"name": "stream_1"}, {"name": "icon_restart"}], "position": [450, 450]}, "postproc_1_2026_07_01_00_00_00": {"label": "postproc_1_2026_07_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e7a166c-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e79fb6e-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_1"}], "position": [480, 480]}, "store_and_clean_1_2026_07_01_00_00_00": {"label": "store_and_clean_1_2026_07_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e7d20dc-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e7d0598-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.stream"}, {"name": "nodes.icon_input"}], "outputs": [], "position": [510, 510]}, "preproc_2026_09_01_00_00_00": {"label": "preproc_2026_09_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e82238e-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e8208cc-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.p"}], "outputs": [{"name": "icon_input"}, {"name": "icon_input"}], "position": [540, 540]}, "ICON_2026_09_01_00_00_00": {"label": "ICON_2026_09_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e8659f4-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e863ee2-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.restart"}], "outputs": [{"name": "stream_1"}, {"name": "stream_1"}, {"name": "icon_restart"}], "position": [570, 570]}, "postproc_1_2026_09_01_00_00_00": {"label": "postproc_1_2026_09_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e89812e-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e894e0c-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_1"}], "position": [600, 600]}, "store_and_clean_1_2026_09_01_00_00_00": {"label": "store_and_clean_1_2026_09_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e8c8f5e-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e8c730c-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.stream"}, {"name": "nodes.icon_input"}], "outputs": [], "position": [630, 630]}, "preproc_2026_11_01_00_00_00": {"label": "preproc_2026_11_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e9262a8-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e9226d0-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.p"}], "outputs": [{"name": "icon_input"}, {"name": "icon_input"}], "position": [660, 660]}, "ICON_2026_11_01_00_00_00": {"label": "ICON_2026_11_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e968e78-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e9673c0-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.restart"}], "outputs": [{"name": "stream_1"}, {"name": "stream_1"}], "position": [690, 690]}, "postproc_1_2026_11_01_00_00_00": {"label": "postproc_1_2026_11_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e998d4e-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e996ca6-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_1"}], "position": [720, 720]}, "store_and_clean_1_2026_11_01_00_00_00": {"label": "store_and_clean_1_2026_11_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e9c902a-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e9c7496-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.stream"}, {"name": "nodes.icon_input"}], "outputs": [], "position": [750, 750]}, "postproc_2_2026_01_01_00_00_00": {"label": "postproc_2_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2e9fb516-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2e9f9a7c-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}], "outputs": [{"name": "postout_2"}], "position": [780, 780]}, "store_and_clean_2_2026_01_01_00_00_00": {"label": "store_and_clean_2_2026_01_01_00_00_00", "inputs": [{"name": "code", "identifier": "General", "uuid": "2ea2d9a8-2a5f-11ef-bbff-bc091bf30ef3", "node_uuid": "2ea2bdec-2a5f-11ef-bbff-bc091bf30ef3", "type": "INPUT", "link_limit": 1, "links": [], "serialize": {"path": "node_graph.serializer", "name": "serialize_pickle"}, "deserialize": {"path": "node_graph.serializer", "name": "deserialize_pickle"}}, {"name": "nodes.input"}, {"name": "nodes.input2"}], "outputs": [], "position": [810, 810]}}, "links": [{"from_socket": "extpar_file", "from_node": "Extpar_2026_01_01_00_00_00", "from_socket_uuid": "2e3d4f7a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.p", "to_node": "preproc_2026_01_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_01_01_00_00_00", "from_socket_uuid": "2e42c360-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "ICON_2026_01_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_01_01_00_00_00", "from_socket_uuid": "2e47377e-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_1_2026_01_01_00_00_00", "state": false}, {"from_socket": "postout_1", "from_node": "postproc_1_2026_01_01_00_00_00", "from_socket_uuid": "2e4a4fc2-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_1_2026_01_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_01_01_00_00_00", "from_socket_uuid": "2e47377e-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.stream", "to_node": "store_and_clean_1_2026_01_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_01_01_00_00_00", "from_socket_uuid": "2e42c360-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.icon_input", "to_node": "store_and_clean_1_2026_01_01_00_00_00", "state": false}, {"from_socket": "extpar_file", "from_node": "Extpar_2026_01_01_00_00_00", "from_socket_uuid": "2e3d4f7a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.p", "to_node": "preproc_2026_03_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_03_01_00_00_00", "from_socket_uuid": "2e530e5a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "ICON_2026_03_01_00_00_00", "state": false}, {"from_socket": "icon_restart", "from_node": "ICON_2026_01_01_00_00_00", "from_socket_uuid": "2e47386e-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.restart", "to_node": "ICON_2026_03_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_03_01_00_00_00", "from_socket_uuid": "2e578674-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_1_2026_03_01_00_00_00", "state": false}, {"from_socket": "postout_1", "from_node": "postproc_1_2026_03_01_00_00_00", "from_socket_uuid": "2e5a92a6-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_1_2026_03_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_03_01_00_00_00", "from_socket_uuid": "2e578674-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.stream", "to_node": "store_and_clean_1_2026_03_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_03_01_00_00_00", "from_socket_uuid": "2e530e5a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.icon_input", "to_node": "store_and_clean_1_2026_03_01_00_00_00", "state": false}, {"from_socket": "extpar_file", "from_node": "Extpar_2026_01_01_00_00_00", "from_socket_uuid": "2e3d4f7a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.p", "to_node": "preproc_2026_05_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_05_01_00_00_00", "from_socket_uuid": "2e62c610-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "ICON_2026_05_01_00_00_00", "state": false}, {"from_socket": "icon_restart", "from_node": "ICON_2026_03_01_00_00_00", "from_socket_uuid": "2e578764-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.restart", "to_node": "ICON_2026_05_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_05_01_00_00_00", "from_socket_uuid": "2e6718a0-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_1_2026_05_01_00_00_00", "state": false}, {"from_socket": "postout_1", "from_node": "postproc_1_2026_05_01_00_00_00", "from_socket_uuid": "2e6a26da-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_1_2026_05_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_05_01_00_00_00", "from_socket_uuid": "2e6718a0-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.stream", "to_node": "store_and_clean_1_2026_05_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_05_01_00_00_00", "from_socket_uuid": "2e62c610-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.icon_input", "to_node": "store_and_clean_1_2026_05_01_00_00_00", "state": false}, {"from_socket": "extpar_file", "from_node": "Extpar_2026_01_01_00_00_00", "from_socket_uuid": "2e3d4f7a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.p", "to_node": "preproc_2026_07_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_07_01_00_00_00", "from_socket_uuid": "2e729b76-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "ICON_2026_07_01_00_00_00", "state": false}, {"from_socket": "icon_restart", "from_node": "ICON_2026_05_01_00_00_00", "from_socket_uuid": "2e67199a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.restart", "to_node": "ICON_2026_07_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_07_01_00_00_00", "from_socket_uuid": "2e7708fa-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_1_2026_07_01_00_00_00", "state": false}, {"from_socket": "postout_1", "from_node": "postproc_1_2026_07_01_00_00_00", "from_socket_uuid": "2e7a2364-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_1_2026_07_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_07_01_00_00_00", "from_socket_uuid": "2e7708fa-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.stream", "to_node": "store_and_clean_1_2026_07_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_07_01_00_00_00", "from_socket_uuid": "2e729b76-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.icon_input", "to_node": "store_and_clean_1_2026_07_01_00_00_00", "state": false}, {"from_socket": "extpar_file", "from_node": "Extpar_2026_01_01_00_00_00", "from_socket_uuid": "2e3d4f7a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.p", "to_node": "preproc_2026_09_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_09_01_00_00_00", "from_socket_uuid": "2e822fbe-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "ICON_2026_09_01_00_00_00", "state": false}, {"from_socket": "icon_restart", "from_node": "ICON_2026_07_01_00_00_00", "from_socket_uuid": "2e7709fe-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.restart", "to_node": "ICON_2026_09_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_09_01_00_00_00", "from_socket_uuid": "2e866796-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_1_2026_09_01_00_00_00", "state": false}, {"from_socket": "postout_1", "from_node": "postproc_1_2026_09_01_00_00_00", "from_socket_uuid": "2e898dd6-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_1_2026_09_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_09_01_00_00_00", "from_socket_uuid": "2e866796-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.stream", "to_node": "store_and_clean_1_2026_09_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_09_01_00_00_00", "from_socket_uuid": "2e822fbe-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.icon_input", "to_node": "store_and_clean_1_2026_09_01_00_00_00", "state": false}, {"from_socket": "extpar_file", "from_node": "Extpar_2026_01_01_00_00_00", "from_socket_uuid": "2e3d4f7a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.p", "to_node": "preproc_2026_11_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_11_01_00_00_00", "from_socket_uuid": "2e926f8c-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "ICON_2026_11_01_00_00_00", "state": false}, {"from_socket": "icon_restart", "from_node": "ICON_2026_09_01_00_00_00", "from_socket_uuid": "2e86689a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.restart", "to_node": "ICON_2026_11_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_11_01_00_00_00", "from_socket_uuid": "2e969cd8-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_1_2026_11_01_00_00_00", "state": false}, {"from_socket": "postout_1", "from_node": "postproc_1_2026_11_01_00_00_00", "from_socket_uuid": "2e99996a-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_1_2026_11_01_00_00_00", "state": false}, {"from_socket": "stream_1", "from_node": "ICON_2026_11_01_00_00_00", "from_socket_uuid": "2e969cd8-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.stream", "to_node": "store_and_clean_1_2026_11_01_00_00_00", "state": false}, {"from_socket": "icon_input", "from_node": "preproc_2026_11_01_00_00_00", "from_socket_uuid": "2e926f8c-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.icon_input", "to_node": "store_and_clean_1_2026_11_01_00_00_00", "state": false}, {"from_socket": "stream_2", "from_node": "ICON_2026_01_01_00_00_00", "from_socket_uuid": "2e473800-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "postproc_2_2026_01_01_00_00_00", "state": false}, {"from_socket": "postout_2", "from_node": "postproc_2_2026_01_01_00_00_00", "from_socket_uuid": "2e9fc268-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input", "to_node": "store_and_clean_2_2026_01_01_00_00_00", "state": false}, {"from_socket": "stream_2", "from_node": "ICON_2026_01_01_00_00_00", "from_socket_uuid": "2e473800-2a5f-11ef-bbff-bc091bf30ef3", "to_socket": "nodes.input2", "to_node": "store_and_clean_2_2026_01_01_00_00_00", "state": false}]}
+
+        // Define Schemes to use in vanilla JS
+        const Schemes = {
+            Node: ClassicPreset.Node,
+            Connection: ClassicPreset.Connection
+        };
+
+        class Node extends ClassicPreset.Node {
+          width = 180;
+          height = 100;
+        }
+        class Connection extends ClassicPreset.Connection {}
+
+        function createDynamicNode(nodeData) {
+          const node = new Node(nodeData.label);
+          // resize the node based on the max length of the input/output names
+          let maxSocketNameLength = 0;
+          nodeData.inputs.forEach((input) => {
+            let socket = new ClassicPreset.Socket(input.name);
+            if (!node.inputs.hasOwnProperty(input.name)) {
+              node.addInput(input.name, new ClassicPreset.Input(socket, input.name));
+              maxSocketNameLength = Math.max(maxSocketNameLength, input.name.length);
+            }
+          });
+
+          nodeData.outputs.forEach((output) => {
+            let socket = new ClassicPreset.Socket(output.name);
+            if (!node.outputs.hasOwnProperty(output.name)) {
+              node.addOutput(output.name, new ClassicPreset.Output(socket, output.name));
+              maxSocketNameLength = Math.max(maxSocketNameLength, output.name.length);
+            }
+          });
+          node.height = Math.max(140, node.height + (nodeData.inputs.length + nodeData.outputs.length) * 35)
+          node.width += maxSocketNameLength * 5;
+
+          return node;
+        }
+
+
+        async function addNode(editor, area, nodeData) {
+          console.log("Adding node", nodeData);
+          const node = createDynamicNode(nodeData);
+          await editor.addNode(node);
+          editor.nodeMap[nodeData.label] = node; // Assuming each nodeData has a unique ID
+          await area.translate(node.id, { x: nodeData.position[0], y: nodeData.position[1] });
+        }
+
+        async function addLink(editor, area, layout, linkData) {
+          const fromNode = editor.nodeMap[linkData.from_node];
+          const toNode = editor.nodeMap[linkData.to_node];
+          console.log("fromNode", fromNode, "toNode", toNode);
+          let socket;
+          if (fromNode && toNode) {
+            socket = new ClassicPreset.Socket(linkData.from_socket);
+            if (!fromNode.outputs.hasOwnProperty(linkData.from_socket)) {
+              fromNode.addOutput(linkData.from_socket, new ClassicPreset.Output(socket, linkData.from_socket));
+              fromNode.height += 25; // Increase height of node for each output
+              area.update('node', fromNode.id);
+            }
+            socket = new ClassicPreset.Socket(linkData.to_socket);
+            if (!toNode.inputs.hasOwnProperty(linkData.to_socket)) {
+              toNode.addInput(linkData.to_socket, new ClassicPreset.Input(socket, linkData.to_socket));
+              toNode.height += 25; // Increase height of node for each input
+              area.update('node', toNode.id);
+            }
+            await editor.addConnection(new Connection(fromNode, linkData.from_socket, toNode, linkData.to_socket));
+            // await layout(true);
+
+          }
+        }
+
+        async function loadJSON(editor, area, layout, workgraphData) {
+          for (const nodeId in workgraphData.nodes) {
+            const nodeData = workgraphData.nodes[nodeId];
+            await addNode(editor, area, nodeData);
+          }
+
+          // Adding connections based on workgraphData
+          workgraphData.links.forEach(async (link) => { // Specify the type of link here
+            await addLink(editor, area, layout, link);
+          });
+        }
+
+        async function createEditor(container) {
+            const socket = new ClassicPreset.Socket("socket");
+
+            const editor = new NodeEditor(Schemes);
+            const area = new AreaPlugin(container);
+            const connection = new ConnectionPlugin();
+            const render = new ReactPlugin({ createRoot });
+            const arrange = new AutoArrangePlugin();
+
+            const minimap = new MinimapPlugin({
+              boundViewport: true
+            });
+
+            AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
+                accumulating: AreaExtensions.accumulateOnCtrl(),
+            });
+
+            render.addPreset(Presets.classic.setup());
+            render.addPreset(Presets.minimap.setup({ size: 200 }));
+
+            connection.addPreset(ConnectionPresets.classic.setup());
+
+            const applier = new ArrangeAppliers.TransitionApplier({
+              duration: 500,
+              timingFunction: (t) => t,
+              async onTick() {
+                await AreaExtensions.zoomAt(area, editor.getNodes());
+              }
+            });
+
+            arrange.addPreset(ArrangePresets.classic.setup());
+
+
+            editor.use(area);
+            // area.use(connection);
+            area.use(render);
+            area.use(arrange);
+            area.use(minimap);
+
+
+            AreaExtensions.simpleNodesOrder(area);
+
+            async function layout(animate) {
+              await arrange.layout({ applier: animate ? applier : undefined });
+              AreaExtensions.zoomAt(area, editor.getNodes());
+            }
+
+            // Adding nodes based on workgraphData
+            const nodeMap = {}; // To keep track of created nodes for linking
+            editor.nodeMap = nodeMap;
+
+
+            return {
+              editor: editor,
+              area: area,
+              layout: layout,
+              destroy: () => area.destroy()
+            };
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+
+        function App() {
+            const [editor, setEditor] = useState(null);
+            const containerRef = useRef(null);
+
+            useEffect(() => {
+                if (containerRef.current && !editor) {
+                    createEditor(containerRef.current).then((editor) => {
+                        setEditor(editor);
+                        loadJSON(editor.editor, editor.area, editor.layout, workgraphData).then(() => {
+                          // aplly layout twice to ensure all nodes are arranged
+                          editor?.layout(false).then(() => editor?.layout(true));
+                        });
+                    });
+                }
+                if (document.getElementById('fullscreen-btn')) {
+                    document.getElementById('fullscreen-btn').addEventListener('click', toggleFullScreen);
+                }
+                return () => {
+                    if (editor) {
+                        editor.destroy();
+                    }
+                };
+            }, [containerRef, editor]);
+
+            return (
+
+                <div className="App">
+                    <div>
+                      <button onClick={() => editor?.layout(true)}>Arrange</button>
+                      <button id="fullscreen-btn">Fullscreen</button>
+                    </div>
+                    <div ref={containerRef} className="rete" style={{ height: "100vh", width: "100%" }}></div>
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById("root");
+        const root = createRoot(rootElement);
+
+        root.render(
+                <App />
+        );
+    </script>
+</body>
+</html>
