@@ -57,7 +57,7 @@ cycles:
         argument:
           input: postout_1
           stream: stream_1
-          icon-input: icon_input
+          icon_input: icon_input
         output:
           - stored_data_1
   yearly:
@@ -123,7 +123,6 @@ tasks:
     uenv:
       squashfs: path/to/squashfs
       mount_point: runtime/mount/point
-    command: path/to/icon
   postproc_1:
     plugin: AiiDA Shell
     command: $PWD/executables/main_script_ocn.sh
