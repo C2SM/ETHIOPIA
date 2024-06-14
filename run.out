@@ -1,0 +1,632 @@
+06/14/2024 04:46:35 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:46:38 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: Extpar_2026_01_01_00_00_00
+06/14/2024 04:46:38 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: Extpar_2026_01_01_00_00_00, type: SHELLJOB
+06/14/2024 04:46:48 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: Extpar_2026_01_01_00_00_00 finished.
+06/14/2024 04:46:55 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:46:59 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: preproc_2026_01_01_00_00_00,preproc_2026_03_01_00_00_00,preproc_2026_05_01_00_00_00,preproc_2026_07_01_00_00_00,preproc_2026_09_01_00_00_00,preproc_2026_11_01_00_00_00
+06/14/2024 04:46:59 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: preproc_2026_01_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:00 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: preproc_2026_03_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:00 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: preproc_2026_05_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:01 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: preproc_2026_07_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:01 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: preproc_2026_09_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:02 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: preproc_2026_11_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:16 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: preproc_2026_01_01_00_00_00 finished.
+06/14/2024 04:47:17 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: preproc_2026_03_01_00_00_00 finished.
+06/14/2024 04:47:17 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: preproc_2026_05_01_00_00_00 finished.
+06/14/2024 04:47:17 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: preproc_2026_07_01_00_00_00 finished.
+06/14/2024 04:47:17 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: preproc_2026_09_01_00_00_00 finished.
+06/14/2024 04:47:17 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: preproc_2026_11_01_00_00_00 finished.
+06/14/2024 04:47:25 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:47:28 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: ICON_2026_01_01_00_00_00
+06/14/2024 04:47:28 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: ICON_2026_01_01_00_00_00, type: SHELLJOB
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'input': <SinglefileData: uuid: 4d39613f-8478-40f4-aa8b-1671dfebc7f4 (pk: 480)>}, 'arguments': ['--input', '{input}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/extpar'}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 RUNNING
+node:  ICON_2026_01_01_00_00_00 CREATED
+node:  ICON_2026_03_01_00_00_00 CREATED
+node:  ICON_2026_05_01_00_00_00 CREATED
+node:  ICON_2026_07_01_00_00_00 CREATED
+node:  ICON_2026_09_01_00_00_00 CREATED
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 CREATED
+node:  postproc_1_2026_03_01_00_00_00 CREATED
+node:  postproc_1_2026_05_01_00_00_00 CREATED
+node:  postproc_1_2026_07_01_00_00_00 CREATED
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 CREATED
+node:  preproc_2026_01_01_00_00_00 CREATED
+node:  preproc_2026_03_01_00_00_00 CREATED
+node:  preproc_2026_05_01_00_00_00 CREATED
+node:  preproc_2026_07_01_00_00_00 CREATED
+node:  preproc_2026_09_01_00_00_00 CREATED
+node:  preproc_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_01_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_03_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_05_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 CREATED
+is workgraph finished:  False
+on awaitable finished:  Extpar_2026_01_01_00_00_00
+update node state:  Extpar_2026_01_01_00_00_00
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'e': <SinglefileData: uuid: a563f2f6-3069-4993-b29f-62968cd40ad5 (pk: 482)>, 'g': <SinglefileData: uuid: 7641b444-2e3c-4a78-a2a2-74f3f744d1e8 (pk: 481)>, 'p': <SinglefileData: uuid: d0910058-2684-4392-8112-1cbf485d1433 (pk: 506)>}, 'arguments': ['-g', '{g}', '-p', '{p}', '-e', '{e}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/cleanup.sh'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'e': <SinglefileData: uuid: 61e4552b-1c8a-457a-9cf7-a340e0f153e8 (pk: 485)>, 'g': <SinglefileData: uuid: 9feedb58-e036-4c92-8242-399764656f3c (pk: 484)>, 'p': <SinglefileData: uuid: d0910058-2684-4392-8112-1cbf485d1433 (pk: 506)>}, 'arguments': ['-g', '{g}', '-p', '{p}', '-e', '{e}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/cleanup.sh'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'e': <SinglefileData: uuid: 598c6535-964a-4ea9-9aca-aaf494a622a5 (pk: 488)>, 'g': <SinglefileData: uuid: 9d07a2a1-02f1-4392-b1de-18be47a2b45d (pk: 487)>, 'p': <SinglefileData: uuid: d0910058-2684-4392-8112-1cbf485d1433 (pk: 506)>}, 'arguments': ['-g', '{g}', '-p', '{p}', '-e', '{e}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/cleanup.sh'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'e': <SinglefileData: uuid: 49b6ca47-8dc2-4030-b0ba-5c6799123474 (pk: 491)>, 'g': <SinglefileData: uuid: 65d1e86c-44c9-4319-8ed0-dcc9d8db6d62 (pk: 490)>, 'p': <SinglefileData: uuid: d0910058-2684-4392-8112-1cbf485d1433 (pk: 506)>}, 'arguments': ['-g', '{g}', '-p', '{p}', '-e', '{e}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/cleanup.sh'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'e': <SinglefileData: uuid: 38c87ec3-194f-4964-bdff-320eb95adbd1 (pk: 494)>, 'g': <SinglefileData: uuid: 8796436c-70db-4147-ac8b-e0dc3cbf4962 (pk: 493)>, 'p': <SinglefileData: uuid: d0910058-2684-4392-8112-1cbf485d1433 (pk: 506)>}, 'arguments': ['-g', '{g}', '-p', '{p}', '-e', '{e}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/cleanup.sh'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'e': <SinglefileData: uuid: 27abc840-a392-43b5-b14c-938f6d821620 (pk: 497)>, 'g': <SinglefileData: uuid: 172fe25a-946f-499b-8f9a-b0cdb1a4526e (pk: 496)>, 'p': <SinglefileData: uuid: d0910058-2684-4392-8112-1cbf485d1433 (pk: 506)>}, 'arguments': ['-g', '{g}', '-p', '{p}', '-e', '{e}'], 'outputs': ['output'], 'command': '/home/alexgo/code/AiiDA_WC/executables/cleanup.sh'}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 CREATED
+node:  ICON_2026_03_01_00_00_00 CREATED
+node:  ICON_2026_05_01_00_00_00 CREATED
+node:  ICON_2026_07_01_00_00_00 CREATED
+node:  ICON_2026_09_01_00_00_00 CREATED
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 CREATED
+node:  postproc_1_2026_03_01_00_00_00 CREATED
+node:  postproc_1_2026_05_01_00_00_00 CREATED
+node:  postproc_1_2026_07_01_00_00_00 CREATED
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 CREATED
+node:  preproc_2026_01_01_00_00_00 RUNNING
+node:  preproc_2026_03_01_00_00_00 RUNNING
+node:  preproc_2026_05_01_00_00_00 RUNNING
+node:  preproc_2026_07_01_00_00_00 RUNNING
+node:  preproc_2026_09_01_00_00_00 RUNNING
+node:  preproc_2026_11_01_00_00_00 RUNNING
+node:  store_and_clean_1_2026_01_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_03_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_05_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 CREATED
+is workgraph finished:  False
+on awaitable finished:  preproc_2026_01_01_00_00_00
+update node state:  preproc_2026_01_01_00_00_00
+on awaitable finished:  preproc_2026_03_01_00_00_00
+update node state:  preproc_2026_03_01_00_00_00
+invalid state
+on awaitable finished:  preproc_2026_05_01_00_00_00
+update node state:  preproc_2026_05_01_00_00_00
+invalid state
+on awaitable finished:  preproc_2026_07_01_00_00_00
+update node state:  preproc_2026_07_01_00_00_00
+invalid state
+on awaitable finished:  preproc_2026_09_01_00_00_00
+update node state:  preproc_2026_09_01_00_00_00
+invalid state
+on awaitable finished:  preproc_2026_11_01_00_00_00
+update node state:  preproc_2026_11_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'g': <SinglefileData: uuid: 5d8e1f2e-14ba-40da-8604-84254467fc13 (pk: 483)>, 'input': <SinglefileData: uuid: 45a6822e-ef21-4eca-8f75-6b9006370cbd (pk: 545)>}, 'arguments': ['-g', '{g}', '--input', '{input}'], 'outputs': ['output_1', 'output_2', 'restart'], 'command': '/home/alexgo/code/AiiDA_WC/executables/icon'}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 RUNNING
+node:  ICON_2026_03_01_00_00_00 CREATED
+node:  ICON_2026_05_01_00_00_00 CREATED
+node:  ICON_2026_07_01_00_00_00 CREATED
+node:  ICON_2026_09_01_00_00_00 CREATED
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 CREATED
+node:  postproc_1_2026_03_01_00_00_00 CREATED
+node:  postproc_1_2026_05_01_00_00_00 CREATED
+node:  postproc_1_2026_07_01_00_00_00 CREATED
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+06/14/2024 04:47:38 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: ICON_2026_01_01_00_00_00 finished.
+06/14/2024 04:47:45 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:47:48 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: ICON_2026_03_01_00_00_00,postproc_1_2026_01_01_00_00_00,postproc_2_2026_01_01_00_00_00
+06/14/2024 04:47:49 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: ICON_2026_03_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:49 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_1_2026_01_01_00_00_00, type: SHELLJOB
+06/14/2024 04:47:50 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_2_2026_01_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:01 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: ICON_2026_03_01_00_00_00 finished.
+06/14/2024 04:48:01 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_1_2026_01_01_00_00_00 finished.
+06/14/2024 04:48:01 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_2_2026_01_01_00_00_00 finished.
+06/14/2024 04:48:09 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:48:12 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: ICON_2026_05_01_00_00_00,postproc_1_2026_03_01_00_00_00,store_and_clean_1_2026_01_01_00_00_00,store_and_clean_2_2026_01_01_00_00_00
+06/14/2024 04:48:12 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: ICON_2026_05_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:13 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_1_2026_03_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:13 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_1_2026_01_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:14 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_2_2026_01_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: ICON_2026_05_01_00_00_00 finished.
+06/14/2024 04:48:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_1_2026_03_01_00_00_00 finished.
+06/14/2024 04:48:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_1_2026_01_01_00_00_00 finished.
+06/14/2024 04:48:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_2_2026_01_01_00_00_00 finished.
+06/14/2024 04:48:35 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:48:38 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: ICON_2026_07_01_00_00_00,postproc_1_2026_05_01_00_00_00,store_and_clean_1_2026_03_01_00_00_00
+06/14/2024 04:48:38 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: ICON_2026_07_01_00_00_00, type: SHELLJOB
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 CREATED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_03_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_05_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 CREATED
+is workgraph finished:  False
+on awaitable finished:  ICON_2026_01_01_00_00_00
+update node state:  ICON_2026_01_01_00_00_00
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'g': <SinglefileData: uuid: f23d76c1-30a6-4942-8203-2157db9b92cb (pk: 486)>, 'input': <SinglefileData: uuid: 615b0733-4a57-45cd-b198-c7095b853e09 (pk: 548)>, 'restart': <SinglefileData: uuid: 9c18cc1b-12b9-4134-a3a9-b1de7e70d565 (pk: 571)>}, 'arguments': ['-g', '{g}', '--input', '{input}', '--restart', '{restart}'], 'outputs': ['output_1', 'output_2', 'restart'], 'command': '/home/alexgo/code/AiiDA_WC/executables/icon'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_ocn.sh', 'nodes': {'input': <SinglefileData: uuid: 731d082e-66a4-4edc-861a-45b27a8a7c6d (pk: 569)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_atm.sh', 'nodes': {'input': <SinglefileData: uuid: 45ac00c1-de47-4067-98ea-c5861b01d4b7 (pk: 570)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 RUNNING
+node:  ICON_2026_05_01_00_00_00 CREATED
+node:  ICON_2026_07_01_00_00_00 CREATED
+node:  ICON_2026_09_01_00_00_00 CREATED
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 RUNNING
+node:  postproc_1_2026_03_01_00_00_00 CREATED
+node:  postproc_1_2026_05_01_00_00_00 CREATED
+node:  postproc_1_2026_07_01_00_00_00 CREATED
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 RUNNING
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_03_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_05_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 CREATED
+is workgraph finished:  False
+on awaitable finished:  ICON_2026_03_01_00_00_00
+update node state:  ICON_2026_03_01_00_00_00
+on awaitable finished:  postproc_1_2026_01_01_00_00_00
+update node state:  postproc_1_2026_01_01_00_00_00
+invalid state
+on awaitable finished:  postproc_2_2026_01_01_00_00_00
+update node state:  postproc_2_2026_01_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'g': <SinglefileData: uuid: fbd3df7a-39c7-462a-9ca5-f574fab82bb4 (pk: 489)>, 'input': <SinglefileData: uuid: 3465faaa-9f87-4722-9b14-71754110139c (pk: 551)>, 'restart': <SinglefileData: uuid: 18c71eeb-a086-4ea4-a5b6-9d3f772686ea (pk: 594)>}, 'arguments': ['-g', '{g}', '--input', '{input}', '--restart', '{restart}'], 'outputs': ['output_1', 'output_2', 'restart'], 'command': '/home/alexgo/code/AiiDA_WC/executables/icon'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_ocn.sh', 'nodes': {'input': <SinglefileData: uuid: b1f1b17d-68d8-4e38-a37a-1cb5f0b549c6 (pk: 592)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--stream', '{stream}', '--icon_input', '{icon_input}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: 5f9d80e9-3dec-4b67-aab8-570608a289c2 (pk: 597)>, 'stream': <SinglefileData: uuid: 731d082e-66a4-4edc-861a-45b27a8a7c6d (pk: 569)>, 'icon_input': <SinglefileData: uuid: 45a6822e-ef21-4eca-8f75-6b9006370cbd (pk: 545)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--input2', '{input2}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: 1da556d4-82d9-4063-96be-bdb2a87ac1fa (pk: 600)>, 'input2': <SinglefileData: uuid: 45ac00c1-de47-4067-98ea-c5861b01d4b7 (pk: 570)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 RUNNING
+node:  ICON_2026_07_01_00_00_00 CREATED
+node:  ICON_2026_09_01_00_00_00 CREATED
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 RUNNING
+node:  postproc_1_2026_05_01_00_00_00 CREATED
+node:  postproc_1_2026_07_01_00_00_00 CREATED
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 RUNNING
+node:  store_and_clean_1_2026_03_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_05_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 RUNNING
+is workgraph finished:  False
+on awaitable finished:  ICON_2026_05_01_00_00_00
+update node state:  ICON_2026_05_01_00_00_00
+on awaitable finished:  postproc_1_2026_03_01_00_00_00
+update node state:  postproc_1_2026_03_01_00_00_00
+invalid state
+on awaitable finished:  store_and_clean_1_2026_01_01_00_00_00
+update node state:  store_and_clean_1_2026_01_01_00_00_00
+invalid state
+on awaitable finished:  store_and_clean_2_2026_01_01_00_00_00
+update node state:  store_and_clean_2_2026_01_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  06/14/2024 04:48:39 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_1_2026_05_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:39 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_1_2026_03_01_00_00_00, type: SHELLJOB
+06/14/2024 04:48:51 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: ICON_2026_07_01_00_00_00 finished.
+06/14/2024 04:48:51 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_1_2026_05_01_00_00_00 finished.
+06/14/2024 04:48:51 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_1_2026_03_01_00_00_00 finished.
+06/14/2024 04:48:59 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:49:02 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: ICON_2026_09_01_00_00_00,postproc_1_2026_07_01_00_00_00,store_and_clean_1_2026_05_01_00_00_00
+06/14/2024 04:49:02 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: ICON_2026_09_01_00_00_00, type: SHELLJOB
+06/14/2024 04:49:03 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_1_2026_07_01_00_00_00, type: SHELLJOB
+06/14/2024 04:49:03 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_1_2026_05_01_00_00_00, type: SHELLJOB
+06/14/2024 04:49:15 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: ICON_2026_09_01_00_00_00 finished.
+06/14/2024 04:49:15 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_1_2026_07_01_00_00_00 finished.
+06/14/2024 04:49:15 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_1_2026_05_01_00_00_00 finished.
+06/14/2024 04:49:23 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:49:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: ICON_2026_11_01_00_00_00,postproc_1_2026_09_01_00_00_00,store_and_clean_1_2026_07_01_00_00_00
+06/14/2024 04:49:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: ICON_2026_11_01_00_00_00, type: SHELLJOB
+06/14/2024 04:49:27 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_1_2026_09_01_00_00_00, type: SHELLJOB
+06/14/2024 04:49:28 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_1_2026_07_01_00_00_00, type: SHELLJOB
+{'nodes': {'g': <SinglefileData: uuid: 3a69201c-f837-4411-929f-5bac4673e2ad (pk: 492)>, 'input': <SinglefileData: uuid: d4bb33c4-5d69-4319-b2ac-766d51174cd7 (pk: 554)>, 'restart': <SinglefileData: uuid: 2e26a889-6b67-4dab-b89a-290f171ab2cf (pk: 629)>}, 'arguments': ['-g', '{g}', '--input', '{input}', '--restart', '{restart}'], 'outputs': ['output_1', 'output_2', 'restart'], 'command': '/home/alexgo/code/AiiDA_WC/executables/icon'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_ocn.sh', 'nodes': {'input': <SinglefileData: uuid: 6db53519-dd1f-4b99-9862-2f9a09d3d395 (pk: 627)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--stream', '{stream}', '--icon_input', '{icon_input}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: 25905888-a7e3-4a61-b074-365e9a8b7208 (pk: 632)>, 'stream': <SinglefileData: uuid: b1f1b17d-68d8-4e38-a37a-1cb5f0b549c6 (pk: 592)>, 'icon_input': <SinglefileData: uuid: 615b0733-4a57-45cd-b198-c7095b853e09 (pk: 548)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 FINISHED
+node:  ICON_2026_07_01_00_00_00 RUNNING
+node:  ICON_2026_09_01_00_00_00 CREATED
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 FINISHED
+node:  postproc_1_2026_05_01_00_00_00 RUNNING
+node:  postproc_1_2026_07_01_00_00_00 CREATED
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_03_01_00_00_00 RUNNING
+node:  store_and_clean_1_2026_05_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 FINISHED
+is workgraph finished:  False
+on awaitable finished:  ICON_2026_07_01_00_00_00
+update node state:  ICON_2026_07_01_00_00_00
+on awaitable finished:  postproc_1_2026_05_01_00_00_00
+update node state:  postproc_1_2026_05_01_00_00_00
+invalid state
+on awaitable finished:  store_and_clean_1_2026_03_01_00_00_00
+update node state:  store_and_clean_1_2026_03_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'g': <SinglefileData: uuid: 7dbddb04-d995-4f38-aa89-1e55e3277a13 (pk: 495)>, 'input': <SinglefileData: uuid: bef88dd9-db17-4cde-b0ac-da7920f67a87 (pk: 557)>, 'restart': <SinglefileData: uuid: e8bd4872-6871-4953-b9f5-5459131a5a95 (pk: 661)>}, 'arguments': ['-g', '{g}', '--input', '{input}', '--restart', '{restart}'], 'outputs': ['output_1', 'output_2', 'restart'], 'command': '/home/alexgo/code/AiiDA_WC/executables/icon'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_ocn.sh', 'nodes': {'input': <SinglefileData: uuid: 3c565d30-fdac-439e-991c-40b0adc6bb17 (pk: 659)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--stream', '{stream}', '--icon_input', '{icon_input}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: d3ee12bd-8c72-460e-ad2e-10e88dbbf9c9 (pk: 664)>, 'stream': <SinglefileData: uuid: 6db53519-dd1f-4b99-9862-2f9a09d3d395 (pk: 627)>, 'icon_input': <SinglefileData: uuid: 3465faaa-9f87-4722-9b14-71754110139c (pk: 551)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 FINISHED
+node:  ICON_2026_07_01_00_00_00 FINISHED
+node:  ICON_2026_09_01_00_00_00 RUNNING
+node:  ICON_2026_11_01_00_00_00 CREATED
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 FINISHED
+node:  postproc_1_2026_05_01_00_00_00 FINISHED
+node:  postproc_1_2026_07_01_00_00_00 RUNNING
+node:  postproc_1_2026_09_01_00_00_00 CREATED
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_03_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_05_01_00_00_00 RUNNING
+node:  store_and_clean_1_2026_07_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 FINISHED
+is workgraph finished:  False
+on awaitable finished:  ICON_2026_09_01_00_00_00
+update node state:  ICON_2026_09_01_00_00_00
+on awaitable finished:  postproc_1_2026_07_01_00_00_00
+update node state:  postproc_1_2026_07_01_00_00_00
+invalid state
+on awaitable finished:  store_and_clean_1_2026_05_01_00_00_00
+update node state:  store_and_clean_1_2026_05_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'nodes': {'g': <SinglefileData: uuid: b9d2d6b4-4313-4ec8-abea-bae54f3c6450 (pk: 498)>, 'input': <SinglefileData: uuid: 068f1bf4-a003-46d2-8138-c900b655c33f (pk: 560)>, 'restart': <SinglefileData: uuid: 3dc164c0-69a9-4a06-b927-51bab432bbc3 (pk: 690)>}, 'arguments': ['-g', '{g}', '--input', '{input}', '--restart', '{restart}'], 'outputs': ['output_1', 'output_2', 'restart'], 'command': '/home/alexgo/code/AiiDA_WC/executables/icon'}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_ocn.sh', 'nodes': {'input': <SinglefileData: uuid: 51dced75-333b-4300-a42d-b20a76a0ebd9 (pk: 688)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--stream', '{stream}', '--icon_input', '{icon_input}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: d058f8c3-9e7c-49f4-842f-c8440c0d2179 (pk: 693)>, 'stream': <SinglefileData: uuid: 3c565d30-fdac-439e-991c-40b0adc6bb17 (pk: 659)>, 'icon_input': <SinglefileData: uuid: d4bb33c4-5d69-4319-b2ac-766d51174cd7 (pk: 554)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+06/14/2024 04:49:40 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: ICON_2026_11_01_00_00_00 finished.
+06/14/2024 04:49:40 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_1_2026_09_01_00_00_00 finished.
+06/14/2024 04:49:40 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_1_2026_07_01_00_00_00 finished.
+06/14/2024 04:49:48 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:49:51 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: postproc_1_2026_11_01_00_00_00,store_and_clean_1_2026_09_01_00_00_00
+06/14/2024 04:49:51 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: postproc_1_2026_11_01_00_00_00, type: SHELLJOB
+06/14/2024 04:49:52 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_1_2026_09_01_00_00_00, type: SHELLJOB
+06/14/2024 04:50:03 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: postproc_1_2026_11_01_00_00_00 finished.
+06/14/2024 04:50:03 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_1_2026_09_01_00_00_00 finished.
+06/14/2024 04:50:10 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:50:14 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: store_and_clean_1_2026_11_01_00_00_00
+06/14/2024 04:50:14 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|run_nodes]: Run node: store_and_clean_1_2026_11_01_00_00_00, type: SHELLJOB
+06/14/2024 04:50:23 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|set_node_result]: Node: store_and_clean_1_2026_11_01_00_00_00 finished.
+06/14/2024 04:50:31 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: Continue workgraph.
+06/14/2024 04:50:34 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|continue_workgraph]: nodes ready to run: 
+06/14/2024 04:50:35 PM <89469> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [499|WorkGraphEngine|finalize]: Finalize
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 FINISHED
+node:  ICON_2026_07_01_00_00_00 FINISHED
+node:  ICON_2026_09_01_00_00_00 FINISHED
+node:  ICON_2026_11_01_00_00_00 RUNNING
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 FINISHED
+node:  postproc_1_2026_05_01_00_00_00 FINISHED
+node:  postproc_1_2026_07_01_00_00_00 FINISHED
+node:  postproc_1_2026_09_01_00_00_00 RUNNING
+node:  postproc_1_2026_11_01_00_00_00 CREATED
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_03_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_05_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_07_01_00_00_00 RUNNING
+node:  store_and_clean_1_2026_09_01_00_00_00 CREATED
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 FINISHED
+is workgraph finished:  False
+on awaitable finished:  ICON_2026_11_01_00_00_00
+update node state:  ICON_2026_11_01_00_00_00
+on awaitable finished:  postproc_1_2026_09_01_00_00_00
+update node state:  postproc_1_2026_09_01_00_00_00
+invalid state
+on awaitable finished:  store_and_clean_1_2026_07_01_00_00_00
+update node state:  store_and_clean_1_2026_07_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}'], 'outputs': ['postout'], 'command': '/home/alexgo/code/AiiDA_WC/executables/main_script_ocn.sh', 'nodes': {'input': <SinglefileData: uuid: ace8617d-348b-442d-8fce-b7dc7abf817a (pk: 717)>}}
+var_kwargs:  None
+node  type: ShellJob.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--stream', '{stream}', '--icon_input', '{icon_input}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: 0fea7076-7c14-4c6c-b012-5cbe1d7a0ef9 (pk: 722)>, 'stream': <SinglefileData: uuid: 51dced75-333b-4300-a42d-b20a76a0ebd9 (pk: 688)>, 'icon_input': <SinglefileData: uuid: bef88dd9-db17-4cde-b0ac-da7920f67a87 (pk: 557)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 FINISHED
+node:  ICON_2026_07_01_00_00_00 FINISHED
+node:  ICON_2026_09_01_00_00_00 FINISHED
+node:  ICON_2026_11_01_00_00_00 FINISHED
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 FINISHED
+node:  postproc_1_2026_05_01_00_00_00 FINISHED
+node:  postproc_1_2026_07_01_00_00_00 FINISHED
+node:  postproc_1_2026_09_01_00_00_00 FINISHED
+node:  postproc_1_2026_11_01_00_00_00 RUNNING
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_03_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_05_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_07_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_09_01_00_00_00 RUNNING
+node:  store_and_clean_1_2026_11_01_00_00_00 CREATED
+node:  store_and_clean_2_2026_01_01_00_00_00 FINISHED
+is workgraph finished:  False
+on awaitable finished:  postproc_1_2026_11_01_00_00_00
+update node state:  postproc_1_2026_11_01_00_00_00
+on awaitable finished:  store_and_clean_1_2026_09_01_00_00_00
+update node state:  store_and_clean_1_2026_09_01_00_00_00
+invalid state
+Continue workgraph.
+------------------------------------------------------------
+executor:  <class 'aiida_shell.calculations.shell.ShellJob'>
+args:  [None]
+kwargs:  {'arguments': ['--input', '{input}', '--stream', '{stream}', '--icon_input', '{icon_input}'], 'outputs': ['stored_data'], 'command': '/home/alexgo/code/AiiDA_WC/executables/post_clean.sh', 'nodes': {'input': <SinglefileData: uuid: be53aaa1-4e4c-4fc9-8e15-5bb49aee9942 (pk: 740)>, 'stream': <SinglefileData: uuid: ace8617d-348b-442d-8fce-b7dc7abf817a (pk: 717)>, 'icon_input': <SinglefileData: uuid: 068f1bf4-a003-46d2-8138-c900b655c33f (pk: 560)>}}
+var_kwargs:  None
+node  type: ShellJob.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 FINISHED
+node:  ICON_2026_07_01_00_00_00 FINISHED
+node:  ICON_2026_09_01_00_00_00 FINISHED
+node:  ICON_2026_11_01_00_00_00 FINISHED
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 FINISHED
+node:  postproc_1_2026_05_01_00_00_00 FINISHED
+node:  postproc_1_2026_07_01_00_00_00 FINISHED
+node:  postproc_1_2026_09_01_00_00_00 FINISHED
+node:  postproc_1_2026_11_01_00_00_00 FINISHED
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_03_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_05_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_07_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_09_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_11_01_00_00_00 RUNNING
+node:  store_and_clean_2_2026_01_01_00_00_00 FINISHED
+is workgraph finished:  False
+on awaitable finished:  store_and_clean_1_2026_11_01_00_00_00
+update node state:  store_and_clean_1_2026_11_01_00_00_00
+Continue workgraph.
+node:  Extpar_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_01_01_00_00_00 FINISHED
+node:  ICON_2026_03_01_00_00_00 FINISHED
+node:  ICON_2026_05_01_00_00_00 FINISHED
+node:  ICON_2026_07_01_00_00_00 FINISHED
+node:  ICON_2026_09_01_00_00_00 FINISHED
+node:  ICON_2026_11_01_00_00_00 FINISHED
+node:  postproc_1_2026_01_01_00_00_00 FINISHED
+node:  postproc_1_2026_03_01_00_00_00 FINISHED
+node:  postproc_1_2026_05_01_00_00_00 FINISHED
+node:  postproc_1_2026_07_01_00_00_00 FINISHED
+node:  postproc_1_2026_09_01_00_00_00 FINISHED
+node:  postproc_1_2026_11_01_00_00_00 FINISHED
+node:  postproc_2_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_01_01_00_00_00 FINISHED
+node:  preproc_2026_03_01_00_00_00 FINISHED
+node:  preproc_2026_05_01_00_00_00 FINISHED
+node:  preproc_2026_07_01_00_00_00 FINISHED
+node:  preproc_2026_09_01_00_00_00 FINISHED
+node:  preproc_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_01_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_03_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_05_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_07_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_09_01_00_00_00 FINISHED
+node:  store_and_clean_1_2026_11_01_00_00_00 FINISHED
+node:  store_and_clean_2_2026_01_01_00_00_00 FINISHED
+is workgraph finished:  True
+group outputs:  []
+Finalize workgraph test_config
+
