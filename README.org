@@ -20,7 +20,7 @@ verdi status
 We made the path of executables and files in the yaml relative so it can only be run from the repo root folder
 
 ```bash
-python Parser_PoC/parse_preview-refactor.py Parser_PoC/test_config.yaml
+python Parser_PoC/parse_preview_refactor.py Parser_PoC/test_config.yaml
 ```
 The file `Parser_PoC/run.out` shows how the output looks like of such a run.
 
