@@ -52,15 +52,17 @@ class WcTask:
         output=None,
         depends=None,
         start_date=None,
+        # ? end_date=None,
         exe=None,
         aiida_code=None,
     ):
         self.name = name
         self.run_spec = run_spec
+
         self.input = input if input is not None else []
         self.output = output if output is not None else []
-
         self.depends = depends if depends is not None else []
+
         self._start_date = start_date
 
         @property
@@ -97,14 +99,14 @@ class WcTask:
     @classmethod
     def from_dict(cls, data):
         # Use keyword argument unpacking to handle arbitrary attributes
-        return cls(**{k: v for k, v in data.items() if k != '_internal_data'})
+        return cls(**{k: v for k, v in data.items() if k != "_internal_data"})
 
 
 class WcData:
-    def __init__(self, name, run_spec):
+    def __init__(self, name, data_spec, start_date):
         self.name = name
-        rel_path = run_spec.get("rel_path")
-        abs_path = run_spec.get("abs_path")
+        rel_path = data_spec.get("rel_path")
+        abs_path = data_spec.get("abs_path")
         if rel_path is None and abs_path is None:
             raise ValueError(
                 f"Error wheen trying to define data node {name}. "
@@ -117,10 +119,39 @@ class WcData:
             )
         self.abs_path = abs_path
         self.rel_apth = rel_path
-        self.run_spec = run_spec
+        self.run_spec = data_spec
+
+        self.data_type = data_spec.get("type")
+        self.data_spec = data_spec
+
+        self._start_date = start_date
+
+        if self.has_abs_path():
+            self.aiida_node = self.to_aiida_data_node()
+        else:
+            self.aiida_node = None
+
+        @property
+        def start_date(self):
+            return self._start_date
+
+        @start_date.setter
+        def start_date(self, value):
+            self._start_date = value
 
     def has_abs_path(self):
         return self.abs_path is not None
+
+    def to_aiida_data_node(self):
+        if self.data_type == "file":
+            wc_data_aiida = SinglefileData(file=Path(self.abs_path).resolve())
+
+        elif self.data_type == "dir":
+            wc_data_aiida = FolderData(tree=Path(self.abs_path).resolve())
+        else:
+            raise NotImplementedError("Only file and dir data types supported for now.")
+
+        return wc_data_aiida
 
 
 class WcCycle:
