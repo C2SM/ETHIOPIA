@@ -1,4 +1,4 @@
-self_graph_dict = {
+dev_dict = {
     "Extpar@2025-01-01-00-00": {
         "inputs": {"obs_data": "obs_data@2025-01-01-00-00"},
         "outputs": {"extpar_file": "extpar_file@2025-01-01-00-00"},

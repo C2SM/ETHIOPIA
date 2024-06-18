@@ -524,6 +524,8 @@ def main():
     # ====================
     WCG = WcWorkflow.from_yaml(args.config)
     WCG.prepare()
+    from target_dict import dev_dict
+    pprint(dev_dict, sort_dicts=False)
     WCG.to_aiida_workgraph()
     # WCG.draw()
 
