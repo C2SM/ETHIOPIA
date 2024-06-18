@@ -324,34 +324,6 @@ class WcWorkflow:
                 k += 1
                 do_parsing = (self.cycling_date + p) <= cycle.end_date
 
-    def draw(self, **kwargs):
-        # draw graphviz dot graph to svg file
-        self.graph.layout(prog="dot")
-        file_path = Path(f"./{self.graph.name}.svg")
-        self.graph.draw(path=file_path, format="svg", **kwargs)
-
-        # Add interactive capabilities to the svg graph thanks to
-        # https://github.com/BartBrood/dynamic-SVG-from-Graphviz
-
-        # Parse svg
-        svg = etree.parse(file_path)
-        svg_root = svg.getroot()
-        # Add 'onload' tag
-        svg_root.set("onload", "addInteractivity(evt)")
-        # Add css style for interactivity
-        with open("svg-interactive-style.css") as f:
-            node = etree.Element("style")
-            node.text = f.read()
-            svg_root.append(node)
-        # Add scripts
-        with open("svg-interactive-script.js") as f:
-            node = etree.Element("script")
-            node.text = etree.CDATA(f.read())
-            svg_root.append(node)
-        # write svg again
-        svg.write(file_path)
-        # open in browser
-        webbrowser.open(file_path.resolve().as_uri(), new=1)
 
     @classmethod
     def from_yaml(cls, config):
