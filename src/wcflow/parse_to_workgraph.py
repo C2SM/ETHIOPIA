@@ -44,12 +44,60 @@ def sanitize_link_label(node_name):
 
 
 class WcTask:
-    def __init__(self, name, run_spec):
+    def __init__(
+        self,
+        name,
+        run_spec,
+        input=None,
+        output=None,
+        depends=None,
+        start_date=None,
+        exe=None,
+        aiida_code=None,
+    ):
         self.name = name
         self.run_spec = run_spec
-        self.input = []
-        self.output = []
-        self.depends = []
+        self.input = input if input is not None else []
+        self.output = output if output is not None else []
+
+        self.depends = depends if depends is not None else []
+        self._start_date = start_date
+
+        @property
+        def start_date(self):
+            return self._start_date
+
+        @start_date.setter
+        def start_date(self, value):
+            self._start_date = value
+
+        if exe is None:
+            self.exe = run_spec["exe"]
+        else:
+            self.exe = exe
+
+        if aiida_code is None:
+            self.aiida_code = run_spec["aiida_code"]
+        else:
+            self.exe = aiida_code
+
+    def __str__(self):
+        return "\n\nWcTask\n" + "\n".join(
+            f"{k}: {v}" for k, v in vars(self).items() if not k.startswith("_")
+        )
+
+    def __repr__(self):
+        return "\n\nWcTask\n" + "\n".join(
+            f"{k}: {v}" for k, v in vars(self).items() if not k.startswith("_")
+        )
+
+    def to_dict(self):
+        return {k: v for k, v in vars(self).items() if not k.startswith("_")}
+
+    @classmethod
+    def from_dict(cls, data):
+        # Use keyword argument unpacking to handle arbitrary attributes
+        return cls(**{k: v for k, v in data.items() if k != '_internal_data'})
 
 
 class WcData:
@@ -323,7 +371,6 @@ class WcWorkflow:
                 self.cycling_date += p
                 k += 1
                 do_parsing = (self.cycling_date + p) <= cycle.end_date
-
 
     @classmethod
     def from_yaml(cls, config):
