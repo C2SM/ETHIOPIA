@@ -1,0 +1,173 @@
+start_date: &root_start_date '2026-01-01T00:00'
+end_date: &root_end_date '2027-01-01T00:00'
+cycles:
+  init:
+    tasks:
+      extpar:
+        argument:
+          input: obs_data
+        input:
+          - obs_data
+        output:
+          - extpar_file
+  icon_bimonthly:
+    period: 'P2M'
+    tasks:
+      preproc:
+        input:
+          - grid_file
+          - extpar_file:
+              date: *root_start_date
+          - ERA5
+        argument:
+          g: grid_file
+          p: extpar_file
+          e: ERA5
+        output:
+          - icon_input
+        depends:
+          - icon:
+              lag: '-P4M'
+      icon:
+        input:
+          - grid_file
+          - icon_input
+          - icon_restart:
+              lag: '-P2M'
+        argument:
+          g: grid_file
+          input: icon_input
+          restart: icon_restart
+        output:
+          - stream_1
+          - stream_2
+          - icon_restart
+      postproc_1:
+        input:
+          - stream_1
+        argument:
+          input: stream_1
+        output:
+          - postout_1
+      store_and_clean_1:
+        input:
+          - postout_1
+          - stream_1
+          - icon_input
+        argument:
+          input: postout_1
+          stream: stream_1
+          icon_input: icon_input
+        output:
+          - stored_data_1
+  yearly:
+    period: 'P1Y'
+    tasks:
+      postproc_2:
+        input:
+          - stream_2:
+              lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+              # lag: ['P0M', 'P3M', 'P6M', 'P9M']
+              #   lag: ['P0M', 'P4M', 'P8M']
+              # lag: ['P0M', 'P6M']
+        argument:
+          input: stream_2
+        output:
+          - postout_2
+      store_and_clean_2:
+        input:
+          - postout_2
+          - stream_2:
+              #  lag: 'P0M'
+               lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+               # lag: ['P0M', 'P3M', 'P6M', 'P9M']
+               # lag: ['P0M', 'P4M', 'P8M']
+               # lag: ['P0M', 'P6M']
+        argument:
+          input: postout_2
+          input2: stream_2
+        output:
+          - stored_data_2
+# Each task and piece of data (input and output of tasks) used to
+# define the graph is described in that section
+tasks:
+  root:
+    # All tasks inherit the root task properties
+    host: santis
+    account: g110
+  extpar:
+    plugin: extpar
+    command: $PWD/executables/extpar
+    config: path/to/namelists/dir
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+    nodes: 1
+    walltime: '00:02:00'
+  preproc:
+    plugin: AiiDA Shell
+    command: $PWD/executables/cleanup.sh
+    nodes: 4
+    walltime: '00:02:00'
+    config: path/to/config/dir
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  icon:
+    plugin: icon
+    command: $PWD/executables/icon
+    nodes: 40
+    walltime: '24:00:00'
+    config: path/to/namelists/dir
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  postproc_1:
+    plugin: AiiDA Shell
+    command: $PWD/executables/main_script_ocn.sh
+    nodes: 2
+    walltime: '00:05:00'
+    src: path/to/src/dir
+    conda_env: path/to/yaml/env/file
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  postproc_2:
+    plugin: AiiDA Shell
+    command: $PWD/executables/main_script_atm.sh
+    nodes: 2
+    walltime: '00:05:00'
+    src: path/to/src/dir
+    conda_env: path/to/yaml/env/file
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  store_and_clean_1:
+    plugin: AiiDA Shell
+    command: $PWD/executables/post_clean.sh
+    nodes: 1
+    walltime: '00:01:00'
+    scipt: path/to/script
+  store_and_clean_2:
+    plugin: AiiDA Shell
+    command: $PWD/executables/post_clean.sh
+    nodes: 1
+    walltime: '00:01:00'
+    scipt: path/to/script
+
+data:
+  # Properties of data nodes
+  # TODO type dir is not working because of workgraph or maybe aiida shell
+  # @Matthieu: Should we use abs_path or rel_path as key words?
+  grid_file: {type: file, src: $PWD/files/file.ncdf}
+  obs_data: {type: file, src: $PWD/files/obs_data}
+  ERA5: {type: file, src: $PWD/files/era5}
+  extpar_file: {type: file, src: output}
+  icon_input: {type: file, src: output}
+  icon_restart: {type: file, format: ncdf, src: restart}
+  stream_1: {type: file, src: output_1}
+  stream_2: {type: file, src: output_2}
+  postout_1: {type: file, src: postout}
+  postout_2: {type: file, src: postout}
+  stored_data_1: {type: file, src: stored_data}
+  stored_data_2: {type: file, src: stored_data}
