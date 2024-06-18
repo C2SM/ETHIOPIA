@@ -71,7 +71,7 @@ class WcData:
         self.rel_apth = rel_path
         self.run_spec = run_spec
 
-    def is_concrete(self):
+    def has_abs_path(self):
         return self.abs_path is not None
 
 
@@ -140,7 +140,7 @@ class WcWorkflow:
         if name not in self.data_specs:
             raise ValueError(f"{name} not declared as data")
         data_node = WcData(name, self.data_specs[name])
-        if data_node.is_concrete():
+        if data_node.has_abs_path():
             if not self.data[name]:
                 self.data[name] = data_node
                 self.graph.add_node(
@@ -472,7 +472,7 @@ def main():
 
     # Build and draw graph
     # ====================
-    WCG = WcGraph.from_yaml(args.config)
+    WCG = WcWorkflow.from_yaml(args.config)
     WCG.prepare()
     WCG.to_aiida_workgraph()
     # WCG.draw()
