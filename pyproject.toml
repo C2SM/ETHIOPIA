@@ -28,7 +28,15 @@ classifiers = [
 keywords = ["wc", "workflow"," icon", "aiida", "aiida-workgraph"]
 requires-python = '>=3.9'
 dependencies = [
+    'aiida-core~=2.5',
+    'aiida-workgraph==0.3.14',
+    'node_graph==0.0.11',
+    'isoduration',
+    'strictyaml',
 ]
+
+[project.scripts]
+wcflow = 'wcflow.cmdline:main'
 
 [tool.pytest.ini_options]
 # Configuration for [pytest](https://docs.pytest.org)
@@ -41,6 +49,9 @@ source = ["wcflow"]
 
 [tool.ruff]
 include = ["src/*py", "test/*py"]
+
+[tool.mypy]
+mypy_path = ["$MYPY_CONFIG_FILE_DIR/stubs"]
 
 ## Hatch configurations
 
@@ -65,4 +76,15 @@ extra-dependencies = [
 [tool.hatch.envs.docs.scripts]
 build = [
   "sphinx-build -E -W -b html docs/src docs/build/html"
+]
+
+[tool.hatch.envs.type]
+extra-dependencies = [
+  'mypy~=1.10.0',
+]
+
+[tool.hatch.envs.type.scripts]
+check = [
+  "stubgen -o stubs -p isoduration",
+  "mypy --config-file pyproject.toml --install-types --non-interactive src/wcflow"
 ]
