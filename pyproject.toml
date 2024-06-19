@@ -32,3 +32,8 @@ keywords = ['aiida', 'workflows']
 name = 'wcflow'
 readme = 'README.org'
 dynamic = ["version"] # read from __init__py
+
+[project.optional-dependencies]
+tests = [
+    'pytest~=7.0',
+]
