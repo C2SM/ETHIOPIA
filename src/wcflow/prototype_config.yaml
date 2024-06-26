@@ -17,7 +17,7 @@ cycles:
         input:
           - grid_file
           - extpar_file:
-              date: *root_start_date
+              when: *root_start_date
           - ERA5
         argument:
           g: grid_file
@@ -27,13 +27,13 @@ cycles:
           - icon_input
         depends:
           - icon:
-              lag: '-P4M'
+              when: '-P4M'
       icon:
         input:
           - grid_file
           - icon_input
           - icon_restart:
-              lag: '-P2M'
+              when: '-P2M'
         argument:
           g: grid_file
           input: icon_input
@@ -66,7 +66,7 @@ cycles:
       postproc_2:
         input:
           - stream_2:
-              lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+              when: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
               # lag: ['P0M', 'P3M', 'P6M', 'P9M']
               #   lag: ['P0M', 'P4M', 'P8M']
               # lag: ['P0M', 'P6M']
@@ -79,7 +79,7 @@ cycles:
           - postout_2
           - stream_2:
               #  lag: 'P0M'
-               lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+               when: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
                # lag: ['P0M', 'P3M', 'P6M', 'P9M']
                # lag: ['P0M', 'P4M', 'P8M']
                # lag: ['P0M', 'P6M']
