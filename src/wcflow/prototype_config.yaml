@@ -4,78 +4,79 @@ cycles:
   init:
     tasks:
       extpar:
-        argument:
-          input: obs_data
-        input:
+        arguments:
+          - input: obs_data
+        inputs:
           - obs_data
-        output:
+        outputs:
           - extpar_file
   icon_bimonthly:
     period: 'P2M'
     tasks:
       preproc:
-        input:
+        inputs:
           - grid_file
           - extpar_file:
               when: *root_start_date
           - ERA5
-        argument:
-          g: grid_file
-          p: extpar_file
-          e: ERA5
-        output:
+        arguments:
+          - g: grid_file
+          - p: extpar_file
+          - e: ERA5
+        outputs:
           - icon_input
         depends:
           - icon:
               when: '-P4M'
       icon:
-        input:
+        inputs:
           - grid_file
           - icon_input
           - icon_restart:
               when: '-P2M'
-        argument:
-          g: grid_file
-          input: icon_input
-          restart: icon_restart
-        output:
+        arguments:
+          - g: grid_file
+          - input: icon_input
+          - restart: icon_restart
+        outputs:
           - stream_1
           - stream_2
           - icon_restart
       postproc_1:
-        input:
+        inputs:
           - stream_1
-        argument:
-          input: stream_1
-        output:
+        arguments:
+          inputs: stream_1
+        outputs:
           - postout_1
       store_and_clean_1:
-        input:
+        inputs:
           - postout_1
           - stream_1
           - icon_input
-        argument:
-          input: postout_1
-          stream: stream_1
-          icon_input: icon_input
-        output:
+        arguments:
+          - inputs: postout_1
+          - stream: stream_1
+          - icon_inputs: icon_input
+        outputs:
           - stored_data_1
   yearly:
+    start_date: 
     period: 'P1Y'
     tasks:
       postproc_2:
-        input:
+        inputs:
           - stream_2:
               when: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
               # lag: ['P0M', 'P3M', 'P6M', 'P9M']
               #   lag: ['P0M', 'P4M', 'P8M']
               # lag: ['P0M', 'P6M']
-        argument:
+        arguments:
           input: stream_2
-        output:
+        outputs:
           - postout_2
       store_and_clean_2:
-        input:
+        inputs:
           - postout_2
           - stream_2:
               #  lag: 'P0M'
@@ -83,10 +84,10 @@ cycles:
                # lag: ['P0M', 'P3M', 'P6M', 'P9M']
                # lag: ['P0M', 'P4M', 'P8M']
                # lag: ['P0M', 'P6M']
-        argument:
+        arguments:
           input: postout_2
           input2: stream_2
-        output:
+        outputs:
           - stored_data_2
 # Each task and piece of data (input and output of tasks) used to
 # define the graph is described in that section
@@ -159,11 +160,11 @@ data:
   # Properties of data nodes
   # TODO type dir is not working because of workgraph or maybe aiida shell
   # @Matthieu: Should we use abs_path or rel_path as key words?
-  grid_file: {type: file, src: $PWD/files/file.ncdf}
+  preproc_output: {type: file, src: $PWD/files/file.ncdf}
   obs_data: {type: file, src: $PWD/files/obs_data}
   ERA5: {type: file, src: $PWD/files/era5}
   extpar_file: {type: file, src: output}
-  icon_input: {type: file, src: output}
+  icon_inputs: {type: file, src: output}
   icon_restart: {type: file, format: ncdf, src: restart}
   stream_1: {type: file, src: output_1}
   stream_2: {type: file, src: output_2}

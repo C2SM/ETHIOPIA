@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from datetime import datetime
+from importlib_metadata import entry_points
 from isoduration import parse_duration
 from isoduration.formatter import Duration
 from node_graph.socket import NodeSocket
@@ -10,7 +11,7 @@ import argparse
 from copy import deepcopy
 from pprint import pprint
 from typing import Tuple, Dict, List, Optional
-from collections.abc import Iterable
+from collections.abc import Hashable, Iterable
 
 from aiida_workgraph import WorkGraph, workgraph
 from aiida_workgraph.task import Task
@@ -88,37 +89,6 @@ def sanitize_link_label(node_name):
 # todo: JG: Extend classes
 # todo: Dict with tuples as keys
 
-# Maybe useful helper?
-#class WcDatedTask:
-#    @property
-#    def date(self):
-#        return
-#
-#    @property
-#    def task_node(self):
-#        return
-#class WcDatedData(WcData):
-#    @property
-#    def aiida_task(self):
-#        return
-#
-#    @property
-#    def aiida_node(self) -> DataNode | NodeSocket:
-#        return
-#class WcCycleTask:
-#    """
-#    An object constructed from the task definition within a cycle
-#    """
-#    @property
-#    def argument(self) ->:
-#        return
-#
-#class WcCycleTaskArgument:
-#    pass
-#class WcCycleTaskInput:
-#    pass
-#class WcCycleTaskOutput:
-#    pass
 class TimeUtils:
     @staticmethod
     def duration_is_negative(duration: Duration) -> bool:
@@ -127,6 +97,21 @@ class TimeUtils:
             return True
         return False
 
+class ParseUtils:
+    @staticmethod
+    def entries_to_dicts(entries: List[Hashable | dict]) -> List[dict]:
+        """
+        We have often expressions that can be dicts or str during the parsing that are always converted to dicts to simplify handling
+
+        .. yaml
+            - key_1
+            - key_2:
+                property: true
+
+        When parsing this results in an object of the form [key_1, {key_2: {property: true}}]. This function converts this to [{key_1: None}, {key_2: {property: true}}]
+        """
+        return [{entry : None} if not isinstance(entry, dict) else entry
+                            for entry in entries]
 
 class WcTask:
     def __init__(
@@ -170,6 +155,16 @@ class WcTask:
         return "\n\nWcTask\n" + "\n".join(
             f"{k}: {v}" for k, v in vars(self).items() if not k.startswith("_")
         )
+    def to_full_spec_task_from_spec(spec: Dict[str, dict], wc_data: Dict[str, WcData])
+        spec
+        task_spec = deepcopy(task_spec)
+        for task_name, cycle_task_spec in tasks.items():
+            task_spec.update(cycle_task_spec)
+            WcFullSpecCycle()
+
+    def to_full_spec_task(inputs: List[str | dict], outputs: List[str], wc_data: Dict[str, WcData])
+        #...
+        pass
 
 class WcData:
     """
@@ -223,20 +218,32 @@ class WcData:
         return self.path.is_absolute()
 
 class WcCycle:
+    """
+    We never need to create instances of a cycle class so we only contains static methods
+    """
+    @staticmethod
+    def valid_spec_keys() -> List[str]:
+        return ["tasks", "period", "start_date", "end_date"]
+
+    @staticmethod
+    def required_spec_keys() -> List[str]:
+        return ["tasks", "start_date", "end_date"]
+
+class WcFullSpecCycle(WcCycle):
 
     @classmethod
-    def from_spec(cls, name: str, spec: dict):
+    def from_spec(cls, name: str, spec: dict, wc_tasks: Dict[str, WcTask], wc_data: Dict[str, WcData]):
         for key in spec.keys():
-            if key not in WcCycle.valid_spec_keys():
+            if key not in cls.valid_spec_keys():
                 raise ValueError(f"Cycle {name!r} found invalid key {key!r}. Key must be in {WcCycle.valid_spec_keys()}")
-        for key in WcCycle.required_spec_keys():
+        for key in cls.required_spec_keys():
             if key not in spec.keys():
                 raise ValueError(
                     f"When creating cycle instance for {name!r}, {key!r} was given in the specification"
                 )
-        return cls(name, **spec)
+        return cls(name, **spec, wc_tasks=wc_tasks, wc_data=wc_data)
 
-    def __init__(self, name: str, start_date: str, end_date: str, tasks: Dict[str, dict], period: Optional[str] = None):
+    def __init__(self, name: str, start_date: str, end_date: str, tasks: Dict[str, dict], wc_tasks: Dict[str, WcTask], wc_data: Dict[str, WcData], period: Optional[str] = None):
         self._name = name
 
         self._start_date = datetime.fromisoformat(start_date)
@@ -249,31 +256,24 @@ class WcCycle:
             raise ValueError("For cycle {self._name!r} the period {period!r} is negative.")
 
         self._tasks = tasks
-        self._input = {}
-        for task_name, task_spec in self._task.items():
-            WcCycleTask.from_spec(task_spec)
 
-        def from_spec
-            if (inputs := task_spec.get("input")) is None:
-                self._input[task_name] = []
+        self._wc_tasks = wc_tasks 
+        self._wc_data = wc_data
+
+    def __iter__(self):
+        cycle_current_date = self._start_date
+        while cycle_current_date <= self._end_date: 
+            for task_name, task_spec in self._wc_tasks.items():
+                yield self._wc_tasks[task_name].to_full_spec_task(task_spec)
+            if self._period is None:
+                break
             else:
-                self._input[task_name] = WcCycleTaskData.from_spec(task_spec)
-
-                raise ValueError(f"Task {task_name!r} in cycle {cycle._name!r} has no input key. Please specify one even when no input")
-
-        self._input = {}
-        if task_spec.get("input") is None
-            self._input[task_name] = []}
-        [WcCycleTaskData() for input_ in task_spec.get("input")]
-        # COMMENT: This should be covered by a grammar check later on, not sure if keeping here
-        for task_name, task_spec in self._task.items():
-            if (inputs := task_spec.get("input")) is None:
-                raise ValueError(f"Task {task_name!r} in cycle {cycle._name!r} has no input key. Please specify one even when no input")
-            if task_spec.get("output")
+                cycle_current_date += self._period
+        WcFullSpecTask()
 
     @staticmethod
     def valid_spec_keys() -> List[str]:
-        return ["tasks", "period", "start_date", "end_date"]
+        return super().valid_spec_keys + ["inputs", "outputs", "arguments"]
 
     @staticmethod
     def required_spec_keys() -> List[str]:
@@ -299,37 +299,117 @@ class WcCycle:
     def tasks(self) -> Dict[str, dict]:
         return self._tasks
 
-    def get_task_input(self, task_name: str) -> List[WcCycleTaskData]:
-        return self._input[task_name]
 
+class WcCycleTask(WcData):
 
-class WcFullSpecData:
+class WcCycleTaskData(WcData):
     @classmethod
     def from_spec(self, name, spec)
         return
-    def __init__(self, name: str, lag: Optonal[str] = None, Optiona):
+
+    def __init__(self, name: str)
+
+
+    @staticmethod
+    def valid_keys() -> List[str]:
+        return WcCycle.valid_spec_keys + ["inputs", "outputs", "arguments"]
+
+    def to_full_spec_task_from_spec(spec: Dict[str, dict], wc_data: Dict[str, WcData])
+        spec
+        task_spec = deepcopy(task_spec)
+        for task_name, cycle_task_spec in tasks.items():
+            task_spec.update(cycle_task_spec)
+            WcFullSpecCycle()
+
+    def to_full_spec_task(inputs: List[str | dict], outputs: List[str], wc_data: Dict[str, WcData])
+        #...
+        pass
+
+    def __init__(self, name: str, lag: Optional[str] = None, Optiona):
+        pass
 
     @property
-    def get_date(self) -> Dict[str, dict]:
-        return self._tasks
+    def date(self, offset_date: Optional[datetime] = None) -> datetime:
+        if isinstance(self._when, Duration): 
+            if offset_date is None:
+                raise ValueError("")
+            else:
+                return offset_date + self._when
+        else:
+            return self._when
 
+
+    def to_workgraph_node(self, workgraph: WorkGraph):
+        workgraph_task = self._aiida_task_nodes[(task_name, task_date)]
+        workgraph.tasks[""]
+        workgraph_task.inputs.new("General", f"nodes.{input_name}")
+
+        if (data_node := self._aiida_data_nodes[(input_name, input_date)] is not None):
+            if (nodes := workgraph_task.inputs.get("nodes")) is None:
+                # TODO can Julian/Xing check if this is correct error message? 
+                raise ValueError(f"Workgraph task {workgraph_task.name!r} did not initialize input nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers.")
+            nodes.value.update({f"{input_name}": data_node})
+        elif (output_socket := self._aiida_socket_nodes[(input_name, input_date)] is not None):
+            self._workgraph.links.new(output_socket, workgraph_task.inputs[f"nodes.{input_name}"])
+        else:
+            raise ValueError("Input data node was neither found in socket nodes nor in data nodes. The task {task_name!r} must have dependencies on inputs before they are created.")
+
+        if :
+            workgraph_task = self._aiida_task_nodes[(task_name, date)]
+            output_socket = workgraph_task.outputs.new("General", output_name)
+            self._aiida_socket_nodes[(output_name, date)] = output_socket
 
 class WcFullSpecTask(WcTask):
     def __init__(
         self,
         name: str,
         command: str,
-        input: Optional[List[str]] = None,
-        output: Optional[List[str]] = None,
-        argument: Optional[str | Dict[str, str | None]] = None,
+        inputs: Optional[List[str | dict]] = None
+        outputs: Optional[List[str]] = None,
+        arguments: Optional[str | Dict[str, str | None]] = None,
         depends: Optional[List[str]] = None,
+        wc_data: Dict[str, WcData]
+        date: datetime,
     ):
         self._name = name
         self._command = command
-        self._input = input if input is not None else []
+        # [{'stream': {when: '-P2M'}}, 'icon_input']
+        if inputs is None:
+            formatted_inputs: List[dict] = ParseUtils.entries_to_dicts(inputs)
+            self._inputs = ParseUtils.entries_to_dicts(inputs){}
+        else:
+            inputs_list = [WcFullSpecData(input_) for input_ in inputs]
+            dict(input_ )
+            self._inputs = {input_.name: input_ for input_ in inputs_list}
         self._output = output if output is not None else []
         self._argument = argument if argument is not None else {}
         self._depends = depends if depends is not None else []
+        
+        self._wc_data
+        
+
+    @classmethod
+    def from_wc_task(cls, wc_task: WcTask, cycle_spec: Dict[str, dict], wc_data: Dict[str, WcData]):
+        for key in cycle_spec.keys():
+            if key not in WcFullSpecTask.valid_spec_keys():
+                raise ValueError(f"Cycle {name!r} found invalid key {key!r}. Key must be in {WcCycle.valid_spec_keys()}")
+        for key in WcFullSpecTask.required_spec_keys():
+            if key not in cycle_spec.keys():
+                raise ValueError(
+                    f"When creating cycle instance for {name!r}, {key!r} was given in the specification"
+                )
+        full_spec = wc_task.to_spec()
+        full_spec.update(spec)
+        spec.update({
+            "command": wc_task.command,
+            "": wc_task.command,
+        })
+        return cls(name, **spec, wc_tasks=wc_tasks, wc_data=wc_data)
+
+    @classmethod
+    def from_spec(cls, spec: Dict[str, dict]):
+        pass
+
 
 # TODO I dont use consistently name and key
 class WcWorkflow:
@@ -352,28 +432,16 @@ class WcWorkflow:
 
         # Needed for date indexing
         self._validate_parameters()
-        # TOOD would be nicer if we give spec as kwargs
         self._wc_data = {name: WcData.from_spec(name, spec) for name, spec in data.items()}
-        self._wc_cycles = WcWorkflow._create_wc_cycles(cycles, start_date, end_date)
-        self._wc_tasks = WcWorkflow._create_wc_tasks(self._wc_cycles.values(), tasks)
+        #self._wc_cycles = WcWorkflow._create_wc_cycles(cycles, start_date, end_date)
+        self._wc_tasks = WcWorkflow._create_wc_tasks(tasks)
+        self._wc_cycles = WcWorkflow._create_wc_cycles(cycles, start_date, end_date, self._wc_tasks, self._wc_tasks)
 
         self._workgraph = WorkGraph(self._name)
 
-        # aiida objects with dated labels 
-        # accesible by (yaml key name, date)
-        #self._data_output_names = []
-
-        # TODO maybe use as property? Since information is available in workgraph, but wg is super hacky and unrobust
-        #      maybe use workgraph_data_nodes?
         self._aiida_data_nodes: Dict[Tuple[str, datetime], DataNode] = {}
         # TODO rename _aiida_output_socket_nodes
         self._aiida_socket_nodes: Dict[Tuple[str, datetime], NodeSocket] = {}
-        #self._aiida_nodes: Dict[Tuple[str, datetime], NodeSocket] = {}
-
-        #self._aiida_task_input_output_nodes: Dict[Tuple[str, datetime], Union[DataNode, NodeSocket]] = {}
-        # Input/Output name -> Input/Output node 
-        #self._aiida_input_output_nodes: Dict[Tuple[str, datetime], Tuple(Union[DataNode, NodeSocket, TaskNode)]] = {}
-        # Input/Output name -> task node 
         self._aiida_task_nodes: Dict[Tuple[str, datetime], Task] = {}
 
         self._add_aiida_data_nodes()
@@ -420,7 +488,6 @@ class WcWorkflow:
             wc_tasks[task_key] = WcTask(task_key, **task_kwargs)
 
         return wc_tasks
-
 
     def _validate_parameters(self):
         """Checks if the defined workflow is correctly referencing key names."""
@@ -508,6 +575,16 @@ class WcWorkflow:
             self._add_aiida_links_from_cycle(cycle)
 
     def _add_aiida_links_from_cycle(self, cycle: WcCycle):
+        for wc_full_spec_task in cycle:
+            for wc_input in wc_full_spec_task.inputs:
+                self._link_input_to_task(wc_full_spec_task.name, wc_full_spec_task.date, wc_input.name, wc_input.date)
+            for argument in wc_full_spec_task.arguments: 
+                self._link_argument_to_task(wc_full_spec_task.name, wc_full_spec_task.date, argument)
+            for output_name in wc_task.outputs: 
+                self._link_output_to_task(wc_full_spec_task.name, wc_full_spec_task.date, output_name)
+
+
+    def _add_aiida_links_from_cycle(self, cycle: WcCycle):
         cycle_current_date = cycle.start_date
         while cycle_current_date <= cycle.end_date: 
             for task_name, cycle_task_spec in cycle.tasks.items():
@@ -526,17 +603,17 @@ class WcWorkflow:
             else:
                 cycle_current_date = cycle_current_date + cycle.period
 
-    def _link_input_to_task(self, task_name, input_name: str, date: datetime):
-        workgraph_task = self._aiida_task_nodes[(task_name, date)]
+    def _link_input_to_task(self, task_name, task_date: datetime, input_name: str, input_date: datetime):
+        workgraph_task = self._aiida_task_nodes[(task_name, task_date)]
         workgraph_task.inputs.new("General", f"nodes.{input_name}")
 
-        if (data_node := self._aiida_data_nodes[(input_name, date)] is not None):
+        if (data_node := self._aiida_data_nodes[(input_name, input_date)] is not None):
             if (nodes := workgraph_task.inputs.get("nodes")) is None:
                 # TODO can Julian/Xing check if this is correct error message? 
                 raise ValueError(f"Workgraph task {workgraph_task.name!r} did not initialize input nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers.")
             nodes.value.update({f"{input_name}": data_node})
-        elif (output_socket := self._aiida_socket_nodes[(input_name, date)] is not None):
-            self._workgraph.links.new(output_socket, task.inputs[f"nodes.{input_name}"])
+        elif (output_socket := self._aiida_socket_nodes[(input_name, input_date)] is not None):
+            self._workgraph.links.new(output_socket, workgraph_task.inputs[f"nodes.{input_name}"])
         else:
             raise ValueError("Input data node was neither found in socket nodes nor in data nodes. The task {task_name!r} must have dependencies on inputs before they are created.")
 
@@ -570,381 +647,6 @@ class WcWorkflow:
         workgraph_task = self._aiida_task_nodes[(task_name, date)]
         output_socket = workgraph_task.outputs.new("General", output_name)
         self._aiida_socket_nodes[(output_name, date)] = output_socket
-
-    #def _add_nodes_from_cycle(self, cycle):
-    #    self.cycling_date = cycle.start_date
-    #    p = cycle.period
-    #    do_parsing = True
-    #    while do_parsing:
-    #        # Tasks nodes with correponding output but not input
-    #        for name, task_graph_spec in cycle.tasks.items():
-    #            # Task nodes
-    #            # note: input, output and dependencies added at second traversing
-    #            self.add_task(name)
-    #            # output nodes
-    #            for out_name in task_graph_spec.get("output", []):
-    #                self.add_data(out_name)
-    #        # Continue cycling
-    #        if not p:
-    #            do_parsing = False
-    #        else:
-    #            self.cycling_date += p
-    #            do_parsing = (self.cycling_date + p) <= cycle.end_date
-    #
-    #def add_wc_data(self, specification):
-    #    if name not in self.data_specs:
-    #        raise ValueError(f"{name} not declared as data")
-    #    data_node = WcData(name, self.data_specs[name])
-    #    if data_node.has_abs_path():
-    #        if not self.data[name]:
-    #            self.data[name] = data_node
-    #            self.graph.add_node(
-    #                data_node,
-    #                label=name,
-    #                tooltip=yaml.dump(data_node.run_spec),
-    #                **data_node.gv_kw,
-    #            )
-    #    elif self.cycling_date not in self.data[name]:
-    #        self.data[name][self.cycling_date] = data_node
-    #        self.graph.add_node(
-    #            data_node,
-    #            label=name,
-    #            tooltip=yaml.dump(data_node.run_spec),
-    #            **data_node.gv_kw,
-    #        )
-
-
-    #@property
-    #def cycles(self):
-    #    return self._cycles
-
-    #@cycles.setter
-    #def cycles(self, specs):
-    #    self._cycles = []
-    #    for name, spec in specs.items():
-    #        self._cycles.append(WcCycle(name, spec, self))
-
-    #def verify_workflow(self):
-    #    """Checks if the defined workflow is correctly referencing files."""
-    #    # - no duplicates keys (no redefinition)
-    #    # - no undefined keys (e.g. inputs in tasks that are not defined)
-    #    # - Do we require files to be present?
-
-    #def init_wc_data(self):
-    #    """Initializes the WcData objects"""
-
-    #def init_wc_tasks(self):
-    #    pass
-
-    #def init_wc_cycles(self):
-    #    pass
-
-    #def add_task(self, name):
-    #    if name not in self.tasks_specs:
-    #        raise ValueError(f"{name} not declared as task")
-    #    if self.cycling_date not in self.tasks[name]:
-    #        task_node = WcTask(name, self.tasks_specs[name])
-    #        self.tasks[name][self.cycling_date] = task_node
-    #        self.graph.add_node(
-    #            task_node,
-    #            label=name,
-    #            tooltip=yaml.dump(task_node.run_spec),
-    #            **task_node.gv_kw,
-    #        )
-
-    #def add_data(self, name, spcs):
-    #    if name not in self.data_specs:
-    #        raise ValueError(f"{name} not declared as data")
-    #    data_node = WcData(name, self.data_specs[name])
-    #    if data_node.has_abs_path():
-    #        if not self.data[name]:
-    #            self.data[name] = data_node
-    #            self.graph.add_node(
-    #                data_node,
-    #                label=name,
-    #                tooltip=yaml.dump(data_node.run_spec),
-    #                **data_node.gv_kw,
-    #            )
-    #    elif self.cycling_date not in self.data[name]:
-    #        self.data[name][self.cycling_date] = data_node
-    #        self.graph.add_node(
-    #            data_node,
-    #            label=name,
-    #            tooltip=yaml.dump(data_node.run_spec),
-    #            **data_node.gv_kw,
-    #        )
-
-    #def get_task(self, spec):
-    #    if isinstance(spec, dict):
-    #        name, graph_spec = next(iter(spec.items()))
-    #    else:
-    #        name, graph_spec = spec, None
-    #    if graph_spec is None:
-    #        return self.tasks[name][self.cycling_date]
-    #    else:
-    #        date = graph_spec.get("date")
-    #        lag = graph_spec.get("lag")
-    #        if date and lag:
-    #            raise ValueError("graph_spec cannot contain both date and lag")
-    #        if not date and not lag:
-    #            raise ValueError("graph_spec must contain eiher date or lag")
-    #        if date:
-    #            return self.task["name"][date]
-    #        else:
-    #            dates = [*self.tasks[name].keys()]
-    #            if isinstance(lag, list):
-    #                nodes = []
-    #                for lg in lag:
-    #                    date = self.cycling_date + parse_duration(lg)
-    #                    if date <= dates[-1] and date >= dates[0]:
-    #                        nodes.append(self.tasks[name][date])
-    #                return nodes
-    #            else:
-    #                date = self.cycling_date + parse_duration(lag)
-    #                if date <= dates[-1] and date >= dates[0]:
-    #                    return self.tasks[name][date]
-
-    #def get_data(self, spec):
-    #    if isinstance(spec, dict):
-    #        name, graph_spec = next(iter(spec.items()))
-    #    else:
-    #        name, graph_spec = spec, None
-    #    if "abs_path" in self.data_specs[name]:
-    #        if graph_spec:
-    #            raise ValueError(
-    #                "graph_spec cannot be provided to access data with abs_path"
-    #            )
-    #        return self.data[name]
-    #    elif graph_spec is None:
-    #        return self.data[name][self.cycling_date]
-    #    else:
-    #        date = graph_spec.get("date")
-    #        lag = graph_spec.get("lag")
-    #        if date and lag:
-    #            raise ValueError("graph_spec cannot contain both date and lag")
-    #        if not date and not lag:
-    #            raise ValueError("graph_spec must contain eiher date or lag")
-    #        if date:
-    #            return self.data[name][datetime.fromisoformat(date)]
-    #        else:
-    #            dates = [*self.data[name].keys()]
-    #            if isinstance(lag, list):
-    #                nodes = []
-    #                for lg in lag:
-    #                    date = self.cycling_date + parse_duration(lg)
-    #                    if date <= dates[-1] and date >= dates[0]:
-    #                        nodes.append(self.data[name][date])
-    #                return nodes
-    #            else:
-    #                date = self.cycling_date + parse_duration(lag)
-    #                if date <= dates[-1] and date >= dates[0]:
-    #                    return self.data[name][date]
-
-    #def add_edge(self, u, v):
-    #    if isinstance(u, list) and isinstance(v, list):
-    #        raise ValueError("Only origin or target of edge can be a list")
-    #    if isinstance(u, list):
-    #        for node in u:
-    #            self.graph.add_edge(node, v, **self.edge_gv_kw)
-    #    elif isinstance(v, list):
-    #        for node in v:
-    #            self.graph.add_edge(u, node, **self.edge_gv_kw)
-    #    else:
-    #        self.graph.add_edge(u, v, **self.edge_gv_kw)
-    #
-    #def _create_workgraph(self):
-    #    # Add concrete data nodes
-    #    for name, spec in self.data_specs.items():
-    #        if "abs_path" in spec:
-    #            self.add_data(name)
-    #    # Define all the other task and data nodes
-    #    for cycle in self.cycles:
-    #        self._add_nodes_from_cycle(cycle)
-    #    # Draw edges between nodes
-    #    for cycle in self.cycles:
-    #        self._add_edges_from_cycle(cycle)
-
-    #    
-    #def _add_nodes_from_cycle(self, cycle):
-
-
-
-    #    self.cycling_date = cycle.start_date
-    #    p = cycle.period
-    #    do_parsing = True
-    #    while do_parsing:
-    #        # Tasks nodes with correponding output but not input
-    #        for name, task_graph_spec in cycle.tasks.items():
-    #            # Task nodes
-    #            # note: input, output and dependencies added at second traversing
-    #            self.add_task(name)
-    #            # output nodes
-    #            for out_name in task_graph_spec.get("output", []):
-    #                self.add_data(out_name)
-    #        # Continue cycling
-    #        if not p:
-    #            do_parsing = False
-    #        else:
-    #            self.cycling_date += p
-    #            do_parsing = (self.cycling_date + p) <= cycle.end_date
-
-    #def _add_edges_from_cycle(self, cycle):
-    #    self.cycling_date = cycle.start_date
-    #    p = cycle.period
-    #    do_parsing = True
-    #    k = 0
-    #    while do_parsing:
-    #        cluster = []
-    #        for name, task_graph_spec in cycle.tasks.items():
-    #            task_node = self.get_task(name)
-    #            cluster.append(task_node)
-    #            # add input nodes
-    #            for in_spec in task_graph_spec.get("input", []):
-    #                if in_node := self.get_data(in_spec):
-    #                    if isinstance(in_node, list):
-    #                        task_node.input.extend(in_node)
-    #                    else:
-    #                        task_node.input.append(in_node)
-    #                    self.add_edge(in_node, task_node)
-    #            # add output nodes
-    #            for out_spec in task_graph_spec.get("output", []):
-    #                if out_node := self.get_data(out_spec):
-    #                    task_node.output.append(out_node)
-    #                    self.add_edge(task_node, out_node)
-    #                    if not out_node.is_concrete():
-    #                        cluster.append(out_node)
-    #            # add dependencies
-    #            for dep_spec in task_graph_spec.get("depends", []):
-    #                if dep_node := self.get_task(dep_spec):
-    #                    if isinstance(dep_node, list):
-    #                        task_node.depends.extend(dep_node)
-    #                    else:
-    #                        task_node.depends.append(dep_node)
-    #                    self.add_edge(dep_node, task_node)
-    #        # Add clsuter
-    #        d1 = self.cycling_date
-    #        dates = d1.isoformat()
-    #        if p:
-    #            d2 = self.cycling_date + p
-    #            dates += f" -- {d2.isoformat()}"
-    #        label = f"{cycle.name}\n{dates}"
-    #        self.graph.add_subgraph(
-    #            cluster,
-    #            name=f"cluster_{cycle.name}_{k}",
-    #            clusterrank="global",
-    #            label=label,
-    #            tooltip=label,
-    #            **self.cluster_kw,
-    #        )
-    #        # Continue cycling
-    #        if not p:
-    #            do_parsing = False
-    #        else:
-    #            self.cycling_date += p
-    #            k += 1
-    #            do_parsing = (self.cycling_date + p) <= cycle.end_date
-
-    #@classmethod
-    #def from_yaml(cls, config):
-    #    config_path = Path(config)
-    #    config = yaml.safe_load(config_path.read_text())
-    #    return cls(
-    #        *map(config["scheduling"].get, ("start_date", "end_date", "graph")),
-    #        *map(config["runtime"].get, ("tasks", "data")),
-    #        name=config_path.stem,
-    #    )
-
-    ## ? JG mod here -> To build WorkGraph from dict
-    #def resolve_inputs(self, task, task_io_dict):
-    #    # ? This should either resolve to the outputs of a previous node, or, if not, to the absolute inputs
-    #    print("self.build_up_dict")
-    #    pprint(self.build_up_dict, sort_dicts=False)
-
-    #    # Extpar@2025-01-01-00-00
-    #    # extpar_file@2025-01-01-00-00
-    #    # extpar_file@2025-01-01-00-00
-
-    #    # print('task_io_dict')
-    #    # pprint(task_io_dict, sort_dicts=False)
-
-    #    input_node_list = []
-
-    #    prev_outputs = [
-    #        list(_["outputs"].values())[0] for _ in self.build_up_dict.values()
-    #    ]
-    #    output_nodes = [_["task"] for _ in self.build_up_dict.values()]
-    #    # print('prev_outputs', prev_outputs)
-    #    # print('output_nodes', output_nodes)
-    #    prev_output_node_mapping = dict(zip(prev_outputs, output_nodes))
-    #    # print('prev_output_node_mapping')
-    #    # pprint(prev_output_node_mapping, sort_dicts=False)
-
-    #    # print('input_dict')
-    #    print("prev_output_node_mapping", prev_output_node_mapping)
-    #    for input_argument, input_instance in task_io_dict["inputs"].items():
-    #        print("input_argument", input_argument)
-    #        print("input_instance", input_instance)
-    #        # ? This works if input of current task is output of previous task
-    #        try:
-    #            input_node_list.append(
-    #                prev_output_node_mapping[input_instance].outputs[input_argument]
-    #            )
-    #        except KeyError:
-    #            print("input_instance")
-    #            print(input_instance)
-    #            print(self.data)
-    #            # ? Here instead attach global input node. For now, just append as string as a quick hack.
-    #            input_node_list.append(input_instance)
-    #            pass
-
-    #    print("input_node_list", input_node_list)
-
-    #    # for prev_task, prev_task_outputs in zip(self.build_up_dict.keys(), :
-    #    #     print(prev_task)
-    #    #     print(prev_task_io_dict)
-
-    #    # print(task_io_dict['inputs'].keys())
-    #    input_node_mapping_dict = dict(
-    #        zip(task_io_dict["inputs"].keys(), input_node_list)
-    #    )
-    #    print(f"task_name: {task}, input_node_mapping_dict")
-    #    pprint(input_node_mapping_dict, sort_dicts=False)
-    #    return input_node_mapping_dict
-
-    #def to_aiida_workgraph(self):
-    #    tmp_dict = deepcopy(self.graph_dict)
-
-    #    print("self.graph_dict")
-    #    pprint(self.graph_dict, sort_dicts=False)
-
-    #    for itask, (task, task_io_dict) in enumerate(self.graph_dict.items()):
-    #        print("task", task)
-    #        task_name_sanitized = sanitize_link_label(task)
-    #        task_name_no_datetime = sanitize_link_label(task.split("@")[0].lower())
-
-    #        task_inputs = self.resolve_inputs(task=task, task_io_dict=task_io_dict)
-
-    #        wg_node = self._workgraph.nodes.new(
-    #            "ShellJob",
-    #            name=task_name_sanitized,
-    #            command=load_code(task_name_no_datetime),
-    #            arguments=list(task_io_dict["inputs"].keys()),
-    #            # nodes=task_io_dict["inputs"],
-    #            nodes=task_inputs,
-    #            outputs=task_io_dict["outputs"],
-    #        )
-
-    #        self.build_up_dict[task] = tmp_dict.pop(task)
-    #        self.build_up_dict[task]["task"] = wg_node
-
-    #        # print("self.tmp_dict")
-    #        # pprint(tmp_dict, sort_dicts=False)
-    #        print("self.build_up_dict")
-    #        pprint(self.build_up_dict, sort_dicts=False)
-
-    #        # if itask > 2:
-    #        #     raise SystemExit
-
 
 # ============
 # Main program
