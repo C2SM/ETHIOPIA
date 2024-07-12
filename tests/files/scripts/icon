@@ -1,0 +1,3 @@
+echo "icon" > restart
+echo "icon" > output_1
+echo "icon" > output_2

@@ -1,0 +1,168 @@
+start_date: &root_start_date '2026-01-01T00:00'
+end_date: &root_end_date '2027-01-01T00:00'
+cycles:
+  init:
+    tasks:
+      extpar:
+        arguments:
+          - input: obs_data
+        inputs:
+          - obs_data:
+        outputs:
+          - extpar_file
+  icon_bimonthly:
+    period: 'P2M'
+    tasks:
+      preproc:
+        inputs:
+          - grid_file
+          - extpar_file:
+              date: *root_start_date
+          - ERA5
+        arguments:
+          - g: grid_file
+          - p: extpar_file
+          - e: ERA5
+        outputs:
+          - icon_input
+        depends:
+          - icon:
+              lag: '-P4M'
+      icon:
+        inputs:
+          - grid_file
+          - icon_input
+          #- icon_restart:
+          #    lag: '-P2M'
+        arguments:
+          - g: grid_file
+          - input: icon_input
+          #- restart: icon_restart
+        outputs:
+          - stream_1
+          - stream_2
+          #- icon_restart
+      postproc_1:
+        inputs:
+          - stream_1
+        arguments:
+          inputs: stream_1
+        outputs:
+          - postout_1
+      store_and_clean_1:
+        inputs:
+          - postout_1
+          - stream_1
+          - icon_input
+        arguments:
+          - inputs: postout_1
+          - stream: stream_1
+          - icon_inputs: icon_input
+        outputs:
+          - stored_data_1
+  yearly:
+    start_date: 
+    period: 'P1Y'
+    tasks:
+      postproc_2:
+        inputs:
+          - stream_2:
+             lag: ['P0M']
+        arguments:
+          input: stream_2
+        outputs:
+          - postout_2
+      store_and_clean_2:
+        inputs:
+          - postout_2
+          - stream_2:
+              #  lag: 'P0M'
+              lag: ['P0M']
+              # lag: ['P0M', 'P3M', 'P6M', 'P9M']
+              # lag: ['P0M', 'P4M', 'P8M']
+              # lag: ['P0M', 'P6M']
+        arguments:
+          input: postout_2
+          input2: stream_2
+        outputs:
+          - stored_data_2
+# Each task and piece of data (input and output of tasks) used to
+# define the graph is described in that section
+tasks:
+  root:
+    # All tasks inherit the root task properties
+    host: santis
+    account: g110
+  extpar:
+    plugin: extpar
+    command: $PWD/tests/files/scripts/extpar
+    config: path/to/namelists/dir
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+    nodes: 1
+    walltime: '00:02:00'
+  preproc:
+    plugin: AiiDA Shell
+    command: $PWD/tests/files/scripts/cleanup.sh
+    nodes: 4
+    walltime: '00:02:00'
+    config: path/to/config/dir
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  icon:
+    plugin: icon
+    command: $PWD/tests/files/scripts/icon
+    nodes: 40
+    walltime: '23:59:59'
+    config: path/to/namelists/dir
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  postproc_1:
+    plugin: AiiDA Shell
+    command: $PWD/tests/files/scripts/main_script_ocn.sh
+    nodes: 2
+    walltime: '00:05:00'
+    conda_env: path/to/yaml/env/file
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  postproc_2:
+    plugin: AiiDA Shell
+    command: $PWD/tests/files/scripts/main_script_atm.sh
+    nodes: 2
+    walltime: '00:05:00'
+    src: path/to/src/dir
+    conda_env: path/to/yaml/env/file
+    uenv:
+      squashfs: path/to/squashfs
+      mount_point: runtime/mount/point
+  store_and_clean_1:
+    plugin: AiiDA Shell
+    command: $PWD/tests/files/scripts/post_clean.sh
+    nodes: 1
+    walltime: '00:01:00'
+  store_and_clean_2:
+    plugin: AiiDA Shell
+    command: $PWD/tests/files/scripts/post_clean.sh
+    nodes: 1
+    walltime: '00:01:00'
+data:
+  # Properties of data nodes
+  # TODO type dir is not working because of workgraph or maybe aiida shell
+  # @Matthieu: Should we use abs_path or rel_path as key words?
+  preproc_output: {type: file, src: $PWD/tests/files/data/file.ncdf}
+  grid_file: {type: file, src: $PWD/tests/files/data/grid}
+  obs_data: {type: file, src: $PWD/tests/files/data/obs_data}
+  ERA5: {type: file, src: $PWD/tests/files/data/era5}
+  extpar_file: {type: file, src: output}
+  icon_input: {type: file, src: output}
+  icon_restart: {type: file, format: ncdf, src: restart}
+  stream_1: {type: file, src: output_1}
+  stream_2: {type: file, src: output_2}
+  postout_1: {type: file, src: postout}
+  postout_2: {type: file, src: postout}
+  stored_data_1: {type: file, src: stored_data}
+  stored_data_2: {type: file, src: stored_data}
