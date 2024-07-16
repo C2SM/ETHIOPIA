@@ -40,3 +40,6 @@ dynamic = ["version"] # read from __init__py
 tests = [
     'pytest~=7.0',
 ]
+	
+[tool.mypy]
+mypy_path = ["$MYPY_CONFIG_FILE_DIR/stubs"]
