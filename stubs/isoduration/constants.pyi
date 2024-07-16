@@ -1,0 +1,3 @@
+PERIOD_PREFIX: str
+TIME_PREFIX: str
+WEEK_PREFIX: str
