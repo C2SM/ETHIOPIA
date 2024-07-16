@@ -1,8 +1,8 @@
-from ._classes import WcWorkflow, WcCycle
+from ._classes import Workflow, Cycle
 from ._schema import WORKFLOW_SCHEMA
 
 __all__ = [
-    WcWorkflow,
-    WcCycle,
+    Workflow,
+    Cycle,
     WORKFLOW_SCHEMA,
 ]

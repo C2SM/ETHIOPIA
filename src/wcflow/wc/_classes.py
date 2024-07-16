@@ -14,7 +14,7 @@ from wcflow import core
 from wcflow._utils import ParseUtils
 
 
-class WcNamedBase:
+class NamedBase:
     """Base class for WC classes with a key that specifies their name.
     For example
 
@@ -47,7 +47,7 @@ class WcNamedBase:
     def name(self) -> str:
         return self._name
 
-class WcTask(WcNamedBase):
+class Task(NamedBase):
     """
     To create an instance of a task defined in a .wc file
     """ 
@@ -122,7 +122,7 @@ class WcTask(WcNamedBase):
     def conda_env(self) -> str:
         return self._conda_env
 
-class WcData(WcNamedBase):
+class Data(NamedBase):
     """
     Parses an entry of the data key of WC yaml file.
     """
@@ -159,36 +159,7 @@ class WcData(WcNamedBase):
         return self._format
 
 
-class WcCycleTaskData(WcNamedBase):
-
-    required_spec_keys = []
-    valid_spec_keys = ["lag", "date"]
-
-    def __init__(self, name: str, lag: Optional[str | Duration] = None, date: Optional[datetime | str] = None):
-        self._name = name
-
-        lags = lag if isinstance(lag, list) else [lag]
-        self._lag = [parse_duration(lag)
-                        for lag in lags if lag is not None]
-
-        dates = date if isinstance(date, list) else [date]
-        self._date = [date if isinstance(date, datetime) else datetime.fromisoformat(date)
-                      for date in dates if date is not None]
-
-    @property
-    def name(self) -> str:
-        """The name of this data instance."""
-        return self._name
-    
-    @property
-    def lag(self) -> list[Duration]:
-        return self._lag
-
-    @property
-    def date(self) -> list[datetime]:
-        return self._date
-
-class WcCycleTaskArgument:
+class CycleTaskArgument:
 
     @classmethod
     def from_spec(cls, name: str, spec: dict):
@@ -221,7 +192,7 @@ class WcCycleTaskArgument:
     def positional_argument(self) -> bool:
         return self._option is None and self._value is not None
 
-class WcCycleTaskDependency:
+class CycleTaskDependency:
 
     def __init__(self, dependency: str | dict):
         # TODO somewhere check that tasks actually exist 
@@ -241,42 +212,7 @@ class WcCycleTaskDependency:
     def date(self) -> datetime | None:
         return self._date
 
-class WcCycleTask(WcNamedBase):
-
-    required_spec_keys = []
-    valid_spec_keys = ["inputs", "outputs", "arguments", "depends"]
-
-    def __init__(
-        self,
-        name: str,
-        inputs: list[str, dict], # TODO make optional
-        outputs: list[str], # TODO make optional
-        arguments: list[str, dict], # TODO make optional
-        depends: Optional[list[str]] = None
-    ):
-        super().__init__(name)
-        self._inputs = [WcCycleTaskData.from_spec(name, spec) for name, spec in ParseUtils.entries_to_dicts(inputs).items()]
-        self._outputs = [WcCycleTaskData.from_spec(name, spec) for name, spec in ParseUtils.entries_to_dicts(outputs).items()]
-        self._arguments = [WcCycleTaskArgument(argument) for argument in arguments]
-        self._depends = [WcCycleTaskArgument(depend) for depend in depends] if depends is not None else []
-
-    @property
-    def inputs(self) -> list[WcCycleTaskData]:
-        return self._inputs
-
-    @property
-    def outputs(self) -> list[WcCycleTaskData]:
-        return self._outputs
-
-    @property
-    def arguments(self) -> list[WcCycleTaskArgument] | None:
-        return self._arguments
-
-    @property
-    def depends(self) -> list[WcCycleTaskDependency] | None:
-        return self._depends
-
-class WcWcCycleTaskData(WcNamedBase):
+class CycleTaskData(NamedBase):
 
     required_spec_keys = []
     valid_spec_keys = ["lag", "date"]
@@ -295,13 +231,51 @@ class WcWcCycleTaskData(WcNamedBase):
         self._date = [date if isinstance(date, datetime) else datetime.fromisoformat(date)
                       for date in dates if date is not None]
 
+    @property
     def lag(self) -> list[str]:
         return self._lag
 
+    @property
     def date(self) -> list[datetime]:
         return self._date
 
-class WcCycle(WcNamedBase):
+
+class CycleTask(NamedBase):
+
+    required_spec_keys = []
+    valid_spec_keys = ["inputs", "outputs", "arguments", "depends"]
+
+    def __init__(
+        self,
+        name: str,
+        inputs: list[str, dict], # TODO make optional
+        outputs: list[str], # TODO make optional
+        arguments: list[str, dict], # TODO make optional
+        depends: Optional[list[str]] = None
+    ):
+        super().__init__(name)
+        self._inputs = [CycleTaskData.from_spec(name, spec) for name, spec in ParseUtils.entries_to_dicts(inputs).items()]
+        self._outputs = [CycleTaskData.from_spec(name, spec) for name, spec in ParseUtils.entries_to_dicts(outputs).items()]
+        self._arguments = [CycleTaskArgument(argument) for argument in arguments]
+        self._depends = [CycleTaskArgument(depend) for depend in depends] if depends is not None else []
+
+    @property
+    def inputs(self) -> list[CycleTaskData]:
+        return self._inputs
+
+    @property
+    def outputs(self) -> list[CycleTaskData]:
+        return self._outputs
+
+    @property
+    def arguments(self) -> list[CycleTaskArgument] | None:
+        return self._arguments
+
+    @property
+    def depends(self) -> list[CycleTaskDependency] | None:
+        return self._depends
+
+class Cycle(NamedBase):
     """
     We never need to create instances of a cycle class so we only contains static methods
     """
@@ -311,12 +285,12 @@ class WcCycle(WcNamedBase):
 
     def __init__(self,
                 name: str,
-                tasks: dict[str, WcCycleTask],
+                tasks: dict[str, CycleTask],
                 start_date: Optional[str | datetime] = None,
                 end_date: Optional[str | datetime] = None,
                 period: Optional[str | Duration] = None):
         super().__init__(name)
-        self._tasks = [WcCycleTask.from_spec(name, spec) for name, spec in tasks.items()]
+        self._tasks = [CycleTask.from_spec(name, spec) for name, spec in tasks.items()]
 
         self._start_date = None if start_date is None else datetime.fromisoformat(start_date)
         self._end_date = None if end_date is None else datetime.fromisoformat(end_date)
@@ -344,11 +318,11 @@ class WcCycle(WcNamedBase):
         return self._period
 
     @property
-    def tasks(self) -> WcTask:
+    def tasks(self) -> Task:
         return self._tasks
 
 
-class WcWorkflow(WcNamedBase):
+class Workflow(NamedBase):
 
     required_spec_keys = ["start_date", "end_date", "cycles", "tasks", "data"]
     valid_spec_keys = ["start_date", "end_date", "cycles", "tasks", "data"]
@@ -363,14 +337,14 @@ class WcWorkflow(WcNamedBase):
         self._name = name
         self._start_date = datetime.fromisoformat(start_date)
         self._end_date = datetime.fromisoformat(end_date)
-        self._cycles = [WcCycle.from_spec(name, spec) for name, spec in cycles.items()]
+        self._cycles = [Cycle.from_spec(name, spec) for name, spec in cycles.items()]
         if (root_task := tasks.pop("root")) is not None:
             for root_key in root_task.keys():
                 for task_spec in tasks.values():
                     if root_key not in task_spec.keys():
                         task_spec[root_key] = root_task[root_key]
-        self._tasks = {name: WcTask.from_spec(name, spec) for name, spec in tasks.items()}
-        self._data = {name: WcData.from_spec(name, spec) for name, spec in data.items()}
+        self._tasks = {name: Task.from_spec(name, spec) for name, spec in tasks.items()}
+        self._data = {name: Data.from_spec(name, spec) for name, spec in data.items()}
 
     def to_core_workflow(self):
         core_cycles = []
@@ -378,7 +352,7 @@ class WcWorkflow(WcNamedBase):
             core_cycles.append(self._to_core_cycle(cycle))
         return core.Workflow(self.name, core_cycles)
         
-    def _to_core_cycle(self, cycle: WcCycle) -> core.Cycle:
+    def _to_core_cycle(self, cycle: Cycle) -> core.Cycle:
         core_tasks = []
         for task in cycle.tasks:
             core_tasks.append(self._to_core_task(task))
@@ -386,7 +360,7 @@ class WcWorkflow(WcNamedBase):
         end_date = self._end_date if cycle.end_date is None else cycle.end_date
         return core.Cycle(cycle.name, core_tasks, start_date, end_date, cycle.period)
 
-    def _to_core_task(self, task: WcCycleTask) -> core.Task:
+    def _to_core_task(self, task: CycleTask) -> core.Task:
         inputs = []
         arguments = []
         outputs = []
@@ -394,7 +368,6 @@ class WcWorkflow(WcNamedBase):
             if (data := self._data.get(input.name)) is None:
                 raise ValueError(f"Task {task.name!r} has input {input.name!r} that is not specied in the data section.")
             core_data = core.Data(input.name, data.type, data.src, input.lag, input.date)
-            inputs.append(core_data)
         for output in task.outputs:
             if (data := self._data.get(output.name)) is None:
                 raise ValueError(f"Task {task.name!r} has output {output.name!r} that is not specied in the data section.")
