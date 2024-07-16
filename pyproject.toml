@@ -14,7 +14,8 @@ dependencies = [
     'aiida-core~=2.5',
     'aiida-workgraph',
     'isoduration',
-    'PyYAML'
+    'PyYAML',
+    'strictyaml',
 ]
 
 classifiers = [

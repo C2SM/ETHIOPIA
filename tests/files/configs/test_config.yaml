@@ -1,5 +1,5 @@
-start_date: &root_start_date '2026-01-01T00:00'
-end_date: &root_end_date '2027-01-01T00:00'
+start_date: '2026-01-01T00:00'
+end_date: '2027-01-01T00:00'
 cycles:
   init:
     tasks:
@@ -7,7 +7,7 @@ cycles:
         arguments:
           - input: obs_data
         inputs:
-          - obs_data:
+          - obs_data
         outputs:
           - extpar_file
   icon_bimonthly:
@@ -17,7 +17,7 @@ cycles:
         inputs:
           - grid_file
           - extpar_file:
-              date: *root_start_date
+              date: '2026-01-01T00:00'
           - ERA5
         arguments:
           - g: grid_file
@@ -46,7 +46,7 @@ cycles:
         inputs:
           - stream_1
         arguments:
-          inputs: stream_1
+          - inputs: stream_1
         outputs:
           - postout_1
       store_and_clean_1:
@@ -61,15 +61,15 @@ cycles:
         outputs:
           - stored_data_1
   yearly:
-    start_date: 
     period: 'P1Y'
     tasks:
       postproc_2:
         inputs:
           - stream_2:
-             lag: ['P0M']
+             lag: 
+               - 'P0M'
         arguments:
-          input: stream_2
+          - input: stream_2
         outputs:
           - postout_2
       store_and_clean_2:
@@ -77,13 +77,14 @@ cycles:
           - postout_2
           - stream_2:
               #  lag: 'P0M'
-              lag: ['P0M']
+              lag: 
+                - 'P0M'
               # lag: ['P0M', 'P3M', 'P6M', 'P9M']
               # lag: ['P0M', 'P4M', 'P8M']
               # lag: ['P0M', 'P6M']
         arguments:
-          input: postout_2
-          input2: stream_2
+          - input: postout_2
+          - input2: stream_2
         outputs:
           - stored_data_2
 # Each task and piece of data (input and output of tasks) used to
@@ -153,16 +154,43 @@ data:
   # Properties of data nodes
   # TODO type dir is not working because of workgraph or maybe aiida shell
   # @Matthieu: Should we use abs_path or rel_path as key words?
-  preproc_output: {type: file, src: $PWD/tests/files/data/file.ncdf}
-  grid_file: {type: file, src: $PWD/tests/files/data/grid}
-  obs_data: {type: file, src: $PWD/tests/files/data/obs_data}
-  ERA5: {type: file, src: $PWD/tests/files/data/era5}
-  extpar_file: {type: file, src: output}
-  icon_input: {type: file, src: output}
-  icon_restart: {type: file, format: ncdf, src: restart}
-  stream_1: {type: file, src: output_1}
-  stream_2: {type: file, src: output_2}
-  postout_1: {type: file, src: postout}
-  postout_2: {type: file, src: postout}
-  stored_data_1: {type: file, src: stored_data}
-  stored_data_2: {type: file, src: stored_data}
+  preproc_output:
+    type: file
+    src: $PWD/tests/files/data/file.ncdf
+  grid_file:
+    type: file
+    src: $PWD/tests/files/data/grid
+  obs_data:
+    type: file
+    src: $PWD/tests/files/data/obs_data
+  ERA5:
+    type: file
+    src: $PWD/tests/files/data/era5
+  extpar_file:
+    type: file
+    src: output
+  icon_input:
+    type: file
+    src: output
+  icon_restart:
+    type: file
+    format: ncdf
+    src: restart
+  stream_1:
+    type: file
+    src: output_1
+  stream_2:
+    type: file
+    src: output_2
+  postout_1:
+    type: file
+    src: postout
+  postout_2:
+    type: file
+    src: postout
+  stored_data_1:
+    type: file
+    src: stored_data
+  stored_data_2:
+    type: file
+    src: stored_data
