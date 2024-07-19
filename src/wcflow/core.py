@@ -10,7 +10,7 @@ from wcflow._utils import TimeUtils
 
 class Data:
 
-    def __init__(self, name: str, type: str, src: str, lags: list[Duration], dates: list[datetime]):
+    def __init__(self, name: str, type: str, src: str, lags: list[Duration], dates: list[datetime], argument: str | None):
         self._name = name
 
         self._src = src 
@@ -22,6 +22,7 @@ class Data:
 
         self._lags = lags
         self._dates = dates
+        self._argument = argument
 
     @property
     def name(self) -> str:
@@ -38,7 +39,7 @@ class Data:
         return self._src
 
     @property
-    def path(self) -> str:
+    def path(self) -> Path:
         return self._path
 
     @property
@@ -48,6 +49,10 @@ class Data:
     @property
     def dates(self) -> list[datetime]:
         return self._dates
+
+    @property
+    def argument(self) -> str | None:
+        return self._argument
 
     def __eq__(self, other_data: Data) -> bool:
         return self._name == other_data.name
@@ -72,10 +77,10 @@ class UnrolledData(Data):
     """
     @classmethod
     def from_data(cls, data: Data, unrolled_task: UnrolledTask, date: datetime):
-        return cls(unrolled_task, date, data.name, data.type, data.src, data.lags, data.dates)
+        return cls(unrolled_task, date, data.name, data.type, data.src, data.lags, data.dates, data.argument)
 
-    def __init__(self, unrolled_task: UnrolledTask, date: datetime, name: str, type: str, src: str, lags: list[Duration], dates: list[datetime]):
-        super().__init__(name, type, src, lags, dates)
+    def __init__(self, unrolled_task: UnrolledTask, date: datetime, name: str, type: str, src: str, lags: list[Duration], dates: list[datetime], argument: str | None):
+        super().__init__(name, type, src, lags, dates, argument)
         self._unrolled_task = unrolled_task
         self._date = date
 

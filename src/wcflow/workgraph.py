@@ -146,8 +146,6 @@ class AiidaWorkGraph:
         for task in cycle.unroll_tasks():
             for input in task.unroll_inputs():
                 self._link_input_to_task(input)
-            for argument in task.unroll_arguments(): 
-                self._link_argument_to_task(argument)
             for output in task.unroll_outputs(): 
                 self._link_output_to_task(output)
 
@@ -159,6 +157,7 @@ class AiidaWorkGraph:
         workgraph_task.inputs.new("General", f"nodes.{input.name}")
         workgraph_task.kwargs.append(f"nodes.{input.name}")
 
+        # resolve data
         if (data_node := self._aiida_data_nodes.get(input_label)) is not None:
             if (nodes := workgraph_task.inputs.get("nodes")) is None:
                 # TODO can Julian/Xing check if this is correct error message? 
@@ -168,28 +167,14 @@ class AiidaWorkGraph:
             self._workgraph.links.new(output_socket, workgraph_task.inputs[f"nodes.{input.name}"])
         else:
             raise ValueError(f"Input data node {input_label!r} was neither found in socket nodes nor in data nodes. The task {task_label!r} must have dependencies on inputs before they are created.")
-
-    def _link_argument_to_task(self, argument: core.UnrolledArgument):
-        workgraph_task = self._aiida_task_nodes[AiidaWorkGraph.get_aiida_label_from_unrolled_task(argument.unrolled_task)]
+        
+        # resolve argument
         if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
             raise ValueError(f"Workgraph task {workgraph_task.name!r} did not initialize argument nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers.")
-        # 3 options for arguments
-        # argument options:
-        # - input: preproc_output --> "command --input {preproc_output}"
-        # - verbose: null --> "command --verbose"
-        # - input_file -->"command {input_file}"
-        # The first two options can have the form "--input" and "-i"
-
-        if argument.option is None and argument.value is not None:
-            workgraph_task_arguments.value.append(f"{{{argument}}}")
-        elif argument.option is not None:
-            if len(argument.option) == 1: 
-                workgraph_task_arguments.value.append(f"-{argument.option}")
-            else:
-                workgraph_task_arguments.value.append(f"--{argument.option}")
-            if argument.value is not None: 
-                workgraph_task_arguments.value.append(f"{{{argument.value}}}")
-
+        if input.argument is not None:
+            workgraph_task_arguments.value.append(f"{input.argument}")
+        workgraph_task_arguments.value.append(f"{{{input_label}}}")
+        
     def _link_output_to_task(self, output: core.UnrolledData):
         workgraph_task = self._aiida_task_nodes[AiidaWorkGraph.get_aiida_label_from_unrolled_task(output.unrolled_task)]
         output_label = AiidaWorkGraph.get_aiida_label_from_unrolled_data(output)

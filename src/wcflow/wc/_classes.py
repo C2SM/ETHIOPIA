@@ -23,6 +23,7 @@ class NamedBase:
             property: true
     """
 
+    # todo can be reomved since it is taken over by strictyaml
     required_spec_keys = []
     valid_spec_keys = []
 
@@ -158,40 +159,6 @@ class Data(NamedBase):
     def format(self):
         return self._format
 
-
-class CycleTaskArgument:
-
-    @classmethod
-    def from_spec(cls, name: str, spec: dict):
-        return cls(**({'name': name} | spec))
-
-    def __init__(self, argument: str | dict):
-        # 3 options for arguments
-        # argument options:
-
-        # - input_file --> f"command {input_file}"
-        # - input: preproc_output --> f"command --input {preproc_output}"
-        # - verbose: null --> f"command --verbose"
-        if isinstance(argument, str):
-            self._option = None
-            self._value = argument
-        elif isinstance(argument, dict) and len(argument) == 1:
-            self._option, self._value = next(iter(argument.items()))
-        else:
-            raise ValueError("Argument {argument!r} not supported. Please only use arguments of the form 'key: value' or 'key'")
-
-    @property
-    def option(self) -> str | None:
-        return self._option
-
-    @property
-    def value(self) -> str | None:
-        return self._value
-    
-    @property
-    def positional_argument(self) -> bool:
-        return self._option is None and self._value is not None
-
 class CycleTaskDependency:
 
     def __init__(self, dependency: str | dict):
@@ -215,9 +182,9 @@ class CycleTaskDependency:
 class CycleTaskData(NamedBase):
 
     required_spec_keys = []
-    valid_spec_keys = ["lag", "date"]
+    valid_spec_keys = ["lag", "date", "argument"]
 
-    def __init__(self, name: str, lag: Optional[list[str] | str] = None, date: Optional[list[str | datetime] | str | datetime] = None):
+    def __init__(self, name: str, lag: Optional[list[str] | str] = None, date: Optional[list[str | datetime] | str | datetime] = None, argument: Optional[str] = None):
         super().__init__(name)
 
         if lag is not None and date is not None:
@@ -231,6 +198,8 @@ class CycleTaskData(NamedBase):
         self._date = [date if isinstance(date, datetime) else datetime.fromisoformat(date)
                       for date in dates if date is not None]
 
+        self._argument = argument
+
     @property
     def lag(self) -> list[str]:
         return self._lag
@@ -239,25 +208,26 @@ class CycleTaskData(NamedBase):
     def date(self) -> list[datetime]:
         return self._date
 
+    @property
+    def argument(self) -> str | None:
+        return self._argument
 
 class CycleTask(NamedBase):
 
     required_spec_keys = []
-    valid_spec_keys = ["inputs", "outputs", "arguments", "depends"]
+    valid_spec_keys = ["inputs", "outputs", "depends"]
 
     def __init__(
         self,
         name: str,
         inputs: list[str, dict], # TODO make optional
         outputs: list[str], # TODO make optional
-        arguments: list[str, dict], # TODO make optional
         depends: Optional[list[str]] = None
     ):
         super().__init__(name)
         self._inputs = [CycleTaskData.from_spec(name, spec) for name, spec in ParseUtils.entries_to_dicts(inputs).items()]
         self._outputs = [CycleTaskData.from_spec(name, spec) for name, spec in ParseUtils.entries_to_dicts(outputs).items()]
-        self._arguments = [CycleTaskArgument(argument) for argument in arguments]
-        self._depends = [CycleTaskArgument(depend) for depend in depends] if depends is not None else []
+        self._depends = [CycleTaskDependency(depend) for depend in depends] if depends is not None else []
 
     @property
     def inputs(self) -> list[CycleTaskData]:
@@ -266,10 +236,6 @@ class CycleTask(NamedBase):
     @property
     def outputs(self) -> list[CycleTaskData]:
         return self._outputs
-
-    @property
-    def arguments(self) -> list[CycleTaskArgument] | None:
-        return self._arguments
 
     @property
     def depends(self) -> list[CycleTaskDependency] | None:
@@ -362,23 +328,16 @@ class Workflow(NamedBase):
 
     def _to_core_task(self, task: CycleTask) -> core.Task:
         inputs = []
-        arguments = []
         outputs = []
         for input in task.inputs:
             if (data := self._data.get(input.name)) is None:
                 raise ValueError(f"Task {task.name!r} has input {input.name!r} that is not specied in the data section.")
-            core_data = core.Data(input.name, data.type, data.src, input.lag, input.date)
+            core_data = core.Data(input.name, data.type, data.src, input.lag, input.date, input.argument)
         for output in task.outputs:
             if (data := self._data.get(output.name)) is None:
                 raise ValueError(f"Task {task.name!r} has output {output.name!r} that is not specied in the data section.")
-            core_data = core.Data(output.name, data.type, data.src, output.lag ,input.date)
+            core_data = core.Data(output.name, data.type, data.src, [], [], None)
             outputs.append(core_data)
-        for argument in task.arguments:
-            # if argument value is input, then use input.src as value
-            if (input_src := {input.name: self._data[input.name].src for input in task.inputs}.get(argument.value)) is None:
-                arguments.append(core.Argument(argument.option, input_src))
-            else:
-                arguments.append(core.Argument(argument.option, argument.value))
                 
         # TODO add depends
-        return core.Task(task.name, self._tasks[task.name].command, inputs, outputs, arguments)
+        return core.Task(task.name, self._tasks[task.name].command, inputs, outputs)

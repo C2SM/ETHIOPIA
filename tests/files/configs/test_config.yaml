@@ -4,60 +4,55 @@ cycles:
   init:
     tasks:
       extpar:
-        arguments:
-          - input: obs_data
         inputs:
-          - obs_data
+          - obs_data:
+              argument: "--input"
         outputs:
           - extpar_file
   icon_bimonthly:
     period: 'P2M'
     tasks:
       preproc:
+        #command_options: "--verbose" # todo implement support
         inputs:
-          - grid_file
+          - grid_file:
+              argument: "-g"
           - extpar_file:
               date: '2026-01-01T00:00'
-          - ERA5
-        arguments:
-          - g: grid_file
-          - p: extpar_file
-          - e: ERA5
+              argument: "-p"
+          - ERA5:
+              argument: "-e"
         outputs:
           - icon_input
-        depends:
+        depends: # todo needs to be supported
           - icon:
               lag: '-P4M'
       icon:
         inputs:
-          - grid_file
-          - icon_input
+          - grid_file:
+              argument: "-g"
+          - icon_input:
+              argument: "--input"
           #- icon_restart:
           #    lag: '-P2M'
-        arguments:
-          - g: grid_file
-          - input: icon_input
-          #- restart: icon_restart
         outputs:
           - stream_1
           - stream_2
           #- icon_restart
       postproc_1:
         inputs:
-          - stream_1
-        arguments:
-          - inputs: stream_1
+          - stream_1:
+              argument: "--input"
         outputs:
           - postout_1
       store_and_clean_1:
         inputs:
-          - postout_1
-          - stream_1
-          - icon_input
-        arguments:
-          - inputs: postout_1
-          - stream: stream_1
-          - icon_inputs: icon_input
+          - postout_1:
+              argument: "--input"
+          - stream_1:
+              argument: "--stream"
+          - icon_input:
+              argument: "--icon_input"
         outputs:
           - stored_data_1
   yearly:
@@ -68,13 +63,13 @@ cycles:
           - stream_2:
              lag: 
                - 'P0M'
-        arguments:
-          - input: stream_2
+             argument: "--input"
         outputs:
           - postout_2
       store_and_clean_2:
         inputs:
-          - postout_2
+          - postout_2:
+             argument: "--input"
           - stream_2:
               #  lag: 'P0M'
               lag: 
@@ -82,9 +77,6 @@ cycles:
               # lag: ['P0M', 'P3M', 'P6M', 'P9M']
               # lag: ['P0M', 'P4M', 'P8M']
               # lag: ['P0M', 'P6M']
-        arguments:
-          - input: postout_2
-          - input2: stream_2
         outputs:
           - stored_data_2
 # Each task and piece of data (input and output of tasks) used to

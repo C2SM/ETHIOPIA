@@ -5,6 +5,7 @@ from strictyaml import Datetime, Map, MapPattern, Str, Seq, UniqueSeq, Optional
 CYCLES_TASK_INPUT_SCHEMA = Str() | MapPattern(Str(), Map({
     Optional("lag"): UniqueSeq(Str()) | Str(),
     Optional("date"): UniqueSeq(Datetime()) | Datetime(),
+    Optional("argument"): Str(),
 }))
 CYCLES_TASK_DEPEND_SCHEMA = Str() | MapPattern(Str(), Map({
     Optional("lag"): UniqueSeq(Str()) | Str(),
