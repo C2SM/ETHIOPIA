@@ -12,7 +12,8 @@ authors = [
 requires-python = '>=3.9'
 dependencies = [
     'aiida-core~=2.5',
-    'aiida-workgraph',
+    'aiida-workgraph==0.3.8',
+    'node_graph==0.0.10',
     'isoduration',
     'PyYAML',
     'strictyaml',
