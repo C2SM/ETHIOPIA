@@ -366,7 +366,7 @@ class Workflow(_NamedBase):
     def _to_core_task(self, task: CycleTask) -> core.Task:
         inputs = []
         outputs = []
-        dependcies = []
+        dependencies = []
         for input_ in task.inputs:
             if (data := self._data.get(input_.name)) is None:
                 msg = f"Task {task.name!r} has input {input_.name!r} that is not specied in the data section."
@@ -381,7 +381,7 @@ class Workflow(_NamedBase):
             outputs.append(core_data)
         for depend in task.depends:
             core_dependency = core.Dependency(depend.task_name, depend.lag, depend.date, depend.cycle_name)
-            dependcies.append(core_dependency)
+            dependencies.append(core_dependency)
 
         return core.Task(
             task.name,

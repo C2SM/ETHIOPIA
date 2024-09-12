@@ -96,7 +96,7 @@ class AiidaWorkGraph:
                     except ValueError as exception:
                         msg = f"Raised error when validating input name '{input_.name}': {exception.args[0]}"
                         raise ValueError(msg) from exception
-                for output in task.unrolled_inputs:
+                for output in task.unrolled_outputs:
                     try:
                         aiida.common.validate_link_label(task.name)
                     except ValueError as exception:
