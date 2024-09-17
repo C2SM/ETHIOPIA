@@ -5,3 +5,4 @@
 .. toctree::
 
    getting_started.rst
+   api.rst

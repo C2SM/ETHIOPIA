@@ -1,0 +1,12 @@
+Running examples
+================
+
+.. marker-example-text
+
+To run the example you can use the command
+
+.. code-block:: bash
+
+    wcflow files/config/example_config.yaml
+
+It is important to execute it from the examples folder as the path are hardcoded.
