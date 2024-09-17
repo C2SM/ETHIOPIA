@@ -12,7 +12,7 @@ authors = [
   {name = 'Julian Geiger', email = 'julian.geiger@psi.ch'},
   {name = 'Alexander Goscinski', email = 'alexander.goscinski@psi.ch'},
 ]
-readme = 'README.rst'
+readme = 'README.md'
 classifiers = [
   'Development Status :: 1 - Planning',
   'Intended Audience :: Science/Research',
@@ -58,11 +58,14 @@ python = ["3.9", "3.10", "3.11", "3.12"]
 [tool.hatch.envs.docs]
 description = "Build the documentation"
 extra-dependencies = [
-    "sphinx",
-    "myst-parser",
+    "mkdocs-material",
 ]
 
 [tool.hatch.envs.docs.scripts]
 build = [
-  "sphinx-build -E -W -b html docs/src docs/build/html"
+  "mkdocs build -f docs/mkdocs.yml",
+  "echo 'Now open docs/build/index.html with your browser'"
+]
+serve = [
+  "mkdocs serve -f docs/mkdocs.yml",
 ]
