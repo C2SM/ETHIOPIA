@@ -40,7 +40,7 @@ addopts = "--pdbcls=IPython.terminal.debugger:TerminalPdb"
 source = ["wcflow"]
 
 [tool.ruff]
-include = ["src/*py", "test/*py"]
+include = ["src/*py", "tests/*py"]
 
 ## Hatch configurations
 
