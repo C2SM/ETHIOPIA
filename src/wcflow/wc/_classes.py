@@ -388,6 +388,6 @@ class Workflow(_NamedBase):
             self._tasks[task.name].command,
             inputs,
             outputs,
-            dependcies,
+            dependencies,
             self._tasks[task.name].command_option,
         )
