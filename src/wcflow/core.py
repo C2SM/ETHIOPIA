@@ -215,7 +215,7 @@ class Dependency(_DependencyBase):
                 lagged_date >= unrolled_task.unrolled_cycle.start_date
                 and lagged_date <= unrolled_task.unrolled_cycle.end_date
             ):
-                yield UnrolledDependency.from_dependency(self, unrolled_task, unrolled_task.unrolled_date)
+                yield UnrolledDependency.from_dependency(self, unrolled_task, lagged_date)
 
         for date in self._date:
             yield UnrolledDependency.from_dependency(self, unrolled_task, date)
