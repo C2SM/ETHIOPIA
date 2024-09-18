@@ -29,4 +29,4 @@ hatch run docs:serve # live preview of doc for development
 # Resources
 
 -   <https://aiida-workgraph.readthedocs.io/en/latest/>
--   <https://github.com/superstar54/aiida-workgraph>
+-   <https://github.com/aiidateam/aiida-workgraph>
