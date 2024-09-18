@@ -117,7 +117,7 @@ class Data(_DataBase):
             identifier = f"{self.__class__.__name__} '{self.name}'"
         else:
             identifier = f"{self.__class__.__name__} '{self.name}' attached task '{self.task}'"
-        return self.__repr__().replace(f"{self.__class__.__name__}", identifier)
+        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
 
     @property
     def task(self) -> Task | None:
@@ -161,7 +161,7 @@ class UnrolledData(_DataBase):
             identifier = f"{self.__class__.__name__} '{self.name}' with date {self.unrolled_date}"
         else:
             identifier = f"{self.__class__.__name__} '{self.name}' with date {self.unrolled_date} attached to task {self.unrolled_task}"
-        return self.__repr__().replace(f"{self.__class__.__name__}", identifier)
+        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
 
     @property
     def unrolled_date(self) -> datetime:
@@ -236,7 +236,7 @@ class Dependency(_DependencyBase):
             identifier = f"{self.__class__.__name__} on task '{self.depend_on_task_name}' attached to task {self.task}"
         else:
             identifier = f"{self.__class__.__name__} on task '{self.depend_on_task_name}' in cycle '{self.cycle_name}' attached to task {self.task}"
-        return self.__repr__().replace(f"{self.__class__.__name__}", identifier)
+        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
 
 
 class UnrolledDependency(_DependencyBase):
@@ -268,7 +268,7 @@ class UnrolledDependency(_DependencyBase):
             )
         else:
             identifier = f"{self.__class__.__name__} on task '{self.depend_on_task_name}' in cycle '{self.cycle_name}' with date {self.unrolled_date}"
-        return self.__repr__().replace(f"{self.__class__.__name__}", identifier)
+        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
 
     @property
     def depend_on_task(self) -> UnrolledTask:
@@ -381,7 +381,7 @@ class Task(_TaskBase):
         identifier = f"Task '{self.name}'"
         if self.cycle is not None:
             identifier += f" in cycle {self.cycle.name}"
-        return self.__repr__().replace("Task", identifier)
+        return super().__repr__().replace("Task", identifier)
 
     def unroll(self, unrolled_cycle: UnrolledCycle) -> Generator[tuple[str, UnrolledTask], None, None]:
         # an unrolled task is just one task, since the date is determined
@@ -433,7 +433,7 @@ class UnrolledTask(_TaskBase):
             identifier = f"Task '{self.name}' with date {self.unrolled_date}"
         else:
             identifier = f"Task '{self.name}' in cycle {self.unrolled_cycle.name} with date {self.unrolled_date}"
-        return self.__repr__().replace("Task", identifier)
+        return super().__repr__().replace("Task", identifier)
 
     def unroll_inputs(self) -> Generator[UnrolledData, None, None]:
         """
@@ -542,7 +542,7 @@ class Cycle(_CycleBase):
             identifier = f"Cycle '{self.name}'"
         else:
             identifier = f"Cycle '{self.name}' in workflow {self.workflow.name}"
-        return self.__repr__().replace("Cycle", identifier)
+        return super().__repr__().replace("Cycle", identifier)
 
     def unroll(self) -> Generator[tuple[str, datetime, UnrolledCycle], None, None]:
         if self._workflow is None:
@@ -600,7 +600,7 @@ class UnrolledCycle(_CycleBase):
             identifier = f"UnrolledCycle '{self.name}' with date {self.unrolled_date}"
         else:
             identifier = f"UnrolledCycle '{self.name}' in workflow {self.workflow.name} with date {self.unrolled_date}"
-        return self.__repr__().replace("UnrolledCycle", identifier)
+        return super().__repr__().replace("UnrolledCycle", identifier)
 
     def unroll_tasks(self) -> Generator[tuple[str, UnrolledTask], None, None]:
         for task in self._tasks:
