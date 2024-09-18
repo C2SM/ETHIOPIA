@@ -1,0 +1,67 @@
+name: ci
+
+on:
+  push:
+    # only pushes to main trigger
+    branches: [main]
+  pull_request:
+    # always triggered
+
+jobs:
+
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        python-version: ['3.11']
+        aiida-version: ['stable']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install hatch
+      run: |
+        pip install --upgrade pip
+        pip install hatch
+    - name: Run test suite
+      env:
+        PYTEST_ADDOPTS: "--durations=0"
+      run: |
+        hatch test --cover
+
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install hatch
+      run: |
+        pip install --upgrade pip
+        pip install hatch
+    - name: Build docs
+      run: hatch run docs:build
+
+  fmt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install hatch
+      run: |
+        pip install --upgrade pip
+        pip install hatch
+    - name: Run formatter and linter
+      run: hatch fmt --check

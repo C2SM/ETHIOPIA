@@ -1,0 +1,71 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+# See https://www.python.org/dev/peps/pep-0621/
+name = 'wcflow'
+dynamic = ["version"]
+description = 'WcFlow a library for creating weather and climate workflows.'
+authors = [
+  {name = 'Matthieu Leclair', email = 'matthieu.leclair@env.ethz.ch'},
+  {name = 'Julian Geiger', email = 'julian.geiger@psi.ch'},
+  {name = 'Alexander Goscinski', email = 'alexander.goscinski@psi.ch'},
+]
+readme = 'README.md'
+classifiers = [
+  'Development Status :: 1 - Planning',
+  'Intended Audience :: Science/Research',
+  'Operating System :: POSIX :: Linux',
+  'Programming Language :: Python',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3.12',
+  'Topic :: Scientific/Engineering',
+  'Topic :: Scientific/Engineering :: Atmospheric Science',
+]
+keywords = ["wc", "workflow"," icon", "aiida", "aiida-workgraph"]
+requires-python = '>=3.9'
+dependencies = [
+]
+
+[tool.pytest.ini_options]
+# Configuration for [pytest](https://docs.pytest.org)
+addopts = "--pdbcls=IPython.terminal.debugger:TerminalPdb"
+
+[tool.coverage.run]
+# Configuration of [coverage.py](https://coverage.readthedocs.io)
+# reporting which lines of your plugin are covered by tests
+source = ["wcflow"]
+
+[tool.ruff]
+include = ["src/*py", "tests/*py"]
+
+## Hatch configurations
+
+[tool.hatch.version]
+path = "src/wcflow/__init__.py"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+    "ipdb"
+]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.docs]
+description = "Build the documentation"
+extra-dependencies = [
+    "mkdocs-material",
+]
+
+[tool.hatch.envs.docs.scripts]
+build = [
+  "mkdocs build -f docs/mkdocs.yml",
+  "echo 'Now open docs/build/index.html with your browser'"
+]
+serve = [
+  "mkdocs serve -f docs/mkdocs.yml",
+]
