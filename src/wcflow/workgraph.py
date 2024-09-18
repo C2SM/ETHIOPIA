@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any
 
 import aiida.common
@@ -5,10 +7,10 @@ import aiida.orm
 import aiida_workgraph.engine.utils  # type: ignore[import-untyped]
 from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
-from wcflow import core
-
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
+
+    from wcflow import core
 
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
@@ -218,5 +220,19 @@ class AiidaWorkGraph:
         output_socket = workgraph_task.outputs.new("Any", output.src)
         self._aiida_socket_nodes[output_label] = output_socket
 
-    def run(self) -> dict[str, Any]:
-        return self._workgraph.run()
+    def run(
+        self,
+        inputs: None | dict[str, Any] = None,
+        metadata: None | dict[str, Any] = None,
+    ) -> dict[str, Any]:
+        return self._workgraph.run(inputs=inputs, metadata=metadata)
+
+    def submit(
+        self,
+        *,
+        inputs: None | dict[str, Any] = None,
+        wait: bool = False,
+        timeout: int = 60,
+        metadata: None | dict[str, Any] = None,
+    ) -> dict[str, Any]:
+        return self._workgraph.submit(inputs=inputs, wait=wait, timeout=timeout, metadata=metadata)
