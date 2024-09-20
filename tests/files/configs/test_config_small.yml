@@ -1,0 +1,41 @@
+---
+start_date: 2026-01-01T00:00
+end_date: 2026-06-01T00:00
+cycles:
+  - bimonthly_tasks:
+      period: P2M
+      tasks:
+        - icon:
+            inputs:
+              - icon_restart:
+                  arg_option: --restart
+                  lag: -P2M
+            outputs:
+              - icon_output
+              - icon_restart:
+  - lastly:
+      tasks:
+        - cleanup:
+            depends:
+              - icon:
+                  date: 2026-05-01T00:00
+tasks:
+  - icon:
+      plugin: shell
+      command: $PWD/tests/files/scripts/icon.py
+  - postproc:
+      plugin: shell
+      command: $PWD/tests/files/scripts/postproc.py
+  - cleanup:
+      plugin: shell
+      command: $PWD/tests/files/scripts/cleanup.py
+data:
+  - icon_input:
+      type: file
+      src: $PWD/tests/files/data/input
+  - icon_output:
+      type: file
+      src: output
+  - icon_restart:
+      type: file
+      src: restart
