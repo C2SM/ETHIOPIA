@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
-from typing import Any, Self
+from typing import Any
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
@@ -171,6 +171,29 @@ class ConfigCycleTask(_NamedBaseModel):
     outputs: list[ConfigCycleTaskOutput | str] | None = None
     depends: list[ConfigCycleTaskDepend | str] | None = None
 
+    @field_validator("inputs", mode="before")
+    def convert_cycle_task_inputs(values) -> list[ConfigCycleTaskInput]:
+        inputs = []
+        if values is None:
+            return inputs
+        for value in values:
+            if isinstance(value, str):
+                inputs.append({value: None})
+            elif isinstance(value, dict):
+                inputs.append(value)
+        return inputs
+
+    @field_validator("outputs", mode="before")
+    def convert_cycle_task_outputs(values) -> list[ConfigCycleTaskOutput]:
+        outputs = []
+        if values is None:
+            return outputs
+        for value in values:
+            if isinstance(value, str):
+                outputs.append({value: None})
+            elif isinstance(value, dict):
+                outputs.append(value)
+        return outputs
 
 class ConfigCycle(_NamedBaseModel):
     """
@@ -195,14 +218,14 @@ class ConfigCycle(_NamedBaseModel):
         return None if value is None else parse_duration(value)
 
     @model_validator(mode="after")
-    def check_start_date_before_end_date(self) -> Self:
+    def check_start_date_before_end_date(self) -> 'ConfigCycle':
         if self.start_date is not None and self.end_date is not None and self.start_date > self.end_date:
             msg = "For cycle {self._name!r} the start_date {start_date!r} lies after given end_date {end_date!r}."
             raise ValueError(msg)
         return self
 
     @model_validator(mode="after")
-    def check_period_is_not_negative_or_zero(self) -> Self:
+    def check_period_is_not_negative_or_zero(self) -> 'ConfigCycle':
         if self.period is not None and TimeUtils.duration_is_less_equal_zero(self.period):
             msg = f"For cycle {self.name!r} the period {self.period!r} is negative or zero."
             raise ValueError(msg)
@@ -223,9 +246,9 @@ class ConfigWorkflow(BaseModel):
         return None if value is None else datetime.fromisoformat(value)
 
     @model_validator(mode="after")
-    def check_start_date_before_end_date(self) -> Self:
+    def check_start_date_before_end_date(self) -> 'ConfigWorkflow':
         if self.start_date is not None and self.end_date is not None and self.start_date > self.end_date:
-            msg = "For cycle {self._name!r} the start_date {start_date!r} lies after given end_date {end_date!r}."
+            msg = "For workflow {self._name!r} the start_date {start_date!r} lies after given end_date {end_date!r}."
             raise ValueError(msg)
         return self
 

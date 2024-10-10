@@ -12,7 +12,7 @@ cycles:
                   lag: -P2M
             outputs:
               - icon_output
-              - icon_restart:
+              - icon_restart
   - lastly:
       tasks:
         - cleanup:
