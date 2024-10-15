@@ -1,12 +1,11 @@
----
-title: ETHIOPIA, wEaTHer and clImate wOrkflow graPhs for aiIdA
----
+# ETHIOPIA
 
-ETHIOPIA is a library for creating weather and climate workflows from a yaml
+ETHIOPIA (wEaTHer and clImate wOrkflow graPhs for aiIdA)
+is a library for creating weather and climate workflows from a yaml
 format inspired by [cylc](https://cylc.github.io/) using
 [AiiDA](https://www.aiida.net/) as workflow engine.
 
-# Install
+## Install
 
 To install it please use
 
@@ -14,7 +13,7 @@ To install it please use
 pip install -e .
 ```
 
-# Developer tools
+## Developer tools
 
 To manage the repo we use [hatch]{.title-ref} please install it
 
@@ -26,7 +25,7 @@ hatch run docs:build # build docs
 hatch run docs:serve # live preview of doc for development
 ```
 
-# Resources
+## Resources
 
 -   <https://aiida-workgraph.readthedocs.io/en/latest/>
 -   <https://github.com/aiidateam/aiida-workgraph>
