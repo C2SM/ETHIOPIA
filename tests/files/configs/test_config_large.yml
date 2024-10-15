@@ -1,0 +1,175 @@
+---
+start_date: 2026-01-01T00:00
+end_date: 2027-01-01T00:00
+cycles:
+  - init:
+      tasks:
+        - extpar:
+            inputs:
+              - obs_data:
+                  arg_option: --input
+            outputs: [extpar_file]
+  - icon_bimonthly:
+      period: P2M
+      tasks:
+        - preproc:
+            inputs:
+              - grid_file:
+                  arg_option: -g
+              - extpar_file:
+                  date: 2026-01-01T00:00
+                  arg_option: -p
+              - ERA5:
+                  arg_option: -e
+            outputs: [icon_input]
+            depends:
+              - icon:
+                  lag: -P4M
+        - icon:
+            inputs:
+              - grid_file:
+                  arg_option: -g
+              - icon_input:
+                  arg_option: --input
+              #- icon_restart:
+              #    lag: '-P2M'
+            outputs:
+              - stream_1
+              - stream_2
+              #- icon_restart
+        - postproc_1:
+            inputs:
+              - stream_1:
+                  arg_option: --input
+            outputs: [postout_1]
+        - store_and_clean_1:
+            inputs:
+              - postout_1:
+                  arg_option: --input
+              - stream_1:
+                  arg_option: --stream
+              - icon_input:
+                  arg_option: --icon_input
+            outputs: [stored_data_1]
+  - yearly:
+      period: P1Y
+      tasks:
+        - postproc_2:
+            inputs:
+              - stream_2:
+                  lag: [P0M]
+                  arg_option: --input
+            outputs: [postout_2]
+        - store_and_clean_2:
+            inputs:
+              - postout_2:
+                  arg_option: --input
+              - stream_2:
+                  lag: [P0M]
+            outputs:
+              - stored_data_2
+# Each task and piece of data (input and output of tasks) used to
+# define the graph is described in that section
+tasks:
+  - ROOT:
+      # All tasks inherit the root task properties
+      host: santis
+      account: g110
+  - extpar:
+      plugin: extpar
+      command: $PWD/files/scripts/extpar
+      command_option: --verbose  # todo implement support
+      config: path/to/namelists/dir
+      uenv:
+        squashfs: path/to/squashfs
+        mount_point: runtime/mount/point
+      nodes: 1
+      walltime: 00:02:00
+  - preproc:
+      plugin: AiiDA Shell
+      command: $PWD/files/scripts/cleanup.sh
+      nodes: 4
+      walltime: 00:02:00
+      config: path/to/config/dir
+      uenv:
+        squashfs: path/to/squashfs
+        mount_point: runtime/mount/point
+  - icon:
+      plugin: icon
+      command: $PWD/files/scripts/icon
+      nodes: 40
+      walltime: 23:59:59
+      config: path/to/namelists/dir
+      uenv:
+        squashfs: path/to/squashfs
+        mount_point: runtime/mount/point
+  - postproc_1:
+      plugin: AiiDA Shell
+      command: $PWD/files/scripts/main_script_ocn.sh
+      nodes: 2
+      walltime: 00:05:00
+      conda_env: path/to/yaml/env/file
+      uenv:
+        squashfs: path/to/squashfs
+        mount_point: runtime/mount/point
+  - postproc_2:
+      plugin: AiiDA Shell
+      command: $PWD/files/scripts/main_script_atm.sh
+      nodes: 2
+      walltime: 00:05:00
+      src: path/to/src/dir
+      conda_env: path/to/yaml/env/file
+      uenv:
+        squashfs: path/to/squashfs
+        mount_point: runtime/mount/point
+  - store_and_clean_1:
+      plugin: AiiDA Shell
+      command: $PWD/files/scripts/post_clean.sh
+      nodes: 1
+      walltime: 00:01:00
+  - store_and_clean_2:
+      plugin: AiiDA Shell
+      command: $PWD/files/scripts/post_clean.sh
+      nodes: 1
+      walltime: 00:01:00
+data:
+  - preproc_output:
+      type: file
+      src: $PWD/files/data/file.ncdf
+  - grid_file:
+      type: file
+      src: $PWD/files/data/grid
+  - obs_data:
+      type: file
+      src: $PWD/files/data/obs_data
+  - ERA5:
+      type: file
+      src: $PWD/files/data/era5
+  - extpar_file:
+      type: file
+      src: output
+  - icon_input:
+      type: file
+      src: output
+  - icon_restart:
+      type: file
+      format: ncdf
+      src: restart
+  - stream_1:
+      type: file
+      src: output_1
+  - stream_2:
+      type: file
+      src: output_2
+  - postout_1:
+      type: file
+      src: postout
+  - postout_2:
+      type: file
+      src: postout
+  - stored_data_1:
+      type: file
+      src: stored_data
+  - stored_data_2:
+      type: file
+      src: stored_data
