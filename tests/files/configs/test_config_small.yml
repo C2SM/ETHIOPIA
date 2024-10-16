@@ -2,34 +2,39 @@
 start_date: 2026-01-01T00:00
 end_date: 2026-06-01T00:00
 cycles:
-  - bimonthly_tasks:
-      period: P2M
+  - single_cycle:
       tasks:
-        - icon:
+        - adder1:
             inputs:
-              - icon_restart:
-                  arg_option: --restart
-                  lag: -P2M
+                - a:
+                    port_name: x
+                - b:
+                    port_name: y
             outputs:
-              - icon_output
-              - icon_restart
-  - lastly:
-      tasks:
-        - cleanup:
-            depends:
-              - icon:
-                  date: 2026-05-01T00:00
+                - sum1: 
+                    port_name: sum
+        - adder2:
+            inputs:
+                - sum1:
+                    port_name: x
+                - c:
+                    port_name: y
+            outputs:
+                - sum2:
+                    port_name: sum
 tasks:
-  - icon:
-      plugin: shell
-      command: $PWD/tests/files/scripts/icon.py
-  - postproc:
-      plugin: shell
-      command: $PWD/tests/files/scripts/postproc.py
-  - cleanup:
-      plugin: shell
-      command: $PWD/tests/files/scripts/cleanup.py
+  - adder1:
+      plugin: core.arithmetic.add
+      code: bash 
+      computer: localhost
+  - adder2:
+      plugin: core.arithmetic.add
+      code: bash 
+      computer: localhost
 data:
+  - icon_input:
+      type: file
+      src: $PWD/tests/files/data/input
   - icon_input:
       type: file
       src: $PWD/tests/files/data/input
@@ -39,3 +44,22 @@ data:
   - icon_restart:
       type: file
       src: restart
+  - a:
+      type: int
+      src: 5
+  - b:
+      type: int
+      src: 2
+  - c:
+      type: int
+      src: 3
+  - sum1:
+      type: int
+  - sum2:
+      type: int
+  #- metadata:
+  #    type: dict
+  #    src:
+  #        options:
+  #            sleep: 1
+  #    port_name: metadata.options.sleep
