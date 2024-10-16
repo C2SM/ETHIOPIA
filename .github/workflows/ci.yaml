@@ -28,6 +28,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+        pip install .
+        verdi presto
     - name: Run test suite
       env:
         PYTEST_ADDOPTS: "--durations=0"
@@ -47,6 +49,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+        pip install .
+        verdi presto
     - name: Build docs
       run: hatch run docs:build
 
@@ -62,6 +66,10 @@ jobs:
     - name: Install hatch
       run: |
         pip install --upgrade pip
+    - name: Install package
+      run: |
         pip install hatch
+        pip install .
+        verdi presto
     - name: Run formatter and linter
       run: hatch fmt --check

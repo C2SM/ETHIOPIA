@@ -77,7 +77,7 @@ tasks:
       account: g110
   - extpar:
       plugin: extpar
-      command: $PWD/files/scripts/extpar
+      command: $PWD/examples/files/scripts/extpar
       command_option: --verbose  # todo implement support
       config: path/to/namelists/dir
       uenv:
@@ -87,7 +87,7 @@ tasks:
       walltime: 00:02:00
   - preproc:
       plugin: AiiDA Shell
-      command: $PWD/files/scripts/cleanup.sh
+      command: $PWD/examples/files/scripts/cleanup.sh
       nodes: 4
       walltime: 00:02:00
       config: path/to/config/dir
@@ -96,7 +96,7 @@ tasks:
         mount_point: runtime/mount/point
   - icon:
       plugin: icon
-      command: $PWD/files/scripts/icon
+      command: $PWD/examples/files/scripts/icon
       nodes: 40
       walltime: 23:59:59
       config: path/to/namelists/dir
@@ -105,7 +105,7 @@ tasks:
         mount_point: runtime/mount/point
   - postproc_1:
       plugin: AiiDA Shell
-      command: $PWD/files/scripts/main_script_ocn.sh
+      command: $PWD/examples/files/scripts/main_script_ocn.sh
       nodes: 2
       walltime: 00:05:00
       conda_env: path/to/yaml/env/file
@@ -114,7 +114,7 @@ tasks:
         mount_point: runtime/mount/point
   - postproc_2:
       plugin: AiiDA Shell
-      command: $PWD/files/scripts/main_script_atm.sh
+      command: $PWD/examples/files/scripts/main_script_atm.sh
       nodes: 2
       walltime: 00:05:00
       src: path/to/src/dir
@@ -124,27 +124,27 @@ tasks:
         mount_point: runtime/mount/point
   - store_and_clean_1:
       plugin: AiiDA Shell
-      command: $PWD/files/scripts/post_clean.sh
+      command: $PWD/examples/files/scripts/post_clean.sh
       nodes: 1
       walltime: 00:01:00
   - store_and_clean_2:
       plugin: AiiDA Shell
-      command: $PWD/files/scripts/post_clean.sh
+      command: $PWD/examples/files/scripts/post_clean.sh
       nodes: 1
       walltime: 00:01:00
 data:
   - preproc_output:
       type: file
-      src: $PWD/files/data/file.ncdf
+      src: $PWD/examples/files/data/file.ncdf
   - grid_file:
       type: file
-      src: $PWD/files/data/grid
+      src: $PWD/examples/files/data/grid
   - obs_data:
       type: file
-      src: $PWD/files/data/obs_data
+      src: $PWD/examples/files/data/obs_data
   - ERA5:
       type: file
-      src: $PWD/files/data/era5
+      src: $PWD/examples/files/data/era5
   - extpar_file:
       type: file
       src: output

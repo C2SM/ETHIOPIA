@@ -4,12 +4,13 @@ import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
-from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from wcflow import core
 from ._utils import TimeUtils
 
 
@@ -167,9 +168,9 @@ class ConfigCycleTask(_NamedBaseModel):
     To create an instance of a task in a cycle defined in a workflow file.
     """
 
-    inputs: list[ConfigCycleTaskInput | str] | None = None
-    outputs: list[ConfigCycleTaskOutput | str] | None = None
-    depends: list[ConfigCycleTaskDepend | str] | None = None
+    inputs: Optional[list[ConfigCycleTaskInput | str]] = Field(default_factory=list)
+    outputs: Optional[list[ConfigCycleTaskOutput | str]] = Field(default_factory=list)
+    depends: Optional[list[ConfigCycleTaskDepend | str]] = Field(default_factory=list)
 
     @field_validator("inputs", mode="before")
     @classmethod
@@ -196,6 +197,20 @@ class ConfigCycleTask(_NamedBaseModel):
             elif isinstance(value, dict):
                 outputs.append(value)
         return outputs
+
+    @field_validator("depends", mode="before")
+    @classmethod
+    def convert_cycle_task_depends(cls, values) -> list[ConfigCycleTaskDepend]:
+        depends = []
+        if values is None:
+            return depends
+        for value in values:
+            if isinstance(value, str):
+                depends.append({value: None})
+            elif isinstance(value, dict):
+                depends.append(value)
+
+        return depends
 
 
 class ConfigCycle(_NamedBaseModel):
@@ -242,6 +257,8 @@ class ConfigWorkflow(BaseModel):
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: list[ConfigData]
+    data_dict: dict = {}
+    task_dict: dict = {}
 
     @field_validator("start_date", "end_date", mode="before")
     @classmethod
@@ -254,6 +271,51 @@ class ConfigWorkflow(BaseModel):
             msg = "For workflow {self._name!r} the start_date {start_date!r} lies after given end_date {end_date!r}."
             raise ValueError(msg)
         return self
+
+    def to_core_workflow(self):
+        self.data_dict = {data.name: data for data in self.data}
+        self.task_dict = {task.name: task for task in self.tasks}
+
+        core_cycles = [self._to_core_cycle(cycle) for cycle in self.cycles]
+        return core.Workflow(self.name, core_cycles)
+
+    def _to_core_cycle(self, cycle: ConfigCycle) -> core.Cycle:
+        core_tasks = [self._to_core_task(task) for task in cycle.tasks]
+        start_date = self.start_date if cycle.start_date is None else cycle.start_date
+        end_date = self.end_date if cycle.end_date is None else cycle.end_date
+        return core.Cycle(cycle.name, core_tasks, start_date, end_date, cycle.period)
+
+    def _to_core_task(self, cycle_task: ConfigCycleTask) -> core.Task:
+        inputs = []
+        outputs = []
+        dependencies = []
+
+        for input_ in cycle_task.inputs:
+            if (data := self.data_dict.get(input_.name)) is None:
+                msg = f"Task {cycle_task.name!r} has input {input_.name!r} that is not specied in the data section."
+                raise ValueError(msg)
+            core_data = core.Data(input_.name, data.type, data.src, input_.lag, input_.date, input_.arg_option)
+            inputs.append(core_data)
+
+        for output in cycle_task.outputs:
+            if (data := self.data_dict.get(output.name)) is None:
+                msg = f"Task {cycle_task.name!r} has output {output.name!r} that is not specied in the data section."
+                raise ValueError(msg)
+            core_data = core.Data(output.name, data.type, data.src, [], [], None)
+            outputs.append(core_data)
+
+        for depend in cycle_task.depends:
+            core_dependency = core.Dependency(depend.name, depend.lag, depend.date, depend.cycle_name)
+            dependencies.append(core_dependency)
+
+        return core.Task(
+            cycle_task.name,
+            self.task_dict[cycle_task.name].command,
+            inputs,
+            outputs,
+            dependencies,
+            self.task_dict[cycle_task.name].command_option,
+        )
 
 
 def load_workflow_config(workflow_config: str) -> ConfigWorkflow:
