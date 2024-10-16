@@ -83,17 +83,14 @@ class ConfigTask(_NamedBaseModel):
     To create an instance of a task defined in a workflow file
     """
 
-    command: str
-    command_option: str | None = None
-    host: str | None = None
-    account: str | None = None
+    # aiida-shell specifics
+    command: str | None = None
+    # these are global commands_options, I think we can remove arg_options to simplify
+    command_options: str | None = None
+    # general 
     plugin: str | None = None
-    config: str | None = None
-    uenv: dict | None = None
-    nodes: int | None = None
-    walltime: str | None = None
-    src: str | None = None
-    conda_env: str | None = None
+    computer: str | None = None
+    code: str | None = None
 
     def __init__(self, /, **data):
         # We have to treat root special as it does not typically define a command
@@ -107,30 +104,36 @@ class ConfigTask(_NamedBaseModel):
         """Expands any environment variables in the value"""
         return expandvars(value)
 
-    @field_validator("walltime")
-    @classmethod
-    def convert_to_struct_time(cls, value: str | None) -> time.struct_time | None:
-        """Converts a string of form "%H:%M:%S" to a time.time_struct"""
-        return None if value is None else time.strptime(value, "%H:%M:%S")
-
 
 class ConfigData(_NamedBaseModel):
     """
     To create an instance of a data defined in a workflow file.
     """
 
-    type: str
-    src: str
+    type: str | None = None
+    src: str | int | dict | None = None
     format: str | None = None
 
     @field_validator("type")
     @classmethod
     def is_file_or_dir(cls, value: str) -> str:
         """."""
-        if value not in ["file", "dir"]:
-            msg = "Must be one of 'file' or 'dir'."
-            raise ValueError(msg)
+        # Is this actually needed? We can refer everything from the plugin
+        #if value not in ["file", "dir", "int"]:
+        #    msg = "Must be one of 'file' or 'dir'."
+        #    raise ValueError(msg)
         return value
+
+    @field_validator("src")
+    @classmethod
+    def expand_env_vars(cls, value: str | int | dict | None) -> str | int | dict | None:
+        """Expands any environment variables in the value"""
+        if isinstance(value, str):
+            return expandvars(value)
+        elif isinstance(value, dict):
+            raise NotImplementedError()
+        else:
+            return value
 
 
 class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
@@ -142,6 +145,7 @@ class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
     cycle_name: str | None = None
 
 
+# NOT NEEDED, but can we make dict with arbitrary
 class ConfigCycleTaskInput(_NamedBaseModel, _LagDateBaseModel):
     """
     To create an instance of an input in a task in a cycle defined in a workflow file.
@@ -156,13 +160,15 @@ class ConfigCycleTaskInput(_NamedBaseModel, _LagDateBaseModel):
     """
 
     arg_option: str | None = None
+    # lag?
+    port_name: str | None = None
 
 
 class ConfigCycleTaskOutput(_NamedBaseModel):
     """
     To create an instance of an output in a task in a cycle defined in a workflow file.
     """
-
+    port_name: str | None = None
 
 class ConfigCycleTask(_NamedBaseModel):
     """
@@ -175,7 +181,7 @@ class ConfigCycleTask(_NamedBaseModel):
 
     @field_validator("inputs", mode="before")
     @classmethod
-    def convert_cycle_task_inputs(cls, values) -> list[ConfigCycleTaskInput]:
+    def convert_cycle_task_inputs(cls, values) -> list[dict]:
         inputs = []
         if values is None:
             return inputs
@@ -295,14 +301,14 @@ class ConfigWorkflow(BaseModel):
             if (data := self.data_dict.get(input_.name)) is None:
                 msg = f"Task {cycle_task.name!r} has input {input_.name!r} that is not specied in the data section."
                 raise ValueError(msg)
-            core_data = core.Data(input_.name, data.type, data.src, input_.lag, input_.date, input_.arg_option)
+            core_data = core.Data(input_.name, data.type, data.src, input_.lag, input_.date, input_.arg_option, input_.port_name)
             inputs.append(core_data)
 
         for output in cycle_task.outputs:
             if (data := self.data_dict.get(output.name)) is None:
                 msg = f"Task {cycle_task.name!r} has output {output.name!r} that is not specied in the data section."
                 raise ValueError(msg)
-            core_data = core.Data(output.name, data.type, data.src, [], [], None)
+            core_data = core.Data(output.name, data.type, data.src, [], [], None, output.port_name)
             outputs.append(core_data)
 
         for depend in cycle_task.depends:
@@ -315,7 +321,10 @@ class ConfigWorkflow(BaseModel):
             inputs,
             outputs,
             dependencies,
-            self.task_dict[cycle_task.name].command_option,
+            self.task_dict[cycle_task.name].command_options,
+            self.task_dict[cycle_task.name].plugin,
+            self.task_dict[cycle_task.name].code,
+            self.task_dict[cycle_task.name].computer,
         )
 
 
