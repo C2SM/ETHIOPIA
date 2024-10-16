@@ -28,6 +28,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+    - name: Install package
+      run: |
         pip install .
         verdi presto
     - name: Run test suite
@@ -49,6 +51,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+    - name: Install package
+      run: |
         pip install .
         verdi presto
     - name: Build docs
@@ -66,9 +70,9 @@ jobs:
     - name: Install hatch
       run: |
         pip install --upgrade pip
+        pip install hatch
     - name: Install package
       run: |
-        pip install hatch
         pip install .
         verdi presto
     - name: Run formatter and linter

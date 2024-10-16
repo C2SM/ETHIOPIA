@@ -11,6 +11,7 @@ from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from wcflow import core
+
 from ._utils import TimeUtils
 
 
