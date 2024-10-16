@@ -2,14 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime
 from itertools import chain
-from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 from isoduration import parse_duration
 from isoduration.types import Duration
 
-from wcflow.parsing._utils import TimeUtils
+from wcflow._utils import TimeUtils
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -24,20 +23,25 @@ class _DataBase:
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        port_name: str | None,
     ):
         self._name = name
 
         self._src = src
-        self._path = Path(expandvars(self._src))
 
         self._type = type
-        if self._type not in ["file", "dir"]:
-            msg = f"Data type {self._type!r} not supported. Please use 'file' or 'dir'."
-            raise ValueError(msg)
 
-        if len(lag) > 0 and len(date) > 0:
-            msg = "Either 'lag' or 'date' can be nonempty. Not both."
-            raise ValueError(msg)
+        # type probably not needed
+        #if self._type not in ["file", "dir", ""]:
+        #    msg = f"Data type {self._type!r} not supported. Please use 'file' or 'dir'."
+        #    raise ValueError(msg)
+
+        # check if not already done by parsing? best inherit these
+        #if len(lag) > 0 and len(date) > 0:
+        #    msg = "Either 'lag' or 'date' can be nonempty. Not both."
+        #    raise ValueError(msg)
+
+        self._port_name = self._name if port_name is None else port_name
 
         # COMMENT I think we should just disallow multiple lags, and enforce the user to write multiple lags
         #         I am not sure how this work with icon as it does not need positional arguments
@@ -83,6 +87,10 @@ class _DataBase:
     def arg_option(self) -> str | None:
         return self._arg_option
 
+    @property
+    def port_name(self) -> str:
+        return self._port_name
+
 
 class Data(_DataBase):
     def __init__(
@@ -93,8 +101,9 @@ class Data(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        port_name: str | None
     ):
-        super().__init__(name, type, src, lag, date, arg_option)
+        super().__init__(name, type, src, lag, date, arg_option, port_name)
         self._task: Task | None = None
 
     def unroll(self, unrolled_task: UnrolledTask) -> Generator[UnrolledData, None, None]:
@@ -130,7 +139,6 @@ class Data(_DataBase):
             raise ValueError(msg)
         self._task = task
 
-
 class UnrolledData(_DataBase):
     """
     Data that are created during the unrolling of a cycle.
@@ -139,7 +147,7 @@ class UnrolledData(_DataBase):
 
     @classmethod
     def from_data(cls, data: Data, unrolled_task: UnrolledTask, unrolled_date: datetime):
-        return cls(unrolled_task, unrolled_date, data.name, data.type, data.src, data.lag, data.date, data.arg_option)
+        return cls(unrolled_task, unrolled_date, data.name, data.type, data.src, data.lag, data.date, data.arg_option, data.port_name)
 
     def __init__(
         self,
@@ -151,8 +159,9 @@ class UnrolledData(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        port_name: str
     ):
-        super().__init__(name, type, src, lag, date, arg_option)
+        super().__init__(name, type, src, lag, date, arg_option, port_name)
         self._unrolled_task = unrolled_task
         self._unrolled_date = unrolled_date
 
@@ -323,13 +332,19 @@ class _TaskBase:
         outputs: list[Data],
         depends: list[Dependency],
         command_option: str | None,
+        plugin: str,
+        code: str,
+        computer: str,
     ):
         self._name = name
-        self._command = expandvars(command)
+        self._command = command
         self._inputs = inputs
         self._outputs = outputs
         self._depends = depends
         self._command_option = command_option
+        self._plugin = plugin
+        self._code = code
+        self._computer = computer
 
     @property
     def name(self) -> str:
@@ -355,6 +370,18 @@ class _TaskBase:
     def depends(self) -> list[Dependency]:
         return self._depends
 
+    @property
+    def plugin(self):
+        return self._plugin
+
+    @property
+    def code(self):
+        return self._code
+
+    @property
+    def computer(self):
+        return self._computer
+
 
 class Task(_TaskBase):
     """A task that is created during the unrolling of a cycle."""
@@ -367,8 +394,11 @@ class Task(_TaskBase):
         outputs: list[Data],
         depends: list[Dependency],
         command_option: str | None,
+        plugin: str,
+        code: str,
+        computer: str,
     ):
-        super().__init__(name, command, inputs, outputs, depends, command_option)
+        super().__init__(name, command, inputs, outputs, depends, command_option, plugin, code, computer)
         for input_ in inputs:
             input_.task = self
         for output in outputs:
@@ -409,7 +439,7 @@ class UnrolledTask(_TaskBase):
     @classmethod
     def from_task(cls, task: Task, unrolled_cycle: UnrolledCycle):
         return cls(
-            unrolled_cycle, task.name, task.command, task.inputs, task.outputs, task.depends, task.command_option
+            unrolled_cycle, task.name, task.command, task.inputs, task.outputs, task.depends, task.command_option, task.plugin, task.code, task.computer
         )
 
     def __init__(
@@ -421,8 +451,11 @@ class UnrolledTask(_TaskBase):
         outputs: list[Data],
         depends: list[Dependency],
         command_option: str | None,
+        plugin: str,
+        code: str,
+        computer: str,
     ):
-        super().__init__(name, command, inputs, outputs, depends, command_option)
+        super().__init__(name, command, inputs, outputs, depends, command_option, plugin, code, computer)
         self._unrolled_cycle = unrolled_cycle
         self._unrolled_inputs = list(self.unroll_inputs())
         self._unrolled_outputs = list(self.unroll_outputs())
