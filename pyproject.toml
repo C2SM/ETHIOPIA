@@ -28,7 +28,7 @@ dependencies = [
   "isoduration",
   "pydantic",
   "pydantic-yaml",
-  "aiida-core"
+  "aiida-core>=2.5"
 ]
 
 [tool.pytest.ini_options]
