@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
@@ -169,9 +169,9 @@ class ConfigCycleTask(_NamedBaseModel):
     To create an instance of a task in a cycle defined in a workflow file.
     """
 
-    inputs: Optional[list[ConfigCycleTaskInput | str]] = Field(default_factory=list)
-    outputs: Optional[list[ConfigCycleTaskOutput | str]] = Field(default_factory=list)
-    depends: Optional[list[ConfigCycleTaskDepend | str]] = Field(default_factory=list)
+    inputs: list[ConfigCycleTaskInput | str] | None = Field(default_factory=list)
+    outputs: list[ConfigCycleTaskOutput | str] | None = Field(default_factory=list)
+    depends: list[ConfigCycleTaskDepend | str] | None = Field(default_factory=list)
 
     @field_validator("inputs", mode="before")
     @classmethod

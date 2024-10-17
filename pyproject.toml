@@ -18,15 +18,12 @@ classifiers = [
   'Intended Audience :: Science/Research',
   'Operating System :: POSIX :: Linux',
   'Programming Language :: Python',
-  'Programming Language :: Python :: 3.9',
-  'Programming Language :: Python :: 3.10',
-  'Programming Language :: Python :: 3.11',
   'Programming Language :: Python :: 3.12',
   'Topic :: Scientific/Engineering',
   'Topic :: Scientific/Engineering :: Atmospheric Science',
 ]
 keywords = ["wc", "workflow"," icon", "aiida", "aiida-workgraph"]
-requires-python = '>=3.9'
+requires-python = '>=3.12'
 dependencies = [
   "isoduration",
   "pydantic",
@@ -51,8 +48,6 @@ target-version = "py39"
 ignore = [
   "TID252", # prefer relative import over absolute
   "TRY003", # write custom error messages for formatting
-  "UP006", # python <3.10 support
-  "UP007", # python <3.10 support
 ]
 
 ## Hatch configurations
@@ -66,7 +61,7 @@ extra-dependencies = [
 ]
 
 [[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.9", "3.10", "3.11", "3.12"]
+python = ["3.12"]
 
 [tool.hatch.envs.docs]
 description = "Build the documentation"
