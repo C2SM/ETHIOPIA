@@ -31,6 +31,7 @@ dependencies = [
   "isoduration",
   "pydantic",
   "pydantic-yaml",
+  "aiida-core"
 ]
 
 [tool.pytest.ini_options]
@@ -44,11 +45,14 @@ source = ["wcflow"]
 
 [tool.ruff]
 include = ["src/*py", "tests/*py"]
+target-version = "py39"
 
 [tool.ruff.lint]
 ignore = [
   "TID252", # prefer relative import over absolute
   "TRY003", # write custom error messages for formatting
+  "UP006", # python <3.10 support
+  "UP007", # python <3.10 support
 ]
 
 ## Hatch configurations
