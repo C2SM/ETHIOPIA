@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
@@ -87,7 +86,7 @@ class ConfigTask(_NamedBaseModel):
     command: str | None = None
     # these are global commands_options, I think we can remove arg_options to simplify
     command_options: str | None = None
-    # general 
+    # general
     plugin: str | None = None
     computer: str | None = None
     code: str | None = None
@@ -131,7 +130,7 @@ class ConfigData(_NamedBaseModel):
         if isinstance(value, str):
             return expandvars(value)
         elif isinstance(value, dict):
-            raise NotImplementedError()
+            raise NotImplementedError
         else:
             return value
 

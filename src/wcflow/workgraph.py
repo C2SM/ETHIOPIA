@@ -5,10 +5,11 @@ from typing import TYPE_CHECKING, Any
 import aiida.common
 import aiida.orm
 import aiida_workgraph.engine.utils  # type: ignore[import-untyped]
-from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 from aiida.plugins.factories import CalculationFactory
+from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
 from ._utils import OrmUtils
+
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
 
@@ -147,7 +148,7 @@ class AiidaWorkGraph:
         if plugin_entry_point == "shell":
             orm_class = OrmUtils.convert_to_class(input_.type)
         else:
-            # TODO catch if entry_point does not exist 
+            # TODO catch if entry_point does not exist
             workflow_class = CalculationFactory(plugin_entry_point)
 
             if (port := workflow_class.spec().inputs.get(input_.port_name, None)) is None:

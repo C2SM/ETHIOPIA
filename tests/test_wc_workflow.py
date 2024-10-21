@@ -1,7 +1,10 @@
+import aiida
 import pytest
 
 from wcflow.parsing import load_workflow_config
+from wcflow.workgraph import AiidaWorkGraph
 
+aiida.load_profile()
 
 @pytest.fixture
 def config_file_small():
