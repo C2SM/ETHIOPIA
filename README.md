@@ -19,10 +19,19 @@ To manage the repo we use [hatch]{.title-ref} please install it
 
 ``` bash
 pip install hatch
+hatch shell # activate shell as dev environment 
 hatch test # run tests
 hatch fmt # run formatting
 hatch run docs:build # build docs
 hatch run docs:serve # live preview of doc for development
+```
+
+### Tests
+``` bash
+pip install hatch
+verdi devel launch-add # creates required codes
+verdi presto
+hatch test
 ```
 
 ## Resources
