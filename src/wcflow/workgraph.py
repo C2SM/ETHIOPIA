@@ -82,8 +82,6 @@ class AiidaWorkGraph:
         self._add_aiida_task_nodes()
         self._add_aiida_links()
 
-        self._add_aiida_plugin_task_nodes()
-        self._add_aiida_plugin_links()
 
     def _validate_workflow(self):
         """Checks if the defined workflow is correctly referencing key names."""
@@ -171,11 +169,12 @@ class AiidaWorkGraph:
             for task in cycle.unrolled_tasks:
                 if task.plugin == "shell":
                     self._add_aiida_task_node(task)
+                else:
+                    self._add_aiida_plugin_task_node(task)
         # after creation we can link the wait_on tasks
         for cycle in self._core_workflow.unrolled_cycles:
             for task in cycle.unrolled_tasks:
-                if task.plugin == "shell":
-                    self._link_wait_on_to_task(task)
+                self._link_wait_on_to_task(task)
 
     def _add_aiida_task_node(self, task: core.UnrolledTask):
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
@@ -203,17 +202,6 @@ class AiidaWorkGraph:
             wait_on_tasks.append(self._aiida_task_nodes[wait_on_task_label])
         workgraph_task.wait = wait_on_tasks
 
-    def _add_aiida_plugin_task_nodes(self):
-        for cycle in self._core_workflow.unrolled_cycles:
-            for task in cycle.unrolled_tasks:
-                if task.plugin != "shell":
-                    self._add_aiida_plugin_task_node(task)
-        # after creation we can link the wait_on tasks
-        for cycle in self._core_workflow.unrolled_cycles:
-            for task in cycle.unrolled_tasks:
-                if task.plugin != "shell":
-                    self._link_wait_on_to_task(task)
-
     def _add_aiida_plugin_task_node(self, task: core.UnrolledTask):
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
         workflow_class = CalculationFactory(task.plugin)
@@ -235,11 +223,16 @@ class AiidaWorkGraph:
 
     def _add_aiida_links_from_cycle(self, cycle: core.UnrolledCycle):
         for task in cycle.unrolled_tasks:
-            if task == "shell":
-                for input_ in task.unrolled_inputs:
+            for input_ in task.unrolled_inputs:
+                if task.plugin == "shell":
                     self._link_input_to_task(input_)
-                for output in task.unrolled_outputs:
+                else:
+                    self._plugin_link_input_to_task(input_)
+            for output in task.unrolled_outputs:
+                if task.plugin == "task":
                     self._link_output_to_task(output)
+                else:
+                    self._plugin_link_output_to_task(output)
 
     def _link_input_to_task(self, input_: core.UnrolledData):
         task_label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(input_.unrolled_task)
@@ -273,18 +266,6 @@ class AiidaWorkGraph:
         output_label = AiidaWorkGraph.get_aiida_label_from_unrolled_data(output)
         output_socket = workgraph_task.outputs.new("Any", output.src)
         self._aiida_socket_nodes[output_label] = output_socket
-
-    def _add_aiida_plugin_links(self):
-        for cycle in self._core_workflow.unrolled_cycles:
-            self._add_aiida_plugin_links_from_cycle(cycle)
-
-    def _add_aiida_plugin_links_from_cycle(self, cycle: core.UnrolledCycle):
-        for task in cycle.unrolled_tasks:
-            if task != "shell":
-                for input_ in task.unrolled_inputs:
-                    self._plugin_link_input_to_task(input_)
-                for output in task.unrolled_outputs:
-                    self._plugin_link_output_to_task(output)
 
     def _plugin_link_input_to_task(self, input_: core.UnrolledData):
         task_label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(input_.unrolled_task)
