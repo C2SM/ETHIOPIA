@@ -549,7 +549,7 @@ class Cycle(_CycleBase):
             msg = f"Cannot unroll cycle {self} because it was not attached to a workflow before."
             raise ValueError(msg)
         current_date = self._start_date
-        while current_date <= self._end_date:
+        while current_date < self._end_date:
             unrolled_cycle = UnrolledCycle.from_cycle(self, current_date, self._workflow)
             yield unrolled_cycle.name, unrolled_cycle.unrolled_date, unrolled_cycle
             if self._period is None:
