@@ -674,3 +674,44 @@ class Workflow:
     @property
     def unrolled_cycles_map(self) -> dict[tuple[str, datetime], UnrolledCycle]:
         return self._unrolled_cycles_map
+
+    @property
+    def unrolled_str(self) -> str:
+        """A string representation of the unrolled graph"""
+        light_red = '\x1b[91m'
+        light_green = '\x1b[92m'
+        light_blue = '\x1b[94m'
+        bold = '\x1b[1m'
+        reset = '\x1b[0m'
+
+        strings = ['cycles:']
+        ind = '  '
+        for cycle in self.unrolled_cycles:
+            strings.append(f'{ind}- {light_green}{cycle.name}[{cycle.unrolled_date}]:{reset}')
+            ind += '  '
+            for task in cycle.unrolled_tasks:
+                strings.append(f'{ind}- {light_red}{task.name}:{reset}')
+                ind += '    '
+                strings.append(f'{ind}inputs:')
+                ind += '  '
+                for data in task.unrolled_inputs:
+                    strings.append(f'{ind}- {light_blue}{data.name}[{data.unrolled_date}]{reset}')
+                ind = ind[:-2]
+                strings.append(f'{ind}outputs:')
+                ind += '  '
+                for data in task.unrolled_outputs:
+                    strings.append(f'{ind}- {light_blue}{data.name}{reset}')
+                ind = ind[:-2]
+                if (wait_tasks := task.unrolled_depends):
+                    strings.append(f'{ind}wait_on:')
+                    ind += '  '
+                    for wait_task in wait_tasks:
+                        strings.append(f'{ind}- {light_red}{wait_task.depend_on_task_name}'
+                                       f'[{wait_task.unrolled_date}]{reset}')
+                    ind = ind[:-2]
+                ind = ind[:-4]
+            ind = ind[:-2]
+        return '\n'.join(strings)
+
+    def print_unrolled(self):
+        print(self.unrolled_str)
