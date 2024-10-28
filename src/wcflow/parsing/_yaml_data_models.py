@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
