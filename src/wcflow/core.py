@@ -86,7 +86,7 @@ class _DataBase:
         return self._arg_option
 
     @property
-    def available(self) -> bool | None:
+    def available(self) -> bool:
         return self._available
 
 
@@ -99,7 +99,7 @@ class Data(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
-        available: bool | None,
+        available: bool,
     ):
         super().__init__(name, type, src, lag, date, arg_option, available)
         self._task: Task | None = None
@@ -158,7 +158,7 @@ class UnrolledData(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
-        available: bool | None,
+        available: bool,
     ):
         super().__init__(name, type, src, lag, date, arg_option, available)
         self._unrolled_task = unrolled_task
@@ -666,14 +666,6 @@ class Workflow:
     @property
     def cycles(self) -> list[Cycle]:
         return self._cycles
-
-    def is_available_on_init(self, data: UnrolledData) -> bool:
-        """Determines if the data is available on init of the workflow."""
-
-        def equal_check(output: UnrolledData) -> bool:
-            return output.name == data.name and output.unrolled_date == data.unrolled_date
-
-        return len(list(filter(equal_check, self._unrolled_outputs))) == 0
 
     @property
     def unrolled_cycles(self) -> list[UnrolledCycle]:
