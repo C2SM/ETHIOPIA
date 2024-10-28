@@ -24,7 +24,7 @@ class _DataBase:
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
-        available: bool | None,
+        available: bool,
     ):
         self._name = name
 
