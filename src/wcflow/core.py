@@ -24,6 +24,7 @@ class _DataBase:
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        available: bool | None,
     ):
         self._name = name
 
@@ -52,6 +53,7 @@ class _DataBase:
         self._lag = lag
         self._date = date
         self._arg_option = arg_option
+        self._available = available
 
     @property
     def name(self) -> str:
@@ -83,6 +85,10 @@ class _DataBase:
     def arg_option(self) -> str | None:
         return self._arg_option
 
+    @property
+    def available(self) -> bool | None:
+        return self._available
+
 
 class Data(_DataBase):
     def __init__(
@@ -93,8 +99,9 @@ class Data(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        available: bool | None,
     ):
-        super().__init__(name, type, src, lag, date, arg_option)
+        super().__init__(name, type, src, lag, date, arg_option, available)
         self._task: Task | None = None
 
     def unroll(self, unrolled_task: UnrolledTask) -> Generator[UnrolledData, None, None]:
@@ -139,7 +146,7 @@ class UnrolledData(_DataBase):
 
     @classmethod
     def from_data(cls, data: Data, unrolled_task: UnrolledTask, unrolled_date: datetime):
-        return cls(unrolled_task, unrolled_date, data.name, data.type, data.src, data.lag, data.date, data.arg_option)
+        return cls(unrolled_task, unrolled_date, data.name, data.type, data.src, data.lag, data.date, data.arg_option, data.available)
 
     def __init__(
         self,
@@ -151,8 +158,9 @@ class UnrolledData(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        available: bool | None,
     ):
-        super().__init__(name, type, src, lag, date, arg_option)
+        super().__init__(name, type, src, lag, date, arg_option, available)
         self._unrolled_task = unrolled_task
         self._unrolled_date = unrolled_date
 
