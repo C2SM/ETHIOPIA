@@ -114,7 +114,7 @@ class ConfigTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-class ConfigData(_NamedBaseModel):
+class _DataBaseModel(_NamedBaseModel):
     """
     To create an instance of a data defined in a workflow file.
     """
@@ -122,6 +122,7 @@ class ConfigData(_NamedBaseModel):
     type: str
     src: str
     format: str | None = None
+    available: bool = False
 
     @field_validator("type")
     @classmethod
@@ -133,15 +134,17 @@ class ConfigData(_NamedBaseModel):
         return value
 
 
-class ConfigAvailableData(ConfigData):
-    available: ClassVar[bool] = True
+class ConfigAvailableData(_DataBaseModel):
+
+    available: bool = True
 
 
-class ConfigGeneratedData(ConfigData):
-    available: ClassVar[bool] = False
+class ConfigGeneratedData(_DataBaseModel):
+
+    available: bool = False
 
 
-class ConfigDataStore(BaseModel):
+class ConfigData(BaseModel):
 
     available: list[ConfigAvailableData]
     generated: list[ConfigGeneratedData]
@@ -271,7 +274,7 @@ class ConfigWorkflow(BaseModel):
     end_date: datetime
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
-    data: ConfigDataStore
+    data: ConfigData
     data_dict: dict = {}
     task_dict: dict = {}
 
