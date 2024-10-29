@@ -114,7 +114,7 @@ class ConfigTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-class ConfigData(_NamedBaseModel):
+class _DataBaseModel(_NamedBaseModel):
     """
     To create an instance of a data defined in a workflow file.
     """
@@ -131,6 +131,23 @@ class ConfigData(_NamedBaseModel):
             msg = "Must be one of 'file' or 'dir'."
             raise ValueError(msg)
         return value
+
+    @property
+    def available(self) -> bool:
+        return isinstance(self, ConfigAvailableData)
+
+
+class ConfigAvailableData(_DataBaseModel):
+    pass
+
+
+class ConfigGeneratedData(_DataBaseModel):
+    pass
+
+
+class ConfigData(BaseModel):
+    available: list[ConfigAvailableData]
+    generated: list[ConfigGeneratedData]
 
 
 class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
@@ -257,7 +274,7 @@ class ConfigWorkflow(BaseModel):
     end_date: datetime
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
-    data: list[ConfigData]
+    data: ConfigData
     data_dict: dict = {}
     task_dict: dict = {}
 
@@ -274,7 +291,9 @@ class ConfigWorkflow(BaseModel):
         return self
 
     def to_core_workflow(self):
-        self.data_dict = {data.name: data for data in self.data}
+        self.data_dict = {data.name: data for data in self.data.available} | {
+            data.name: data for data in self.data.generated
+        }
         self.task_dict = {task.name: task for task in self.tasks}
 
         core_cycles = [self._to_core_cycle(cycle) for cycle in self.cycles]
@@ -295,14 +314,16 @@ class ConfigWorkflow(BaseModel):
             if (data := self.data_dict.get(input_.name)) is None:
                 msg = f"Task {cycle_task.name!r} has input {input_.name!r} that is not specied in the data section."
                 raise ValueError(msg)
-            core_data = core.Data(input_.name, data.type, data.src, input_.lag, input_.date, input_.arg_option)
+            core_data = core.Data(
+                input_.name, data.type, data.src, input_.lag, input_.date, input_.arg_option, available=data.available
+            )
             inputs.append(core_data)
 
         for output in cycle_task.outputs:
             if (data := self.data_dict.get(output.name)) is None:
                 msg = f"Task {cycle_task.name!r} has output {output.name!r} that is not specied in the data section."
                 raise ValueError(msg)
-            core_data = core.Data(output.name, data.type, data.src, [], [], None)
+            core_data = core.Data(output.name, data.type, data.src, [], [], None, available=False)
             outputs.append(core_data)
 
         for depend in cycle_task.depends:

@@ -23,19 +23,18 @@ tasks:
   - icon:
       plugin: shell
       command: $PWD/tests/files/scripts/icon.py
-  - postproc:
-      plugin: shell
-      command: $PWD/tests/files/scripts/postproc.py
   - cleanup:
       plugin: shell
       command: $PWD/tests/files/scripts/cleanup.py
 data:
-  - icon_input:
-      type: file
-      src: $PWD/tests/files/data/input
-  - icon_output:
-      type: file
-      src: output
-  - icon_restart:
-      type: file
-      src: restart
+  available:
+     - icon_input:
+         type: file
+         src: $PWD/tests/files/data/input
+  generated:
+     - icon_output:
+         type: file
+         src: output
+     - icon_restart:
+         type: file
+         src: restart

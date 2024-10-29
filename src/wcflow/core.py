@@ -24,6 +24,8 @@ class _DataBase:
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        *,
+        available: bool,
     ):
         self._name = name
 
@@ -52,6 +54,7 @@ class _DataBase:
         self._lag = lag
         self._date = date
         self._arg_option = arg_option
+        self._available = available
 
     @property
     def name(self) -> str:
@@ -83,6 +86,10 @@ class _DataBase:
     def arg_option(self) -> str | None:
         return self._arg_option
 
+    @property
+    def available(self) -> bool:
+        return self._available
+
 
 class Data(_DataBase):
     def __init__(
@@ -93,8 +100,10 @@ class Data(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        *,
+        available: bool,
     ):
-        super().__init__(name, type, src, lag, date, arg_option)
+        super().__init__(name, type, src, lag, date, arg_option, available=available)
         self._task: Task | None = None
 
     def unroll(self, unrolled_task: UnrolledTask) -> Generator[UnrolledData, None, None]:
@@ -139,7 +148,17 @@ class UnrolledData(_DataBase):
 
     @classmethod
     def from_data(cls, data: Data, unrolled_task: UnrolledTask, unrolled_date: datetime):
-        return cls(unrolled_task, unrolled_date, data.name, data.type, data.src, data.lag, data.date, data.arg_option)
+        return cls(
+            unrolled_task,
+            unrolled_date,
+            data.name,
+            data.type,
+            data.src,
+            data.lag,
+            data.date,
+            data.arg_option,
+            available=data.available,
+        )
 
     def __init__(
         self,
@@ -151,8 +170,10 @@ class UnrolledData(_DataBase):
         lag: list[Duration],
         date: list[datetime],
         arg_option: str | None,
+        *,
+        available: bool,
     ):
-        super().__init__(name, type, src, lag, date, arg_option)
+        super().__init__(name, type, src, lag, date, arg_option, available=available)
         self._unrolled_task = unrolled_task
         self._unrolled_date = unrolled_date
 
@@ -658,14 +679,6 @@ class Workflow:
     @property
     def cycles(self) -> list[Cycle]:
         return self._cycles
-
-    def is_available_on_init(self, data: UnrolledData) -> bool:
-        """Determines if the data is available on init of the workflow."""
-
-        def equal_check(output: UnrolledData) -> bool:
-            return output.name == data.name and output.unrolled_date == data.unrolled_date
-
-        return len(list(filter(equal_check, self._unrolled_outputs))) == 0
 
     @property
     def unrolled_cycles(self) -> list[UnrolledCycle]:
