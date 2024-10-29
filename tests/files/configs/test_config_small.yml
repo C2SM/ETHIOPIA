@@ -30,12 +30,14 @@ tasks:
       plugin: shell
       command: $PWD/tests/files/scripts/cleanup.py
 data:
-  - icon_input:
-      type: file
-      src: $PWD/tests/files/data/input
-  - icon_output:
-      type: file
-      src: output
-  - icon_restart:
-      type: file
-      src: restart
+  availlable:
+     - icon_input:
+         type: file
+         src: $PWD/tests/files/data/input
+  genarated:
+     - icon_output:
+         type: file
+         src: output
+     - icon_restart:
+         type: file
+         src: restart
