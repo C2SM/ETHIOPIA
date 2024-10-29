@@ -122,7 +122,6 @@ class _DataBaseModel(_NamedBaseModel):
     type: str
     src: str
     format: str | None = None
-    available: bool = False
 
     @field_validator("type")
     @classmethod
@@ -133,15 +132,19 @@ class _DataBaseModel(_NamedBaseModel):
             raise ValueError(msg)
         return value
 
+    @property
+    def available(self) -> bool:
+        return isinstance(self, ConfigAvailableData)
+
 
 class ConfigAvailableData(_DataBaseModel):
 
-    available: bool = True
+    pass
 
 
 class ConfigGeneratedData(_DataBaseModel):
 
-    available: bool = False
+    pass
 
 
 class ConfigData(BaseModel):
