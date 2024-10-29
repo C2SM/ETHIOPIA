@@ -134,9 +134,6 @@ tasks:
       walltime: 00:01:00
 data:
   available:
-    - preproc_output:
-        type: file
-        src: $PWD/examples/files/data/file.ncdf
     - grid_file:
         type: file
         src: $PWD/examples/files/data/grid
