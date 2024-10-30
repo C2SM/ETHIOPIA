@@ -68,6 +68,7 @@ class AiidaWorkGraph:
         self._core_workflow = core_workflow
 
         self._validate_workflow()
+        # breakpoint()
 
         self._workgraph = WorkGraph(core_workflow.name)
 
@@ -81,6 +82,7 @@ class AiidaWorkGraph:
 
         self._add_aiida_task_nodes()
         self._add_aiida_links()
+
 
 
     def _validate_workflow(self):
@@ -153,12 +155,20 @@ class AiidaWorkGraph:
                 raise ValueError(f"Port name {input_.port_name} for input {input_} does not exist. Here a list of supported port name {workflow_class.spec().inputs.keys()}")
 
             orm_class = OrmUtils.convert_to_class(input_.type)
-            if orm_class not in port.valid_type:
-                raise ValueError(f"For input {input_} the type {input_.type} was translated to {orm_class} and is not a supported type for port {input_.port_name}. Supported types are {port.valid_type}.")
+
+            # Otherwise port.valid_type might be non-iterable
+            valid_types = port.valid_type if isinstance(port.valid_type, (list, tuple)) else (port.valid_type,)
+            if orm_class not in valid_types:
+                raise ValueError(f"For input {input_} the type {input_.type} was translated to {orm_class} and is not a supported type for port {input_.port_name}. Supported types are {valid_types}.")
 
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_data(input_)
         if orm_class is aiida.orm.FolderData:
             orm_instance = aiida.orm.FolderData(tree=input_.src, label=label)
+        elif orm_class is aiida.orm.RemoteData:
+            # TODO: Add load or create logic for RemoteData from Rico's aiida-icon-clm repo here
+            computer = aiida.orm.load_computer(self._core_workflow.computer)
+            orm_instance = aiida.orm.RemoteData(remote_path=input_.src, label=label, computer=computer)
+
         else:
             orm_instance = orm_class(input_.src, label=label)
 
@@ -166,6 +176,7 @@ class AiidaWorkGraph:
 
     def _add_aiida_task_nodes(self):
         for cycle in self._core_workflow.unrolled_cycles:
+
             for task in cycle.unrolled_tasks:
                 if task.plugin == "shell":
                     self._add_aiida_task_node(task)
@@ -206,11 +217,13 @@ class AiidaWorkGraph:
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
         workflow_class = CalculationFactory(task.plugin)
 
+        full_label = f'{task.code}@{task.computer}'
+
         workgraph_task = self._workgraph.tasks.new(
             workflow_class,
             name=label,
             #metadata={"computer": aiida.orm.load_computer(task.computer)},
-            code=aiida.orm.load_code(task.code),
+            code=aiida.orm.load_code(full_label),
             #computer=task.computer,
             #metadata={"computer": task.computer},
             #code=task.code,
@@ -292,6 +305,7 @@ class AiidaWorkGraph:
         inputs: None | dict[str, Any] = None,
         metadata: None | dict[str, Any] = None,
     ) -> dict[str, Any]:
+        a = self._workgraph
         return self._workgraph.run(inputs=inputs, metadata=metadata)
 
     def submit(

@@ -12,6 +12,8 @@ class OrmUtils:
             return aiida.orm.Int
         elif type_ == "float":
             return aiida.orm.Float
+        elif type_ == "remote":
+            return aiida.orm.RemoteData
         else:
             raise ValueError(f"Type {type_} is unknown.")
 

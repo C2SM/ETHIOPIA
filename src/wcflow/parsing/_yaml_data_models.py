@@ -112,6 +112,7 @@ class ConfigData(_NamedBaseModel):
     type: str | None = None
     src: str | int | dict | None = None
     format: str | None = None
+    computer: str | None = None
 
     @field_validator("type")
     @classmethod
@@ -265,6 +266,7 @@ class ConfigWorkflow(BaseModel):
     data: list[ConfigData]
     data_dict: dict = {}
     task_dict: dict = {}
+    computer: str | None = None
 
     @field_validator("start_date", "end_date", mode="before")
     @classmethod
@@ -283,7 +285,7 @@ class ConfigWorkflow(BaseModel):
         self.task_dict = {task.name: task for task in self.tasks}
 
         core_cycles = [self._to_core_cycle(cycle) for cycle in self.cycles]
-        return core.Workflow(self.name, core_cycles)
+        return core.Workflow(self.name, core_cycles, computer=self.computer)
 
     def _to_core_cycle(self, cycle: ConfigCycle) -> core.Cycle:
         core_tasks = [self._to_core_task(task) for task in cycle.tasks]

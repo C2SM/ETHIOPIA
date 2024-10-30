@@ -11,7 +11,7 @@ cycles:
                 - b:
                     port_name: y
             outputs:
-                - sum1: 
+                - sum1:
                     port_name: sum
         - adder2:
             inputs:
@@ -25,25 +25,13 @@ cycles:
 tasks:
   - adder1:
       plugin: core.arithmetic.add
-      code: bash 
+      code: bash
       computer: localhost
   - adder2:
       plugin: core.arithmetic.add
-      code: bash 
+      code: bash
       computer: localhost
 data:
-  - icon_input:
-      type: file
-      src: $PWD/tests/files/data/input
-  - icon_input:
-      type: file
-      src: $PWD/tests/files/data/input
-  - icon_output:
-      type: file
-      src: output
-  - icon_restart:
-      type: file
-      src: restart
   - a:
       type: int
       src: 5
@@ -57,9 +45,3 @@ data:
       type: int
   - sum2:
       type: int
-  #- metadata:
-  #    type: dict
-  #    src:
-  #        options:
-  #            sleep: 1
-  #    port_name: metadata.options.sleep

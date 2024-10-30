@@ -1,0 +1,70 @@
+---
+start_date: 2026-01-01T00:00
+end_date: 2026-06-01T00:00
+computer: localhost
+cycles:
+  - single_cycle:
+    #   period: P2M
+      tasks:
+        - icon_task:
+            inputs:
+              - icon_master_namelist:
+                  port_name: master_namelist
+              - icon_model_namelist:
+                  port_name: model_namelist
+              - grid_file:
+                  port_name: dynamics_grid_file
+              - ecrad_data:
+                  port_name: ecrad_data
+              - cloud_data:
+                  port_name: cloud_opt_props
+              - wet_whatever:
+                  port_name: dmin_wetgrowth_lookup
+              - rrtmg_sw:
+                  port_name: rrtmg_sw
+            outputs:
+              - latest_restart_file:
+                  port_name: latest_restart_file
+              - finish_status:
+                  port_name: finish_status
+tasks:
+  - icon_task:
+        plugin: aiida_icon.icon
+        code: icon
+        computer: localhost
+    #   icon_master_namelist:
+    #     src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/examples/exclaim_R02B04/icon_master.namelist
+    #     modify:
+    #       model_min_rank: 2
+
+data:
+  - icon_master_namelist:
+        src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/examples/exclaim_R02B04/icon_master.namelist
+        type: file
+        # modify:
+        #   model_min_rank: 2
+  - icon_model_namelist:
+        src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/tests/data/simple_icon_run/inputs/model.namelist
+        type: file
+  - grid_file:
+        src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/tests/data/simple_icon_run/inputs/icon_grid_simple.nc
+        type: remote
+  - ecrad_data:
+      src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/tests/data/simple_icon_run/inputs/ecrad_data.nc
+      type: remote
+  - cloud_data:
+      src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/tests/data/simple_icon_run/inputs/ECHAM6_CldOptProps.nc
+      type: remote
+  - wet_whatever:
+      src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/tests/data/simple_icon_run/inputs/dmin_wetgrowth_lookup.nc
+      type: remote
+  - rrtmg_sw:
+      src: /home/geiger_j/aiida_projects/aiida-icon-clm/git-repos/aiida-icon/tests/data/simple_icon_run/inputs/rrtmg_sw.nc
+      type: remote
+  - latest_restart_file:
+      type: file
+      src: .
+  - finish_status:
+      type: file
+      src: .
+

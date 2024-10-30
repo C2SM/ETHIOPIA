@@ -72,10 +72,6 @@ class _DataBase:
         return self._src
 
     @property
-    def path(self) -> Path:
-        return self._path
-
-    @property
     def lag(self) -> list[Duration]:
         return self._lag
 
@@ -657,9 +653,10 @@ class UnrolledCycle(_CycleBase):
 
 
 class Workflow:
-    def __init__(self, name: str, cycles: list[Cycle]):
+    def __init__(self, name: str, cycles: list[Cycle], computer: str):
         self._name = name
         self._cycles = cycles
+        self._computer = computer
         for cycle in self._cycles:
             cycle.workflow = self
         self._validate_cycles()
@@ -691,6 +688,10 @@ class Workflow:
     @property
     def cycles(self) -> list[Cycle]:
         return self._cycles
+
+    @property
+    def computer(self) -> str:
+        return self._computer
 
     def is_available_on_init(self, data: UnrolledData) -> bool:
         """Determines if the data is available on init of the workflow."""

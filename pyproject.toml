@@ -23,12 +23,14 @@ classifiers = [
   'Topic :: Scientific/Engineering :: Atmospheric Science',
 ]
 keywords = ["wc", "workflow"," icon", "aiida", "aiida-workgraph"]
-requires-python = '>=3.12'
+requires-python = '~=3.12'
 dependencies = [
   "isoduration",
   "pydantic",
   "pydantic-yaml",
-  "aiida-core>=2.5"
+  "aiida-core>=2.5",
+  'aiida-workgraph[widget]==0.3.14',
+  'node_graph==0.0.11',
 ]
 
 [tool.pytest.ini_options]
@@ -55,7 +57,11 @@ ignore = [
 [tool.hatch.version]
 path = "src/wcflow/__init__.py"
 
+[project.optional-dependencies]
+tests = ["pytest"]
+
 [tool.hatch.envs.hatch-test]
+extras = ["tests"]
 extra-dependencies = [
     "ipdb"
 ]
