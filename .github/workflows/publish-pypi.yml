@@ -5,8 +5,7 @@ name: Publish Python Package
 on:
   push:
     # only pushes to main trigger
-    # TODO
-    #branches: [main]
+    branches: [main]
     tags:
     - v[0-9]+.[0-9]+.[0-9]+*
 
@@ -30,10 +29,8 @@ jobs:
         pip install hatch
     - name: Publish package
       env:
-        # TODO update api token from test.pypi to pypi
         HATCH_INDEX_AUTH: ${{ secrets.PYPI_API_TOKEN }} 
         HATCH_INDEX_USER: __token__
       run: |
         hatch build
-        # TODO hatch publish 
-        hatch publish -r test 
+        hatch publish 
