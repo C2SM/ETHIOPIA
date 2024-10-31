@@ -1,6 +1,6 @@
 import pytest
 
-from wcflow.parsing import load_workflow_config
+from sirocco.parsing import load_workflow_config
 
 
 @pytest.fixture

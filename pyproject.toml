@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 # See https://www.python.org/dev/peps/pep-0621/
 name = 'sirocco'
 dynamic = ["version"]
-description = 'WcFlow a library for creating weather and climate workflows.'
+description = 'A library for creating weather and climate workflows.'
 authors = [
   {name = 'Matthieu Leclair', email = 'matthieu.leclair@env.ethz.ch'},
   {name = 'Julian Geiger', email = 'julian.geiger@psi.ch'},
@@ -38,7 +38,7 @@ addopts = "--pdbcls=IPython.terminal.debugger:TerminalPdb"
 [tool.coverage.run]
 # Configuration of [coverage.py](https://coverage.readthedocs.io)
 # reporting which lines of your plugin are covered by tests
-source = ["wcflow"]
+source = ["sirocco"]
 
 [tool.ruff]
 include = ["src/*py", "tests/*py"]
@@ -52,8 +52,13 @@ ignore = [
 
 ## Hatch configurations
 
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/sirocco/",
+]
+
 [tool.hatch.version]
-path = "src/wcflow/__init__.py"
+path = "src/sirocco/__init__.py"
 
 [tool.hatch.envs.hatch-test]
 extra-dependencies = [

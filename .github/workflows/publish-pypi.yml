@@ -1,0 +1,36 @@
+# This workflow will upload a Python Package using hatch when a release is created
+
+name: Publish Python Package
+
+on:
+  push:
+    # only pushes to main trigger
+    #branches: [main]
+    tags:
+    - v[0-9]+.[0-9]+.[0-9]+*
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.12'
+    - name: Install hatch
+      run: |
+        pip install --upgrade pip
+        pip install hatch
+    - name: Publish package
+      env:
+        HATCH_INDEX_AUTH: ${{ secrets.PYPI_API_TOKEN }} 
+        HATCH_INDEX_USER: __token__
+      run:
+        hatch build
+        hatch publish -r test 

@@ -1,7 +1,6 @@
-# ETHIOPIA
+# Sirocco
 
-ETHIOPIA (wEaTHer and clImate wOrkflow graPhs for aiIdA)
-is a library for creating weather and climate workflows from a yaml
+Sirocco is a library for creating weather and climate workflows from a yaml
 format inspired by [cylc](https://cylc.github.io/) using
 [AiiDA](https://www.aiida.net/) as workflow engine.
 
