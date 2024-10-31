@@ -22,7 +22,7 @@ classifiers = [
   'Topic :: Scientific/Engineering',
   'Topic :: Scientific/Engineering :: Atmospheric Science',
 ]
-keywords = ["wc", "workflow"," icon", "aiida", "aiida-workgraph"]
+keywords = ["workflow"," icon", "aiida", "aiida-workgraph"]
 requires-python = '>=3.12'
 dependencies = [
   "isoduration",
