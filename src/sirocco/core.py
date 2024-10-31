@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from isoduration import parse_duration
 from isoduration.types import Duration
 
-from wcflow.parsing._utils import TimeUtils
+from sirocco.parsing._utils import TimeUtils
 
 if TYPE_CHECKING:
     from collections.abc import Generator
