@@ -31,6 +31,6 @@ jobs:
       env:
         HATCH_INDEX_AUTH: ${{ secrets.PYPI_API_TOKEN }} 
         HATCH_INDEX_USER: __token__
-      run:
+      run: |
         hatch build
         hatch publish -r test 
