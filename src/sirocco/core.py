@@ -101,7 +101,7 @@ class Data:
             date=date,
         )
 
-
+# TODO metaclass to generate stores of specific data type (avoid `Any`)
 class TimeSeries():
     """Dictionnary of objects accessed by date, checking start and end dates"""
 
@@ -178,22 +178,6 @@ class Store:
                 else:
                     raise KeyError(f"entry {name} is not a TimeSeries, cannot be accessed  must by date")
 
-    def add(self, key: str | tuple[str, datetime|None], value: Any) -> None:
-        if isinstance(key, tuple):
-            name, date = key
-        else:
-            name, date = key, None
-        if date is None:
-            if name in self._dict:
-                if isinstance(self._dict[name], TimeSeries):
-                    raise ValueError(f"TimeSeries object requires a date as key")
-                raise ValueError(f"{name} already set, cannot set twice")
-            self._dict[name] = value
-        else:
-            if name not in self._dict:
-                self._dict[name] = TimeSeries()
-            self._dict[name][date] = value
-
     def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator(Any):
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
@@ -240,12 +224,12 @@ class Workflow:
 
         self.tasks = Store()
         self.data = Store()
-        self.cycles = {}
+        self.cycles = Store()
 
         ind = '    '
         # 1 - create availalbe data nodes
         for data_config in workflow_config.data.available:
-            self.data.add(data_config.name, Data.from_config(data_config, date=None))
+            self.data[data_config.name] = Data.from_config(data_config, date=None)
 
         # 2 - create output data nodes
         for cycle_config in workflow_config.cycles:
@@ -254,7 +238,7 @@ class Workflow:
                     for data_ref in task_ref.outputs:
                         data_name = data_ref.name
                         data_config = workflow_config.data_dict[data_name]
-                        self.data.add((data_name, date), Data.from_config(data_config, date=date))
+                        self.data[data_name, date] = Data.from_config(data_config, date=date)
 
         # 3 - create cycles and tasks
         for cycle_config in workflow_config.cycles:
@@ -264,9 +248,9 @@ class Workflow:
                 for task_ref in cycle_config.tasks:
                     task_name = task_ref.name
                     task_config = workflow_config.task_dict[task_name]
-                    self.tasks.add((task_name, date), task := Task(task_config, task_ref, workflow=self, date=date))
+                    self.tasks[task_name, date] = (task := Task(task_config, task_ref, workflow=self, date=date))
                     cycle_tasks.append(task)
-                self.cycles[cycle_name] = Cycle(name=cycle_name, tasks=cycle_tasks, date=date)
+                self.cycles[cycle_name, date] = Cycle(name=cycle_name, tasks=cycle_tasks, date=date)
 
         # 4 - Link wait on tasks
         for task in self.tasks.values():
