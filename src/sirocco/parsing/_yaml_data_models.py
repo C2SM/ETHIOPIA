@@ -1,4 +1,5 @@
 from __future__ import annotations
+from collections.abc import Iterator
 
 import time
 from datetime import datetime
@@ -9,9 +10,6 @@ from typing import Any
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-
-from sirocco import core
-
 from ._utils import TimeUtils
 
 
@@ -77,14 +75,27 @@ class _LagDateBaseModel(BaseModel):
         values = value if isinstance(value, list) else [value]
         return [datetime.fromisoformat(value) for value in values]
 
+    def resolve_target_dates(self, ref_date: datetime | None) -> Iterator[datetime]:
+        if not self.lag and not self.date:
+            yield ref_date
+        if self.lag:
+            for l in self.lag:
+                yield ref_date + l
+        if self.date:
+            for d in self.date:
+                yield d
+
 
 class ConfigTask(_NamedBaseModel):
     """
     To create an instance of a task defined in a workflow file
     """
 
+    # TODO This list is too large. We should start with the set of supported
+    #      keywords and extend it as we support more
     command: str
     command_option: str | None = None
+    input_arg_options: dict[str, str] | None = None
     host: str | None = None
     account: str | None = None
     plugin: str | None = None
@@ -146,7 +157,9 @@ class ConfigGeneratedData(_DataBaseModel):
 
 
 class ConfigData(BaseModel):
-    available: list[ConfigAvailableData]
+    """To create the container of available and generated data"""
+
+    available: list[ConfigAvailableData] | None = None
     generated: list[ConfigGeneratedData]
 
 
@@ -155,6 +168,7 @@ class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
     To create an instance of a input or output in a task in a cycle defined in a workflow file.
     """
 
+    # TODO Move to "wait_on" keyword in yaml instead of "depend"
     name: str  # name of the task it depends on
     cycle_name: str | None = None
 
@@ -253,6 +267,16 @@ class ConfigCycle(_NamedBaseModel):
     def convert_duration(cls, value):
         return None if value is None else parse_duration(value)
 
+    @model_validator(mode="before")
+    @classmethod
+    def check_start_date_end_date_period_combination(cls, data: Any) -> Any:
+        if ("start_date" in data) ^ ("end_date" in data):
+            msg = f"in cycle {data['name']}: both start_date and end_date must be provided or none of them."
+            raise ValueError(msg)
+        if 'period' in data and 'start_date' not in data:
+            msg = f"in cycle {data['name']}: period provided without start and end dates."
+        return data
+
     @model_validator(mode="after")
     def check_start_date_before_end_date(self) -> ConfigCycle:
         if self.start_date is not None and self.end_date is not None and self.start_date > self.end_date:
@@ -267,77 +291,26 @@ class ConfigCycle(_NamedBaseModel):
             raise ValueError(msg)
         return self
 
+    def dates(self) -> Iterator[datetime]:
+        yield (date := self.start_date)
+        if self.period is not None:
+            while (date := date + self.period) < self.end_date:
+                yield date
+
 
 class ConfigWorkflow(BaseModel):
     name: str | None = None
-    start_date: datetime
-    end_date: datetime
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: ConfigData
     data_dict: dict = {}
     task_dict: dict = {}
 
-    @field_validator("start_date", "end_date", mode="before")
-    @classmethod
-    def convert_datetime(cls, value) -> None | datetime:
-        return None if value is None else datetime.fromisoformat(value)
-
     @model_validator(mode="after")
-    def check_start_date_before_end_date(self) -> ConfigWorkflow:
-        if self.start_date is not None and self.end_date is not None and self.start_date > self.end_date:
-            msg = "For workflow {self._name!r} the start_date {start_date!r} lies after given end_date {end_date!r}."
-            raise ValueError(msg)
-        return self
-
-    def to_core_workflow(self):
-        self.data_dict = {data.name: data for data in self.data.available} | {
-            data.name: data for data in self.data.generated
-        }
+    def build_internal_dicts(self) -> ConfigWorkflow:
+        self.data_dict = {data.name: data for data in self.data.available} | {data.name: data for data in self.data.generated}
         self.task_dict = {task.name: task for task in self.tasks}
-
-        core_cycles = [self._to_core_cycle(cycle) for cycle in self.cycles]
-        return core.Workflow(self.name, core_cycles)
-
-    def _to_core_cycle(self, cycle: ConfigCycle) -> core.Cycle:
-        core_tasks = [self._to_core_task(task) for task in cycle.tasks]
-        start_date = self.start_date if cycle.start_date is None else cycle.start_date
-        end_date = self.end_date if cycle.end_date is None else cycle.end_date
-        return core.Cycle(cycle.name, core_tasks, start_date, end_date, cycle.period)
-
-    def _to_core_task(self, cycle_task: ConfigCycleTask) -> core.Task:
-        inputs = []
-        outputs = []
-        dependencies = []
-
-        for input_ in cycle_task.inputs:
-            if (data := self.data_dict.get(input_.name)) is None:
-                msg = f"Task {cycle_task.name!r} has input {input_.name!r} that is not specied in the data section."
-                raise ValueError(msg)
-            core_data = core.Data(
-                input_.name, data.type, data.src, input_.lag, input_.date, input_.arg_option, available=data.available
-            )
-            inputs.append(core_data)
-
-        for output in cycle_task.outputs:
-            if (data := self.data_dict.get(output.name)) is None:
-                msg = f"Task {cycle_task.name!r} has output {output.name!r} that is not specied in the data section."
-                raise ValueError(msg)
-            core_data = core.Data(output.name, data.type, data.src, [], [], None, available=False)
-            outputs.append(core_data)
-
-        for depend in cycle_task.depends:
-            core_dependency = core.Dependency(depend.name, depend.lag, depend.date, depend.cycle_name)
-            dependencies.append(core_dependency)
-
-        return core.Task(
-            cycle_task.name,
-            self.task_dict[cycle_task.name].command,
-            inputs,
-            outputs,
-            dependencies,
-            self.task_dict[cycle_task.name].command_option,
-        )
+        return self
 
 
 def load_workflow_config(workflow_config: str) -> ConfigWorkflow:
