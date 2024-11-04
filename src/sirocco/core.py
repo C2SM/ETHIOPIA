@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING, TypeVar, Generic
 
 from datetime import datetime
 
@@ -17,11 +17,29 @@ from sirocco.parsing._yaml_data_models import (
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable, Iterator
-    type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
+type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
+TimeSeriesObject = TypeVar('TimeSeriesObject')
+
+light_red = '\x1b[91m'
+light_green = '\x1b[92m'
+light_blue = '\x1b[94m'
+bold = '\x1b[1m'
+reset = '\x1b[0m'
 
 
-class Task:
+class NodeStr:
+
+    def __str__(self):
+        ret_str = f"{self.color}{bold}{self.name}{reset}"
+        if self.date is not None:
+            ret_str += f" {self.color}[{self.date}]"
+        return ret_str + f"{reset}"
+
+
+class Task(NodeStr):
     """Internal representation of a task node"""
+
+    color: str = light_red
 
     name: str
     outputs: list[Data]
@@ -85,9 +103,10 @@ class Task:
 
 
 @dataclass(kw_only=True)
-class Data:
+class Data(NodeStr):
     """Internal representation of a data node"""
 
+    color: str = light_blue
     name: str
     type: str
     src: str
@@ -104,16 +123,26 @@ class Data:
             date=date,
         )
 
-# TODO metaclass to generate stores of specific data type (avoid `Any`)
-class TimeSeries():
+
+@dataclass(kw_only=True)
+class Cycle(NodeStr):
+    """Internal reprenstation of a cycle"""
+
+    color: str = light_green
+    name: str
+    tasks: list[Task]
+    date: datetime | None = None
+
+
+class TimeSeries(Generic[TimeSeriesObject]):
     """Dictionnary of objects accessed by date, checking start and end dates"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.start_date: datetime | None = None
         self.end_date: datetime | None = None
-        self._dict: dict[str: Any] = {}
+        self._dict: dict[str: TimeSeriesObject] = {}
 
-    def __setitem__(self, date: datetime, data: Any) -> None:
+    def __setitem__(self, date: datetime, data: TimeSeriesObject) -> None:
         if date in self._dict.keys():
             raise KeyError(f"date {date} already used, cannot set twice")
         self._dict[date] = data
@@ -125,10 +154,11 @@ class TimeSeries():
         elif date > self.end_date:
             self.end_date = date
 
-    def __getitem__(self, date: datetime) -> Any:
+    def __getitem__(self, date: datetime) -> TimeSeriesObject:
         if date < self.start_date or date > self.end_date:
             # TODO proper logging
-            print(f"WARNING: date {date} is out of bounds, ignoring.")
+            item = next(iter(self._dict.values()))
+            print(f"WARNING: date {date} for item {item.name} is out of bounds [{self.start_date} - {self.end_date}], ignoring.")
             return None
         if date not in self._dict:
             msg = f"date {date} not found"
@@ -137,13 +167,13 @@ class TimeSeries():
 
 
 # TODO metaclass to generate stores of specific data type (avoid `Any`)
-class Store:
+class Store(Generic[TimeSeriesObject]):
     """Container for TimeSeries or unique data"""
 
     def __init__(self):
-        self._dict: dict[str, TimeSeries | Any] = {}
+        self._dict: dict[str, TimeSeries | TimeSeriesObject] = {}
 
-    def __setitem__(self, key: str | tuple(str, datetime|None), value: Any) -> None:
+    def __setitem__(self, key: str | tuple(str, datetime|None), value: TimeSeriesObject) -> None:
         if isinstance(key, tuple):
             name, date = key
         else:
@@ -161,7 +191,7 @@ class Store:
                 self._dict[name] = TimeSeries()
                 self._dict[name][date] = value
 
-    def __getitem__(self, key: str | tuple(str, datetime|None)) -> Any:
+    def __getitem__(self, key: str | tuple(str, datetime|None)) -> TimeSeriesObject:
         if isinstance(key, tuple):
             name, date = key
         else:
@@ -178,7 +208,7 @@ class Store:
                 raise KeyError(f"entry {name} is not a TimeSeries, cannot be accessed by date")
             return self._dict[name]
 
-    def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator(Any):
+    def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator(TimeSeriesObject):
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None and spec.date is []:
@@ -199,25 +229,14 @@ class Store:
                 yield item
 
 
-@dataclass(kw_only=True)
-class Cycle:
-    """Internal reprenstation of a cycle"""
-
-    name: str
-    tasks: list[Task]
-    date: datetime | None = None
-
-
 class Workflow:
     """Internal reprensentation of a worflow"""
 
     def __init__(self, workflow_config: ConfigWorkflow) -> None:
-
         self.tasks = Store()
         self.data = Store()
         self.cycles = Store()
 
-        ind = '    '
         # 1 - create availalbe data nodes
         for data_config in workflow_config.data.available:
             self.data[data_config.name] = Data.from_config(data_config, date=None)
@@ -248,54 +267,35 @@ class Workflow:
             task.link_wait_on_tasks()
 
     def __str__(self):
-        light_red = '\x1b[91m'
-        light_green = '\x1b[92m'
-        light_blue = '\x1b[94m'
-        bold = '\x1b[1m'
-        reset = '\x1b[0m'
-
         ind = ''
         lines = []
         lines.append(f"{ind}cycles:")
         ind += '  '
         for cycle in self.cycles.values():
-            line = f"{ind}- {light_green}{bold}{cycle.name}{reset}"
-            if (date := cycle.date) is not None:
-                line += f" {light_green}[{date}]"
-            lines.append(line + f"{reset}:")
+            lines.append(f"{ind}- {cycle}:")
             ind += '    '
             lines.append(f"{ind}tasks:")
             ind += '  '
             for task in cycle.tasks:
-                line = f"{ind}- {light_red}{bold}{task.name}{reset}"
-                if (date := task.date) is not None:
-                    line += f" {light_red}[{date}]"
-                lines.append(line + f"{reset}:")
+                lines.append(f"{ind}- {task}:")
                 ind += '    '
-                lines.append(f"{ind}input:")
-                ind += '  '
-                for data in task.inputs:
-                    line = f"{ind}- {light_blue}{bold}{data.name}{reset}"
-                    if (date := data.date) is not None:
-                        line += f" {light_blue}[{date}]"
-                    lines.append(line + f"{reset}")
-                ind = ind[:-2]
-                lines.append(f"{ind}output:")
-                ind += '  '
-                for data in task.outputs:
-                    line = f"{ind}- {light_blue}{bold}{data.name}{reset}"
-                    if (date := data.date) is not None:
-                        line += f" {light_blue}[{date}]"
-                    lines.append(line + f"{reset}")
-                ind = ind[:-2]
+                if task.inputs:
+                    lines.append(f"{ind}input:")
+                    ind += '  '
+                    for data in task.inputs:
+                        lines.append(f"{ind}- {data}")
+                    ind = ind[:-2]
+                if task.outputs:
+                    lines.append(f"{ind}output:")
+                    ind += '  '
+                    for data in task.outputs:
+                        lines.append(f"{ind}- {data}")
+                    ind = ind[:-2]
                 if task.wait_on:
                     lines.append(f"{ind}wait on:")
                     ind += '  '
                     for task in task.wait_on:
-                        line = f"{ind}- {light_red}{bold}{task.name}{reset}"
-                        if (date := task.date) is not None:
-                            line += f" {light_red}[{date}]"
-                        lines.append(line + f"{reset}")
+                        lines.append(f"{ind}- {task}")
                     ind = ind[:-2]
                 ind = ind[:-4]
             ind = ind[:-4]
