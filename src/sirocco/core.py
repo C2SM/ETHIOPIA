@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, TYPE_CHECKING
+
 from datetime import datetime
 
 from sirocco.parsing._yaml_data_models import (
@@ -17,7 +18,7 @@ from sirocco.parsing._yaml_data_models import (
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable, Iterator
-    type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput | ConfigCycleTaskOutput
+    type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
 
 
 class Task:
@@ -104,14 +105,10 @@ class Data:
 class TimeSeries():
     """Dictionnary of objects accessed by date, checking start and end dates"""
 
-    # start_date: datetime | None = None
-    # end_date: datetime | None = None
-    # _dict: dict[datetime, Any] = {}
-
     def __init__(self):
-        self.start_date = None
-        self.end_date = None
-        self._dict = {}
+        self.start_date: datetime | None = None
+        self.end_date: datetime | None = None
+        self._dict: dict[str: Any] = {}
 
     def __setitem__(self, date: datetime, data: Any) -> None:
         if date in self._dict.keys():
@@ -141,7 +138,7 @@ class Store:
     """Container for TimeSeries or unique data"""
 
     def __init__(self):
-        self._dict: dict[str, Any] = {}
+        self._dict: dict[str, TimeSeries | Any] = {}
 
     def __setitem__(self, key: str | tuple(str, datetime|None), value: Any) -> None:
         if isinstance(key, tuple):
