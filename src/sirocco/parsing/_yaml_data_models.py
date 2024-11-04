@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
@@ -12,6 +14,7 @@ from typing import Any
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
 from ._utils import TimeUtils
 
 
