@@ -159,6 +159,9 @@ class Store:
                     self._dict[name][date] = value
                 else:
                     raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
+            else:
+                self._dict[name] = TimeSeries()
+                self._dict[name][date] = value
 
     def __getitem__(self, key: str | tuple(str, datetime|None)) -> Any:
         if isinstance(key, tuple):
