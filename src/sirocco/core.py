@@ -181,7 +181,7 @@ class Store:
     def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator(Any):
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
-            if ref_date is None:
+            if ref_date is None and spec.date is []:
                 raise ValueError("TimeSeries object must be referenced by dates")
             for target_date in spec.resolve_target_dates(ref_date):
                 yield self._dict[name][target_date]
