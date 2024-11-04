@@ -72,7 +72,7 @@ tasks:
       plugin: AiiDA Shell
       command: $PWD/examples/files/scripts/cleanup.sh
       input_arg_options:
-        grid_file:  '-g'
+        grid_file: '-g'
         extpar_file : '-p'
         ERA5: '-e'
       nodes: 4
