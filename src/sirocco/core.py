@@ -1,22 +1,21 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import Any, TYPE_CHECKING, TypeVar, Generic
 
+from dataclasses import dataclass
 from datetime import datetime
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from sirocco.parsing._yaml_data_models import (
-    _DataBaseModel,
-    ConfigCycleTaskDepend,
     ConfigCycleTask,
+    ConfigCycleTaskDepend,
     ConfigCycleTaskInput,
-    ConfigData,
     ConfigTask,
     ConfigWorkflow,
+    _DataBaseModel,
     load_workflow_config,
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Generator, Iterable, Iterator
+    from collections.abc import Iterator
 type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
 TimeSeriesObject = TypeVar('TimeSeriesObject')
 
@@ -183,12 +182,11 @@ class Store(Generic[TimeSeriesObject]):
             if date is None:
                 raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
             self._dict[name][date] = value
+        elif date is None:
+            self._dict[name] = value
         else:
-            if date is None:
-                self._dict[name] = value
-            else:
-                self._dict[name] = TimeSeries()
-                self._dict[name][date] = value
+            self._dict[name] = TimeSeries()
+            self._dict[name][date] = value
 
     def __getitem__(self, key: str | tuple(str, datetime|None)) -> TimeSeriesObject:
         if isinstance(key, tuple):

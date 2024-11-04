@@ -1,7 +1,8 @@
 import pytest
 
-from sirocco.parsing import load_workflow_config
 from sirocco.core import Workflow
+from sirocco.parsing import load_workflow_config
+
 
 @pytest.fixture
 def config_file_small():
