@@ -1,57 +1,39 @@
 ---
-start_date: 2026-01-01T00:00
-end_date: 2027-01-01T00:00
+start_date: &root_start_date '2025-01-01T00:00'
+end_date: &root_end_date '2027-01-01T00:00'
 cycles:
   - init:
       tasks:
         - extpar:
-            inputs:
-              - obs_data:
-                  arg_option: --input
+            inputs: [obs_data]
             outputs: [extpar_file]
   - icon_bimonthly:
+      start_date: *root_start_date
+      end_date: *root_end_date
       period: P2M
       tasks:
         - preproc:
-            inputs:
-              - grid_file:
-                  arg_option: -g
-              - extpar_file:
-                  date: 2026-01-01T00:00
-                  arg_option: -p
-              - ERA5:
-                  arg_option: -e
+            inputs: [grid_file, extpar_file, ERA5]
             outputs: [icon_input]
             depends:
               - icon:
                   lag: -P4M
         - icon:
             inputs:
-              - grid_file:
-                  arg_option: -g
-              - icon_input:
-                  arg_option: --input
-              #- icon_restart:
-              #    lag: '-P2M'
-            outputs:
-              - stream_1
-              - stream_2
-              #- icon_restart
+              - grid_file
+              - icon_input
+              - icon_restart:
+                  lag: '-P2M'
+            outputs: [stream_1, stream_2, icon_restart]
         - postproc_1:
-            inputs:
-              - stream_1:
-                  arg_option: --input
+            inputs: [stream_1]
             outputs: [postout_1]
         - store_and_clean_1:
-            inputs:
-              - postout_1:
-                  arg_option: --input
-              - stream_1:
-                  arg_option: --stream
-              - icon_input:
-                  arg_option: --icon_input
+            inputs: [postout_1, stream_1, icon_input]
             outputs: [stored_data_1]
   - yearly:
+      start_date: *root_start_date
+      end_date: *root_end_date
       period: P1Y
       tasks:
         - postproc_2:
@@ -63,7 +45,6 @@ cycles:
         - store_and_clean_2:
             inputs:
               - postout_2:
-                  arg_option: --input
               - stream_2:
                   lag: [P0M]
             outputs:
