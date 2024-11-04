@@ -9,7 +9,6 @@ from sirocco.parsing._yaml_data_models import (
     ConfigCycleTaskDepend,
     ConfigCycleTask,
     ConfigCycleTaskInput,
-    ConfigCycleTaskOutput,
     ConfigData,
     ConfigTask,
     ConfigWorkflow,
@@ -70,7 +69,9 @@ class Task:
         self.conda_env = config.conda_env
 
         for input_spec in task_ref.inputs:
-            self.inputs.append(data for data in workflow.data.get((input_spec, self.date)))
+            for data in workflow.data.get(input_spec, self.date):
+                if data is not None:
+                    self.inputs.append(data)
         for output_spec in task_ref.outputs:
             self.outputs.append(self.workflow.data[output_spec.name, self.date])
         # Store for actual linking in link_wait_on_tasks() once all tasks are created
@@ -78,7 +79,9 @@ class Task:
 
     def link_wait_on_tasks(self):
         for wait_on_spec in self._wait_on_specs:
-            self.wait_on.append(task for task in self.workflow.tasks.get((wait_on_spec, self.date)))
+            for task in self.workflow.tasks.get(wait_on_spec, self.date):
+                if task is not None:
+                    self.wait_on.append(task)
 
 
 @dataclass(kw_only=True)
@@ -145,17 +148,15 @@ class Store:
             name, date = key
         else:
             name, date = key, None
-        if date is None:
-            if name in self._dict:
+        if name in self._dict:
+            if not isinstance(self._dict[name], TimeSeries):
                 raise KeyError(f"single entry {name} already set")
-            else:
-                self._dict[name] = value
+            if date is None:
+                raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
+            self._dict[name][date] = value
         else:
-            if name in self._dict:
-                if isinstance(self._dict[name], TimeSeries):
-                    self._dict[name][date] = value
-                else:
-                    raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
+            if date is None:
+                self._dict[name] = value
             else:
                 self._dict[name] = TimeSeries()
                 self._dict[name][date] = value
@@ -165,39 +166,29 @@ class Store:
             name, date = key
         else:
             name, date = key, None
-        if date is None:
-            if name in self._dict:
-                if isinstance(self._dict[name], TimeSeries):
-                    raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
-                else:
-                    return self._dict[name]
+
+        if name not in self._dict:
+            raise KeyError(f"entry {name} not found in Store")
+        if isinstance(self._dict[name], TimeSeries):
+            if date is None:
+                raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
+            return self._dict[name][date]
         else:
-            if name in self._dict:
-                if isinstance(self._dict[name], TimeSeries):
-                    return self._dict[name][date]
-                else:
-                    raise KeyError(f"entry {name} is not a TimeSeries, cannot be accessed  must by date")
+            if date is not None:
+                raise KeyError(f"entry {name} is not a TimeSeries, cannot be accessed by date")
+            return self._dict[name]
 
     def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator(Any):
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None:
                 raise ValueError("TimeSeries object must be referenced by dates")
-            else:
-                for target_date in spec.resolve_target_dates(ref_date):
-                    yield self._dict[name][target_date]
+            for target_date in spec.resolve_target_dates(ref_date):
+                yield self._dict[name][target_date]
         else:
             if spec.lag or spec.date:
-                raise ValueError(f"item {name} is not a TimeSeries, cannot be referenced vis date or lag")
-            else:
-                yield self._dict[name]
-
-        if ref_date is None:
-            if isinstance(self._dict[name], TimeSeries):
-                raise ValueError(f"TimeSeries object requires a date as key")
-            return self._dict[name]
-        else:
-            return self._dict[name][date]
+                raise ValueError(f"item {name} is not a TimeSeries, cannot be referenced via date or lag")
+            yield self._dict[name]
 
     def values(self) -> Iterator[Any]:
         for item in self._dict.values():
@@ -255,6 +246,62 @@ class Workflow:
         # 4 - Link wait on tasks
         for task in self.tasks.values():
             task.link_wait_on_tasks()
+
+    def __str__(self):
+        light_red = '\x1b[91m'
+        light_green = '\x1b[92m'
+        light_blue = '\x1b[94m'
+        bold = '\x1b[1m'
+        reset = '\x1b[0m'
+
+        ind = ''
+        lines = []
+        lines.append(f"{ind}cycles:")
+        ind += '  '
+        for cycle in self.cycles.values():
+            line = f"{ind}- {light_green}{bold}{cycle.name}{reset}"
+            if (date := cycle.date) is not None:
+                line += f" {light_green}[{date}]"
+            lines.append(line + f"{reset}:")
+            ind += '    '
+            lines.append(f"{ind}tasks:")
+            ind += '  '
+            for task in cycle.tasks:
+                line = f"{ind}- {light_red}{bold}{task.name}{reset}"
+                if (date := task.date) is not None:
+                    line += f" {light_red}[{date}]"
+                lines.append(line + f"{reset}:")
+                ind += '    '
+                lines.append(f"{ind}input:")
+                ind += '  '
+                for data in task.inputs:
+                    line = f"{ind}- {light_blue}{bold}{data.name}{reset}"
+                    if (date := data.date) is not None:
+                        line += f" {light_blue}[{date}]"
+                    lines.append(line + f"{reset}")
+                ind = ind[:-2]
+                lines.append(f"{ind}output:")
+                ind += '  '
+                for data in task.outputs:
+                    line = f"{ind}- {light_blue}{bold}{data.name}{reset}"
+                    if (date := data.date) is not None:
+                        line += f" {light_blue}[{date}]"
+                    lines.append(line + f"{reset}")
+                ind = ind[:-2]
+                if task.wait_on:
+                    lines.append(f"{ind}wait on:")
+                    ind += '  '
+                    for task in task.wait_on:
+                        line = f"{ind}- {light_red}{bold}{task.name}{reset}"
+                        if (date := task.date) is not None:
+                            line += f" {light_red}[{date}]"
+                        lines.append(line + f"{reset}")
+                    ind = ind[:-2]
+                ind = ind[:-4]
+            ind = ind[:-4]
+            ind = ind[:-2]
+        ind = ind[:-2]
+        return '\n'.join(lines)
 
     @classmethod
     def from_yaml(cls, config_path: str):
