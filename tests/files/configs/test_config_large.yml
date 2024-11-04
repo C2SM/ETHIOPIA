@@ -39,14 +39,14 @@ cycles:
         - postproc_2:
             inputs:
               - stream_2:
-                  lag: [P0M]
+                  lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
                   arg_option: --input
             outputs: [postout_2]
         - store_and_clean_2:
             inputs:
-              - postout_2:
+              - postout_2
               - stream_2:
-                  lag: [P0M]
+                  lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
             outputs:
               - stored_data_2
 # Each task and piece of data (input and output of tasks) used to
@@ -59,7 +59,9 @@ tasks:
   - extpar:
       plugin: extpar
       command: $PWD/examples/files/scripts/extpar
-      command_option: --verbose  # todo implement support
+      command_option: '--verbose'  # todo implement support
+      input_arg_options:
+        obs_data: '--input'
       config: path/to/namelists/dir
       uenv:
         squashfs: path/to/squashfs
@@ -69,6 +71,10 @@ tasks:
   - preproc:
       plugin: AiiDA Shell
       command: $PWD/examples/files/scripts/cleanup.sh
+      input_arg_options:
+        grid_file:  '-g'
+        extpar_file : '-p'
+        ERA5: '-e'
       nodes: 4
       walltime: 00:02:00
       config: path/to/config/dir
@@ -78,6 +84,9 @@ tasks:
   - icon:
       plugin: icon
       command: $PWD/examples/files/scripts/icon
+      input_arg_options:
+        grid_file: '-g'
+        icon_input: '--input'
       nodes: 40
       walltime: 23:59:59
       config: path/to/namelists/dir
@@ -87,6 +96,8 @@ tasks:
   - postproc_1:
       plugin: AiiDA Shell
       command: $PWD/examples/files/scripts/main_script_ocn.sh
+      input_arg_options:
+        stream_1: '--input'
       nodes: 2
       walltime: 00:05:00
       conda_env: path/to/yaml/env/file
@@ -96,6 +107,8 @@ tasks:
   - postproc_2:
       plugin: AiiDA Shell
       command: $PWD/examples/files/scripts/main_script_atm.sh
+      input_arg_options:
+        stream_2: '--input'
       nodes: 2
       walltime: 00:05:00
       src: path/to/src/dir
@@ -106,11 +119,17 @@ tasks:
   - store_and_clean_1:
       plugin: AiiDA Shell
       command: $PWD/examples/files/scripts/post_clean.sh
+      input_arg_options:
+        postout_1: '--input'
+        stream_1: '--stream'
+        icon_input: '--icon_input'
       nodes: 1
       walltime: 00:01:00
   - store_and_clean_2:
       plugin: AiiDA Shell
       command: $PWD/examples/files/scripts/post_clean.sh
+      input_arg_options:
+        postout_2: '--input'
       nodes: 1
       walltime: 00:01:00
 data:
