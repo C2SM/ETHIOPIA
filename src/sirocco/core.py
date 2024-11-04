@@ -166,7 +166,6 @@ class TimeSeries(Generic[TimeSeriesObject]):
         return self._dict[date]
 
 
-# TODO metaclass to generate stores of specific data type (avoid `Any`)
 class Store(Generic[TimeSeriesObject]):
     """Container for TimeSeries or unique data"""
 
