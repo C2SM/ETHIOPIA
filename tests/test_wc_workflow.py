@@ -15,4 +15,4 @@ def config_file_small():
 def test_parse_config_file(config_file):
     config_workflow = load_workflow_config(config_file)
     core_workflow = Workflow(config_workflow)
-    # TODO add test to compare str(core_workflow) against "tests/files/configs/test_config_xxx.txt"
+    # TODO: add test to compare str(core_workflow) against "tests/files/configs/test_config_xxx.txt"

@@ -84,11 +84,10 @@ class _LagDateBaseModel(BaseModel):
         if not self.lag and not self.date:
             yield ref_date
         if self.lag:
-            for l in self.lag:
-                yield ref_date + l
+            for lag in self.lag:
+                yield ref_date + lag
         if self.date:
-            for d in self.date:
-                yield d
+            yield from self.date
 
 
 class ConfigTask(_NamedBaseModel):
@@ -96,8 +95,8 @@ class ConfigTask(_NamedBaseModel):
     To create an instance of a task defined in a workflow file
     """
 
-    # TODO This list is too large. We should start with the set of supported
-    #      keywords and extend it as we support more
+    # TODO: This list is too large. We should start with the set of supported
+    #       keywords and extend it as we support more
     command: str
     command_option: str | None = None
     input_arg_options: dict[str, str] | None = None
@@ -173,7 +172,7 @@ class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
     To create an instance of a input or output in a task in a cycle defined in a workflow file.
     """
 
-    # TODO Move to "wait_on" keyword in yaml instead of "depend"
+    # TODO: Move to "wait_on" keyword in yaml instead of "depend"
     name: str  # name of the task it depends on
     cycle_name: str | None = None
 

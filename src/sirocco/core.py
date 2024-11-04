@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
-from typing import TYPE_CHECKING, Any, Generic, TypeVar
+from typing import TYPE_CHECKING, Generic, TypeVar
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
@@ -16,6 +15,8 @@ from sirocco.parsing._yaml_data_models import (
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
+    from datetime import datetime
+
 type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
 TimeSeriesObject = TypeVar('TimeSeriesObject')
 
@@ -45,8 +46,8 @@ class Task(NodeStr):
     inputs: list[Data]
     wait_on: list[Task]
     date: datetime | None = None
-    # TODO This list is too long. We should start with the set of supported
-    #      keywords and extend it as we support more
+    # TODO: This list is too long. We should start with the set of supported
+    #       keywords and extend it as we support more
     command: str | None = None
     command_option: str | None = None
     input_arg_options: dict[str, str] | None = None
@@ -113,7 +114,7 @@ class Data(NodeStr):
     date: datetime | None = None
 
     @classmethod
-    def from_config(cls, config: _DataBaseModel, *, date: datetime = None):
+    def from_config(cls, config: _DataBaseModel, *, date: datetime | None = None):
         return cls(
             name=config.name,
             type=config.type,
@@ -142,8 +143,9 @@ class TimeSeries(Generic[TimeSeriesObject]):
         self._dict: dict[str: TimeSeriesObject] = {}
 
     def __setitem__(self, date: datetime, data: TimeSeriesObject) -> None:
-        if date in self._dict.keys():
-            raise KeyError(f"date {date} already used, cannot set twice")
+        if date in self._dict:
+            msg = f"date {date} already used, cannot set twice"
+            raise KeyError(msg)
         self._dict[date] = data
         if self.start_date is None:
             self.start_date = date
@@ -155,7 +157,7 @@ class TimeSeries(Generic[TimeSeriesObject]):
 
     def __getitem__(self, date: datetime) -> TimeSeriesObject:
         if date < self.start_date or date > self.end_date:
-            # TODO proper logging
+            # TODO: add proper logging for warnings, info, etc
             item = next(iter(self._dict.values()))
             print(f"WARNING: date {date} for item {item.name} is out of bounds [{self.start_date} - {self.end_date}], ignoring.")
             return None
@@ -163,6 +165,9 @@ class TimeSeries(Generic[TimeSeriesObject]):
             msg = f"date {date} not found"
             raise KeyError(msg)
         return self._dict[date]
+
+    def values(self) -> Iterator[TimeSeriesObject]:
+        yield from self._dict.values()
 
 
 class Store(Generic[TimeSeriesObject]):
@@ -178,9 +183,11 @@ class Store(Generic[TimeSeriesObject]):
             name, date = key, None
         if name in self._dict:
             if not isinstance(self._dict[name], TimeSeries):
-                raise KeyError(f"single entry {name} already set")
+                msg = f"single entry {name} already set"
+                raise KeyError(msg)
             if date is None:
-                raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
+                msg = f"entry {name} is a TimeSeries, must be accessed by date"
+                raise KeyError(msg)
             self._dict[name][date] = value
         elif date is None:
             self._dict[name] = value
@@ -195,33 +202,36 @@ class Store(Generic[TimeSeriesObject]):
             name, date = key, None
 
         if name not in self._dict:
-            raise KeyError(f"entry {name} not found in Store")
+            msg = f"entry {name} not found in Store"
+            raise KeyError(msg)
         if isinstance(self._dict[name], TimeSeries):
             if date is None:
-                raise KeyError(f"entry {name} is a TimeSeries, must be accessed by date")
+                msg = f"entry {name} is a TimeSeries, must be accessed by date"
+                raise KeyError(msg)
             return self._dict[name][date]
-        else:
-            if date is not None:
-                raise KeyError(f"entry {name} is not a TimeSeries, cannot be accessed by date")
-            return self._dict[name]
+        if date is not None:
+            msg = f"entry {name} is not a TimeSeries, cannot be accessed by date"
+            raise KeyError(msg)
+        return self._dict[name]
 
-    def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator(TimeSeriesObject):
+    def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator[TimeSeriesObject]:
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None and spec.date is []:
-                raise ValueError("TimeSeries object must be referenced by dates")
+                msg = "TimeSeries object must be referenced by dates"
+                raise ValueError(msg)
             for target_date in spec.resolve_target_dates(ref_date):
                 yield self._dict[name][target_date]
         else:
             if spec.lag or spec.date:
-                raise ValueError(f"item {name} is not a TimeSeries, cannot be referenced via date or lag")
+                msg = f"item {name} is not a TimeSeries, cannot be referenced via date or lag"
+                raise ValueError(msg)
             yield self._dict[name]
 
-    def values(self) -> Iterator[Any]:
+    def values(self) -> Iterator[TimeSeriesObject]:
         for item in self._dict.values():
             if isinstance(item, TimeSeries):
-                for subitem in item._dict.values():
-                    yield subitem
+                yield from item.values()
             else:
                 yield item
 
@@ -279,20 +289,17 @@ class Workflow:
                 if task.inputs:
                     lines.append(f"{ind}input:")
                     ind += '  '
-                    for data in task.inputs:
-                        lines.append(f"{ind}- {data}")
+                    lines.extend(f"{ind}- {data}" for data in task.inputs)
                     ind = ind[:-2]
                 if task.outputs:
                     lines.append(f"{ind}output:")
                     ind += '  '
-                    for data in task.outputs:
-                        lines.append(f"{ind}- {data}")
+                    lines.extend(f"{ind}- {data}" for data in task.outputs)
                     ind = ind[:-2]
                 if task.wait_on:
                     lines.append(f"{ind}wait on:")
                     ind += '  '
-                    for task in task.wait_on:
-                        lines.append(f"{ind}- {task}")
+                    lines.extend(f"{ind}- {wait_task}" for wait_task in task.wait_on)
                     ind = ind[:-2]
                 ind = ind[:-4]
             ind = ind[:-4]
