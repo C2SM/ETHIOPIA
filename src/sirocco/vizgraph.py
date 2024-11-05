@@ -22,7 +22,7 @@ class VizGraph:
     io_edge_kw = edge_base_kw
     wait_on_edge_kw = edge_base_kw | {'style': 'dashed'}
 
-    def __init__(self, name:str, cycles: Store, tasks: Store, data: Store) -> None:
+    def __init__(self, name:str, cycles: Store, data: Store) -> None:
 
         self.name = name
         self.agraph = AGraph(name=name, fontname='Fira Sans', newrank=True)
@@ -85,7 +85,7 @@ class VizGraph:
         svg.write(file_path)
 
     @classmethod
-    def from_core_workflow(cls, workflow: WorkFlow):
+    def from_core_workflow(cls, workflow: Workflow):
         return cls(workflow.name, workflow.cycles, workflow.tasks, workflow.data)
 
     @classmethod
