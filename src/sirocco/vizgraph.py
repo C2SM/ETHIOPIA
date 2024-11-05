@@ -1,13 +1,13 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import TYPE_CHECKING
+
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from lxml import etree
 from pygraphviz import AGraph
 
 if TYPE_CHECKING:
-    from sirocco.core import Store, Task, Data
+    from sirocco.core import Store
 from sirocco.core import Workflow
 
 
