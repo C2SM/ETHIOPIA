@@ -17,7 +17,8 @@ class VizGraph:
     node_base_kw = {'style': 'filled', 'fontname': 'Fira Sans', 'fontsize': 14, 'penwidth': 2}
     edge_base_kw = {'color': '#77767B', 'penwidth': 1.5}
     task_node_kw = node_base_kw | {'shape': 'box', 'fillcolor': '#ffd8dc', 'fontcolor': '#330005', 'color': '#4F161D'}
-    data_node_kw = node_base_kw | {'shape': 'ellipse', 'fillcolor': '#d8e9ff', 'fontcolor': '#001633', 'color': '#001633'}
+    data_gen_node_kw = node_base_kw | {'shape': 'ellipse', 'fillcolor': '#d8e9ff', 'fontcolor': '#001633', 'color': '#001633'}
+    data_av_node_kw = node_base_kw | {'shape': 'ellipse', 'fillcolor': '#c5e5c3', 'fontcolor': '#001633', 'color': '#2d3d2c'}
     cluster_kw = {'bgcolor': '#F6F5F4', 'color': None, 'fontsize': 16}
     io_edge_kw = edge_base_kw
     wait_on_edge_kw = edge_base_kw | {'style': 'dashed'}
@@ -27,7 +28,11 @@ class VizGraph:
         self.name = name
         self.agraph = AGraph(name=name, fontname='Fira Sans', newrank=True)
         for data_node in data.values():
-            self.agraph.add_node(data_node, label=data_node.name, **self.data_node_kw)
+            if data_node.available:
+                gv_kw = self.data_av_node_kw
+            else:
+                gv_kw = self.data_gen_node_kw
+            self.agraph.add_node(data_node, label=data_node.name, **gv_kw)
 
         k = 1
         for cycle in cycles.values():
@@ -86,7 +91,7 @@ class VizGraph:
 
     @classmethod
     def from_core_workflow(cls, workflow: Workflow):
-        return cls(workflow.name, workflow.cycles, workflow.tasks, workflow.data)
+        return cls(workflow.name, workflow.cycles, workflow.data)
 
     @classmethod
     def from_yaml(cls, config_path: str):
