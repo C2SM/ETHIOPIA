@@ -1,3 +1,4 @@
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -28,7 +29,9 @@ dependencies = [
   "isoduration",
   "pydantic",
   "pydantic-yaml",
-  "aiida-core>=2.5"
+  "aiida-core>=2.5",
+  "pygraphviz",
+  "lxml"
 ]
 [project.urls]
 Repository = "https://github.com/C2SM/Sirocco.git"

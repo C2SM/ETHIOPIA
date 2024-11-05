@@ -35,11 +35,17 @@ reset = "\x1b[0m"
 class NodeStr:
     color: str
 
-    def __str__(self):
+    def colstr(self):
         ret_str = f"{self.color}{bold}{self.name}{reset}"
         if self.date is not None:
             ret_str += f" {self.color}[{self.date}]"
         return ret_str + f"{reset}"
+
+    def __str__(self):
+        ret_str = f"{self.name}"
+        if self.date is not None:
+            ret_str += f"_{self.date}"
+        return ret_str
 
 
 class Task(NodeStr):
@@ -244,6 +250,7 @@ class Workflow:
     """Internal reprensentation of a worflow"""
 
     def __init__(self, workflow_config: ConfigWorkflow) -> None:
+        self.name = workflow_config.name
         self.tasks = Store()
         self.data = Store()
         self.cycles = Store()
@@ -283,27 +290,27 @@ class Workflow:
         lines.append(f"{ind}cycles:")
         ind += "  "
         for cycle in self.cycles.values():
-            lines.append(f"{ind}- {cycle}:")
+            lines.append(f"{ind}- {cycle.colstr()}:")
             ind += "    "
             lines.append(f"{ind}tasks:")
             ind += "  "
             for task in cycle.tasks:
-                lines.append(f"{ind}- {task}:")
+                lines.append(f"{ind}- {task.colstr()}:")
                 ind += "    "
                 if task.inputs:
                     lines.append(f"{ind}input:")
                     ind += "  "
-                    lines.extend(f"{ind}- {data}" for data in task.inputs)
+                    lines.extend(f"{ind}- {data.colstr()}" for data in task.inputs)
                     ind = ind[:-2]
                 if task.outputs:
                     lines.append(f"{ind}output:")
                     ind += "  "
-                    lines.extend(f"{ind}- {data}" for data in task.outputs)
+                    lines.extend(f"{ind}- {data.colstr()}" for data in task.outputs)
                     ind = ind[:-2]
                 if task.wait_on:
                     lines.append(f"{ind}wait on:")
                     ind += "  "
-                    lines.extend(f"{ind}- {wait_task}" for wait_task in task.wait_on)
+                    lines.extend(f"{ind}- {wait_task.colstr()}" for wait_task in task.wait_on)
                     ind = ind[:-2]
                 ind = ind[:-4]
             ind = ind[:-4]
