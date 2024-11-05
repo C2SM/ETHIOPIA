@@ -1,8 +1,6 @@
 from __future__ import annotations
-import logging
-logging.basicConfig()
-logger = logging.getLogger(__name__)
 
+import logging
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Generic, TypeVar
 
@@ -20,18 +18,21 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
     from datetime import datetime
 
-type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
-TimeSeriesObject = TypeVar('TimeSeriesObject')
 
-light_red = '\x1b[91m'
-light_green = '\x1b[92m'
-light_blue = '\x1b[94m'
-bold = '\x1b[1m'
-reset = '\x1b[0m'
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+
+type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
+TimeSeriesObject = TypeVar("TimeSeriesObject")
+
+light_red = "\x1b[91m"
+light_green = "\x1b[92m"
+light_blue = "\x1b[94m"
+bold = "\x1b[1m"
+reset = "\x1b[0m"
 
 
 class NodeStr:
-
     color: str
 
     def __str__(self):
@@ -66,11 +67,7 @@ class Task(NodeStr):
     src: str | None = None
     conda_env: str | None = None
 
-    def __init__(self,
-                 config: ConfigTask,
-                 task_ref: ConfigCycleTask,
-                 workflow: Workflow,
-                 date: datetime | None = None):
+    def __init__(self, config: ConfigTask, task_ref: ConfigCycleTask, workflow: Workflow, date: datetime | None = None):
         self.name = config.name
         self.date = date
         self.inputs = []
@@ -145,7 +142,7 @@ class TimeSeries(Generic[TimeSeriesObject]):
     def __init__(self) -> None:
         self.start_date: datetime | None = None
         self.end_date: datetime | None = None
-        self._dict: dict[str: TimeSeriesObject] = {}
+        self._dict: dict[str:TimeSeriesObject] = {}
 
     def __setitem__(self, date: datetime, data: TimeSeriesObject) -> None:
         if date in self._dict:
@@ -163,7 +160,10 @@ class TimeSeries(Generic[TimeSeriesObject]):
     def __getitem__(self, date: datetime) -> TimeSeriesObject:
         if date < self.start_date or date > self.end_date:
             item = next(iter(self._dict.values()))
-            logger.warning(f"date {date} for item '{item.name}' is out of bounds [{self.start_date} - {self.end_date}], ignoring.")
+            msg = (
+                f"date {date} for item '{item.name}' is out of bounds [{self.start_date} - {self.end_date}], ignoring."
+            )
+            logger.warning(msg)
             return None
         if date not in self._dict:
             msg = f"date {date} not found"
@@ -180,7 +180,7 @@ class Store(Generic[TimeSeriesObject]):
     def __init__(self):
         self._dict: dict[str, TimeSeries | TimeSeriesObject] = {}
 
-    def __setitem__(self, key: str | tuple(str, datetime|None), value: TimeSeriesObject) -> None:
+    def __setitem__(self, key: str | tuple(str, datetime | None), value: TimeSeriesObject) -> None:
         if isinstance(key, tuple):
             name, date = key
         else:
@@ -199,7 +199,7 @@ class Store(Generic[TimeSeriesObject]):
             self._dict[name] = TimeSeries()
             self._dict[name][date] = value
 
-    def __getitem__(self, key: str | tuple(str, datetime|None)) -> TimeSeriesObject:
+    def __getitem__(self, key: str | tuple(str, datetime | None)) -> TimeSeriesObject:
         if isinstance(key, tuple):
             name, date = key
         else:
@@ -218,7 +218,7 @@ class Store(Generic[TimeSeriesObject]):
             raise KeyError(msg)
         return self._dict[name]
 
-    def get(self, spec: ConfigCycleSpec, ref_date: datetime|None = None) -> Iterator[TimeSeriesObject]:
+    def get(self, spec: ConfigCycleSpec, ref_date: datetime | None = None) -> Iterator[TimeSeriesObject]:
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None and spec.date is []:
@@ -278,38 +278,38 @@ class Workflow:
             task.link_wait_on_tasks()
 
     def __str__(self):
-        ind = ''
+        ind = ""
         lines = []
         lines.append(f"{ind}cycles:")
-        ind += '  '
+        ind += "  "
         for cycle in self.cycles.values():
             lines.append(f"{ind}- {cycle}:")
-            ind += '    '
+            ind += "    "
             lines.append(f"{ind}tasks:")
-            ind += '  '
+            ind += "  "
             for task in cycle.tasks:
                 lines.append(f"{ind}- {task}:")
-                ind += '    '
+                ind += "    "
                 if task.inputs:
                     lines.append(f"{ind}input:")
-                    ind += '  '
+                    ind += "  "
                     lines.extend(f"{ind}- {data}" for data in task.inputs)
                     ind = ind[:-2]
                 if task.outputs:
                     lines.append(f"{ind}output:")
-                    ind += '  '
+                    ind += "  "
                     lines.extend(f"{ind}- {data}" for data in task.outputs)
                     ind = ind[:-2]
                 if task.wait_on:
                     lines.append(f"{ind}wait on:")
-                    ind += '  '
+                    ind += "  "
                     lines.extend(f"{ind}- {wait_task}" for wait_task in task.wait_on)
                     ind = ind[:-2]
                 ind = ind[:-4]
             ind = ind[:-4]
             ind = ind[:-2]
         ind = ind[:-2]
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     @classmethod
     def from_yaml(cls, config_path: str):
