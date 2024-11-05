@@ -277,7 +277,7 @@ class ConfigCycle(_NamedBaseModel):
         if ("start_date" in data) ^ ("end_date" in data):
             msg = f"in cycle {data['name']}: both start_date and end_date must be provided or none of them."
             raise ValueError(msg)
-        if 'period' in data and 'start_date' not in data:
+        if "period" in data and "start_date" not in data:
             msg = f"in cycle {data['name']}: period provided without start and end dates."
         return data
 
@@ -312,7 +312,9 @@ class ConfigWorkflow(BaseModel):
 
     @model_validator(mode="after")
     def build_internal_dicts(self) -> ConfigWorkflow:
-        self.data_dict = {data.name: data for data in self.data.available} | {data.name: data for data in self.data.generated}
+        self.data_dict = {data.name: data for data in self.data.available} | {
+            data.name: data for data in self.data.generated
+        }
         self.task_dict = {task.name: task for task in self.tasks}
         return self
 
