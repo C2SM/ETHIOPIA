@@ -1,4 +1,7 @@
 from __future__ import annotations
+import logging
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Generic, TypeVar
@@ -28,6 +31,8 @@ reset = '\x1b[0m'
 
 
 class NodeStr:
+
+    color: str
 
     def __str__(self):
         ret_str = f"{self.color}{bold}{self.name}{reset}"
@@ -157,9 +162,8 @@ class TimeSeries(Generic[TimeSeriesObject]):
 
     def __getitem__(self, date: datetime) -> TimeSeriesObject:
         if date < self.start_date or date > self.end_date:
-            # TODO: add proper logging for warnings, info, etc
             item = next(iter(self._dict.values()))
-            print(f"WARNING: date {date} for item {item.name} is out of bounds [{self.start_date} - {self.end_date}], ignoring.")
+            logger.warning(f"date {date} for item '{item.name}' is out of bounds [{self.start_date} - {self.end_date}], ignoring.")
             return None
         if date not in self._dict:
             msg = f"date {date} not found"
