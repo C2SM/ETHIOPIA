@@ -1,28 +1,28 @@
 cycles:
-  - [92m[1mbimonthly_tasks[0m [92m[2026-01-01 00:00:00][0m:
+  - bimonthly_tasks [2026-01-01 00:00:00]:
       tasks:
-        - [91m[1micon[0m [91m[2026-01-01 00:00:00][0m:
+        - icon [2026-01-01 00:00:00]:
             output:
-              - [94m[1micon_output[0m [94m[2026-01-01 00:00:00][0m
-              - [94m[1micon_restart[0m [94m[2026-01-01 00:00:00][0m
-  - [92m[1mbimonthly_tasks[0m [92m[2026-03-01 00:00:00][0m:
+              - icon_output [2026-01-01 00:00:00]
+              - icon_restart [2026-01-01 00:00:00]
+  - bimonthly_tasks [2026-03-01 00:00:00]:
       tasks:
-        - [91m[1micon[0m [91m[2026-03-01 00:00:00][0m:
+        - icon [2026-03-01 00:00:00]:
             input:
-              - [94m[1micon_restart[0m [94m[2026-01-01 00:00:00][0m
+              - icon_restart [2026-01-01 00:00:00]
             output:
-              - [94m[1micon_output[0m [94m[2026-03-01 00:00:00][0m
-              - [94m[1micon_restart[0m [94m[2026-03-01 00:00:00][0m
-  - [92m[1mbimonthly_tasks[0m [92m[2026-05-01 00:00:00][0m:
+              - icon_output [2026-03-01 00:00:00]
+              - icon_restart [2026-03-01 00:00:00]
+  - bimonthly_tasks [2026-05-01 00:00:00]:
       tasks:
-        - [91m[1micon[0m [91m[2026-05-01 00:00:00][0m:
+        - icon [2026-05-01 00:00:00]:
             input:
-              - [94m[1micon_restart[0m [94m[2026-03-01 00:00:00][0m
+              - icon_restart [2026-03-01 00:00:00]
             output:
-              - [94m[1micon_output[0m [94m[2026-05-01 00:00:00][0m
-              - [94m[1micon_restart[0m [94m[2026-05-01 00:00:00][0m
-  - [92m[1mlastly[0m[0m:
+              - icon_output [2026-05-01 00:00:00]
+              - icon_restart [2026-05-01 00:00:00]
+  - lastly:
       tasks:
-        - [91m[1mcleanup[0m[0m:
+        - cleanup:
             wait on:
-              - [91m[1micon[0m [91m[2026-05-01 00:00:00][0m
+              - icon [2026-05-01 00:00:00]
