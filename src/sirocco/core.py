@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Generic, Literal, TypeVar
+
+from termcolor import colored
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
@@ -25,27 +27,26 @@ logger = logging.getLogger(__name__)
 type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
 TimeSeriesObject = TypeVar("TimeSeriesObject")
 
-light_red = "\x1b[91m"
-light_green = "\x1b[92m"
-light_blue = "\x1b[94m"
-bold = "\x1b[1m"
-reset = "\x1b[0m"
-
 
 class NodeStr:
     color: str
 
-    def __str__(self):
-        ret_str = f"{self.color}{bold}{self.name}{reset}"
+    def _str_pretty_(self) -> str:
+        repr_str = colored(self.name, self.color, attrs=["bold"])
         if self.date is not None:
-            ret_str += f" {self.color}[{self.date}]"
-        return ret_str + f"{reset}"
+            repr_str += colored(f" [{self.date}]", self.color)
+        return repr_str
+
+    def __str__(self) -> str:
+        if self.date is None:
+            return self.name
+        return f"{self.name} [{self.date}]"
 
 
 class Task(NodeStr):
     """Internal representation of a task node"""
 
-    color: str = light_red
+    color: str = "light_red"
 
     name: str
     outputs: list[Data]
@@ -108,7 +109,7 @@ class Task(NodeStr):
 class Data(NodeStr):
     """Internal representation of a data node"""
 
-    color: str = light_blue
+    color: str = "light_blue"
     name: str
     type: str
     src: str
@@ -130,7 +131,7 @@ class Data(NodeStr):
 class Cycle(NodeStr):
     """Internal reprenstation of a cycle"""
 
-    color: str = light_green
+    color: str = "light_green"
     name: str
     tasks: list[Task]
     date: datetime | None = None
@@ -277,39 +278,49 @@ class Workflow:
         for task in self.tasks.values():
             task.link_wait_on_tasks()
 
-    def __str__(self):
+    def _str_from_method(self, method_name: Literal["__str__", "_str_pretty_"]) -> str:
+        str_method = getattr(NodeStr, method_name)
         ind = ""
         lines = []
         lines.append(f"{ind}cycles:")
         ind += "  "
         for cycle in self.cycles.values():
-            lines.append(f"{ind}- {cycle}:")
+            lines.append(f"{ind}- {str_method(cycle)}:")
             ind += "    "
             lines.append(f"{ind}tasks:")
             ind += "  "
             for task in cycle.tasks:
-                lines.append(f"{ind}- {task}:")
+                lines.append(f"{ind}- {str_method(task)}:")
                 ind += "    "
                 if task.inputs:
                     lines.append(f"{ind}input:")
                     ind += "  "
-                    lines.extend(f"{ind}- {data}" for data in task.inputs)
+                    lines.extend(f"{ind}- {str_method(data)}" for data in task.inputs)
                     ind = ind[:-2]
                 if task.outputs:
                     lines.append(f"{ind}output:")
                     ind += "  "
-                    lines.extend(f"{ind}- {data}" for data in task.outputs)
+                    lines.extend(f"{ind}- {str_method(data)}" for data in task.outputs)
                     ind = ind[:-2]
                 if task.wait_on:
                     lines.append(f"{ind}wait on:")
                     ind += "  "
-                    lines.extend(f"{ind}- {wait_task}" for wait_task in task.wait_on)
+                    lines.extend(f"{ind}- {str_method(wait_task)}" for wait_task in task.wait_on)
                     ind = ind[:-2]
                 ind = ind[:-4]
             ind = ind[:-4]
             ind = ind[:-2]
         ind = ind[:-2]
         return "\n".join(lines)
+
+    def __str__(self):
+        return self._str_from_method("__str__")
+
+    def _str_pretty_(self):
+        return self._str_from_method("_str_pretty_")
+
+    def _repr_pretty_(self, p, cycle):
+        p.text(self._str_pretty_() if not cycle else "...")
 
     @classmethod
     def from_yaml(cls, config_path: str):
