@@ -286,12 +286,6 @@ class ConfigCycle(_NamedBaseModel):
             raise ValueError(msg)
         return self
 
-    def dates(self) -> Iterator[datetime]:
-        yield (date := self.start_date)
-        if self.period is not None:
-            while (date := date + self.period) < self.end_date:
-                yield date
-
 
 class ConfigWorkflow(BaseModel):
     name: str | None = None
