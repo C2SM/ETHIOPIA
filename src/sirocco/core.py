@@ -12,13 +12,13 @@ from sirocco.parsing._yaml_data_models import (
     ConfigCycleTaskInput,
     ConfigTask,
     ConfigWorkflow,
-    _DataBaseModel,
     load_workflow_config,
 )
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
     from datetime import datetime
+    from sirocco.parsing._yaml_data_models import ConfigCycle, _DateBaseModel
 
 
 logging.basicConfig()
@@ -259,7 +259,7 @@ class Workflow:
 
         # 2 - create output data nodes
         for cycle_config in workflow_config.cycles:
-            for date in cycle_config.dates():
+            for date in self.cycle_dates(cycle_config):
                 for task_ref in cycle_config.tasks:
                     for data_ref in task_ref.outputs:
                         data_name = data_ref.name
@@ -269,7 +269,7 @@ class Workflow:
         # 3 - create cycles and tasks
         for cycle_config in workflow_config.cycles:
             cycle_name = cycle_config.name
-            for date in cycle_config.dates():
+            for date in self.cycle_dates(cycle_config):
                 cycle_tasks = []
                 for task_ref in cycle_config.tasks:
                     task_name = task_ref.name
@@ -283,6 +283,12 @@ class Workflow:
         # 4 - Link wait on tasks
         for task in self.tasks.values():
             task.link_wait_on_tasks()
+
+    def cycle_dates(self, cycle_config: ConfigCycle) -> Iterator[datetime]:
+        yield (date := cycle_config.start_date)
+        if cycle_config.period is not None:
+            while (date := date + cycle_config.period) < cycle_config.end_date:
+                yield date
 
     def _str_from_method(self, method_name: Literal["__str__", "_str_pretty_"]) -> str:
         str_method = getattr(NodeStr, method_name)
