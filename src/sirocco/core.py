@@ -18,7 +18,8 @@ from sirocco.parsing._yaml_data_models import (
 if TYPE_CHECKING:
     from collections.abc import Iterator
     from datetime import datetime
-    from sirocco.parsing._yaml_data_models import ConfigCycle, _DateBaseModel
+
+    from sirocco.parsing._yaml_data_models import ConfigCycle, _DataBaseModel
 
 
 logging.basicConfig()
