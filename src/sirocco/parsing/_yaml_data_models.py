@@ -80,15 +80,6 @@ class _LagDateBaseModel(BaseModel):
         values = value if isinstance(value, list) else [value]
         return [datetime.fromisoformat(value) for value in values]
 
-    def resolve_target_dates(self, ref_date: datetime | None) -> Iterator[datetime]:
-        if not self.lag and not self.date:
-            yield ref_date
-        if self.lag:
-            for lag in self.lag:
-                yield ref_date + lag
-        if self.date:
-            yield from self.date
-
 
 class ConfigTask(_NamedBaseModel):
     """
