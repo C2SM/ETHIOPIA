@@ -159,6 +159,12 @@ class TimeSeries(Generic[TimeSeriesObject]):
             self.end_date = date
 
     def __getitem__(self, date: datetime) -> TimeSeriesObject:
+        if self.start_date is None:
+            msg = "TimeSeries still empty, cannot access by date"
+            raise ValueError(msg)
+        if date not in self._dict:
+            msg = f"date {date} not found"
+            raise KeyError(msg)
         if date < self.start_date or date > self.end_date:
             item = next(iter(self._dict.values()))
             msg = (
@@ -166,9 +172,6 @@ class TimeSeries(Generic[TimeSeriesObject]):
             )
             logger.warning(msg)
             return None
-        if date not in self._dict:
-            msg = f"date {date} not found"
-            raise KeyError(msg)
         return self._dict[date]
 
     def values(self) -> Iterator[TimeSeriesObject]:
