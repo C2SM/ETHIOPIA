@@ -214,13 +214,22 @@ class Store(Generic[TimeSeriesObject]):
             raise KeyError(msg)
         return self._dict[name]
 
+    def resolve_target_dates(self, spec, ref_date: datetime | None) -> Iterator[datetime]:
+        if not spec.lag and not spec.date:
+            yield ref_date
+        if spec.lag:
+            for lag in spec.lag:
+                yield ref_date + lag
+        if spec.date:
+            yield from spec.date
+
     def get(self, spec: ConfigCycleSpec, ref_date: datetime | None = None) -> Iterator[TimeSeriesObject]:
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None and spec.date is []:
                 msg = "TimeSeries object must be referenced by dates"
                 raise ValueError(msg)
-            for target_date in spec.resolve_target_dates(ref_date):
+            for target_date in self.resolve_target_dates(spec, ref_date):
                 yield self._dict[name][target_date]
         else:
             if spec.lag or spec.date:
