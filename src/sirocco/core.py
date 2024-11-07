@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Generic, Literal, TypeVar
+from typing import TYPE_CHECKING, Generic, Literal, Self, TypeVar
 
 from termcolor import colored
 
@@ -45,8 +45,6 @@ class NodeStr:
 
 @dataclass
 class Task(NodeStr):
-
-
     name: str
     workflow: Workflow
     outputs: list[Data] = field(default_factory=list)
@@ -71,35 +69,31 @@ class Task(NodeStr):
 
     # use classmethod instead of custom init
     @classmethod
-    def from_config(cls, config: ConfigTask, task_ref: ConfigCycleTask, workflow: Workflow, date: datetime | None = None) -> Self:
+    def from_config(
+        cls, config: ConfigTask, task_ref: ConfigCycleTask, workflow: Workflow, date: datetime | None = None
+    ) -> Self:
         inputs: list[Data] = []
         for input_spec in task_ref.inputs:
-            for data in workflow.data.get(input_spec, date):
-                if data is not None:
-                    inputs.append(data)
-
-        outputs: list[Data] = []
-        for output_spec in task_ref.outputs:
-            outputs.append(workflow.data[output_spec.name, date])
+            inputs.extend(data for data in workflow.data.get(input_spec, date) if data is not None)
+        outputs: list[Data] = [workflow.data[output_spec.name, date] for output_spec in task_ref.outputs]
 
         new = cls(
             date=date,
             inputs=inputs,
             outputs=outputs,
             workflow=workflow,
-            **dict(config)  # use the fact that pydantic models can be turned into dicts easily
+            **dict(config),  # use the fact that pydantic models can be turned into dicts easily
         )  # this works because dataclass has generated this init for us
 
         # Store for actual linking in link_wait_on_tasks() once all tasks are created
-        new._wait_on_specs = task_ref.depends
+        new.wait_on_specs = task_ref.depends
 
         return new
 
     def link_wait_on_tasks(self):
-        for wait_on_spec in self._wait_on_specs:
-            for task in self.workflow.tasks.get(wait_on_spec, self.date):
-                if task is not None:
-                    self.wait_on.append(task)
+        self.wait_on: list[Task] = []
+        for wait_on_spec in self.wait_on_specs:
+            self.wait_on.extend(task for task in self.workflow.tasks.get(wait_on_spec, self.date) if task is not None)
 
 
 @dataclass(kw_only=True)
@@ -165,7 +159,7 @@ class TimeSeries(Generic[TimeSeriesObject]):
                 f"date {date} for item '{item.name}' is out of bounds [{self.start_date} - {self.end_date}], ignoring."
             )
             logger.warning(msg)
-            return None
+            return
         if date not in self._dict:
             item = next(iter(self._dict.values()))
             msg = f"date {date} for item '{item.name}' not found"
@@ -271,7 +265,9 @@ class Workflow:
                 for task_ref in cycle_config.tasks:
                     task_name = task_ref.name
                     task_config = workflow_config.task_dict[task_name]
-                    self.tasks[task_name, date] = (task := Task.from_config(task_config, task_ref, workflow=self, date=date))
+                    self.tasks[task_name, date] = (
+                        task := Task.from_config(task_config, task_ref, workflow=self, date=date)
+                    )
                     cycle_tasks.append(task)
                 self.cycles[cycle_name, date] = Cycle(name=cycle_name, tasks=cycle_tasks, date=date)
 
