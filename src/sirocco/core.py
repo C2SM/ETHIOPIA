@@ -218,7 +218,8 @@ class Store(Generic[TimeSeriesObject]):
             raise KeyError(msg)
         return self._dict[name]
 
-    def _resolve_target_dates(self, spec, ref_date: datetime | None) -> Iterator[datetime]:
+    @staticmethod
+    def _resolve_target_dates(spec, ref_date: datetime | None) -> Iterator[datetime]:
         if not spec.lag and not spec.date:
             yield ref_date
         if spec.lag:
