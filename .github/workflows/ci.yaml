@@ -28,6 +28,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+    - name: install graphviz
+      run: apt install graphviz
     - name: Install package
       run: |
         pip install .
