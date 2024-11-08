@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
     from datetime import datetime
 
-    from sirocco.parsing._yaml_data_models import ConfigCycle, _DataBaseModel
+    from sirocco.parsing._yaml_data_models import ConfigCycle, DataBaseModel
 
     type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
 
@@ -218,7 +218,7 @@ class Store(Generic[TimeSeriesObject]):
             raise KeyError(msg)
         return self._dict[name]
 
-    def resolve_target_dates(self, spec, ref_date: datetime | None) -> Iterator[datetime]:
+    def _resolve_target_dates(self, spec, ref_date: datetime | None) -> Iterator[datetime]:
         if not spec.lag and not spec.date:
             yield ref_date
         if spec.lag:
@@ -233,7 +233,7 @@ class Store(Generic[TimeSeriesObject]):
             if ref_date is None and spec.date is []:
                 msg = "TimeSeries object must be referenced by dates"
                 raise ValueError(msg)
-            for target_date in self.resolve_target_dates(spec, ref_date):
+            for target_date in self._resolve_target_dates(spec, ref_date):
                 yield self._dict[name][target_date]
         else:
             if spec.lag or spec.date:

@@ -115,7 +115,7 @@ class ConfigTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-class _DataBaseModel(_NamedBaseModel):
+class DataBaseModel(_NamedBaseModel):
     """
     To create an instance of a data defined in a workflow file.
     """
@@ -138,11 +138,11 @@ class _DataBaseModel(_NamedBaseModel):
         return isinstance(self, ConfigAvailableData)
 
 
-class ConfigAvailableData(_DataBaseModel):
+class ConfigAvailableData(DataBaseModel):
     pass
 
 
-class ConfigGeneratedData(_DataBaseModel):
+class ConfigGeneratedData(DataBaseModel):
     pass
 
 
