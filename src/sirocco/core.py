@@ -112,7 +112,7 @@ class Data(NodeStr):
     date: datetime | None = None
 
     @classmethod
-    def from_config(cls, config: _DataBaseModel, *, date: datetime | None = None):
+    def from_config(cls, config: DataBaseModel, *, date: datetime | None = None):
         return cls(
             name=config.name,
             type=config.type,
