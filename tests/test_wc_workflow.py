@@ -5,11 +5,6 @@ import pytest
 from sirocco.core import Workflow
 
 
-@pytest.fixture
-def config_file_small():
-    return "files/configs/"
-
-
 config_test_files = ["tests/files/configs/test_config_small.yml", "tests/files/configs/test_config_large.yml"]
 
 
