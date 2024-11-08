@@ -18,7 +18,7 @@ def test_parse_config_file(config_file):
     reference_str = Path(config_file).with_suffix(".txt").read_text()
     test_str = str(Workflow.from_yaml(config_file))
     if test_str != reference_str:
-        new_path = Path(config_file).with_suffix("new.txt")
+        new_path = Path(config_file).with_suffix(".new.txt")
         new_path.write_text(test_str)
         msg = f"Workflow graph doesn't match serialized data. New graph string dumped to {new_path}."
         raise ValueError(msg)
