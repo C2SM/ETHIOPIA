@@ -23,4 +23,6 @@ def test_parse_config_file(config_file):
 @pytest.mark.skip(reason="don't run it each time, uncomment to regenerate serilaized data")
 @pytest.mark.parametrize("config_file", config_test_files)
 def test_serialize_workflow(config_file):
-    Path(config_file).with_suffix(".txt").write_text(str(Workflow.from_yaml(config_file)))
+    config_path = Path(config_file)
+    reference_path = (config_path.parent/".."/"data"/config_path.name).with_suffix('.txt')
+    reference_path.write_text(str(Workflow.from_yaml(config_file)))
