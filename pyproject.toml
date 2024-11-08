@@ -31,7 +31,8 @@ dependencies = [
   "pydantic-yaml",
   "aiida-core>=2.5",
   "pygraphviz",
-  "lxml"
+  "lxml",
+  "termcolor"
 ]
 [project.urls]
 Repository = "https://github.com/C2SM/Sirocco.git"

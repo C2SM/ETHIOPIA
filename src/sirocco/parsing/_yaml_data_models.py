@@ -1,10 +1,5 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator
-
 import time
 from datetime import datetime
 from os.path import expandvars
@@ -80,15 +75,6 @@ class _LagDateBaseModel(BaseModel):
         values = value if isinstance(value, list) else [value]
         return [datetime.fromisoformat(value) for value in values]
 
-    def resolve_target_dates(self, ref_date: datetime | None) -> Iterator[datetime]:
-        if not self.lag and not self.date:
-            yield ref_date
-        if self.lag:
-            for lag in self.lag:
-                yield ref_date + lag
-        if self.date:
-            yield from self.date
-
 
 class ConfigTask(_NamedBaseModel):
     """
@@ -129,7 +115,7 @@ class ConfigTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-class _DataBaseModel(_NamedBaseModel):
+class DataBaseModel(_NamedBaseModel):
     """
     To create an instance of a data defined in a workflow file.
     """
@@ -152,11 +138,11 @@ class _DataBaseModel(_NamedBaseModel):
         return isinstance(self, ConfigAvailableData)
 
 
-class ConfigAvailableData(_DataBaseModel):
+class ConfigAvailableData(DataBaseModel):
     pass
 
 
-class ConfigGeneratedData(_DataBaseModel):
+class ConfigGeneratedData(DataBaseModel):
     pass
 
 
@@ -294,12 +280,6 @@ class ConfigCycle(_NamedBaseModel):
             msg = f"For cycle {self.name!r} the period {self.period!r} is negative or zero."
             raise ValueError(msg)
         return self
-
-    def dates(self) -> Iterator[datetime]:
-        yield (date := self.start_date)
-        if self.period is not None:
-            while (date := date + self.period) < self.end_date:
-                yield date
 
 
 class ConfigWorkflow(BaseModel):
