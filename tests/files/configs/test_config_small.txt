@@ -1,28 +1,28 @@
 cycles:
-  - bimonthly_tasks [2026-01-01 00:00:00]:
+  - bimonthly_tasks_2026-01-01 00:00:00:
       tasks:
-        - icon [2026-01-01 00:00:00]:
+        - icon_2026-01-01 00:00:00:
             output:
-              - icon_output [2026-01-01 00:00:00]
-              - icon_restart [2026-01-01 00:00:00]
-  - bimonthly_tasks [2026-03-01 00:00:00]:
+              - icon_output_2026-01-01 00:00:00
+              - icon_restart_2026-01-01 00:00:00
+  - bimonthly_tasks_2026-03-01 00:00:00:
       tasks:
-        - icon [2026-03-01 00:00:00]:
+        - icon_2026-03-01 00:00:00:
             input:
-              - icon_restart [2026-01-01 00:00:00]
+              - icon_restart_2026-01-01 00:00:00
             output:
-              - icon_output [2026-03-01 00:00:00]
-              - icon_restart [2026-03-01 00:00:00]
-  - bimonthly_tasks [2026-05-01 00:00:00]:
+              - icon_output_2026-03-01 00:00:00
+              - icon_restart_2026-03-01 00:00:00
+  - bimonthly_tasks_2026-05-01 00:00:00:
       tasks:
-        - icon [2026-05-01 00:00:00]:
+        - icon_2026-05-01 00:00:00:
             input:
-              - icon_restart [2026-03-01 00:00:00]
+              - icon_restart_2026-03-01 00:00:00
             output:
-              - icon_output [2026-05-01 00:00:00]
-              - icon_restart [2026-05-01 00:00:00]
+              - icon_output_2026-05-01 00:00:00
+              - icon_restart_2026-05-01 00:00:00
   - lastly:
       tasks:
         - cleanup:
             wait on:
-              - icon [2026-05-01 00:00:00]
+              - icon_2026-05-01 00:00:00
