@@ -44,12 +44,6 @@ class NodeStr:
             return self.name
         return f"{self.name} [{self.date}]"
 
-    def __str__(self):
-        ret_str = f"{self.name}"
-        if self.date is not None:
-            ret_str += f"_{self.date}"
-        return ret_str
-
 
 @dataclass
 class Task(NodeStr):

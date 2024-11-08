@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from sirocco.core import Workflow
-
+from sirocco.vizgraph import VizGraph
 
 config_test_files = ["tests/files/configs/test_config_small.yml", "tests/files/configs/test_config_large.yml"]
 
@@ -26,3 +26,7 @@ def test_serialize_workflow(config_file):
     config_path = Path(config_file)
     reference_path = (config_path.parent/".."/"data"/config_path.name).with_suffix('.txt')
     reference_path.write_text(str(Workflow.from_yaml(config_file)))
+
+@pytest.mark.parametrize("config_file", config_test_files)
+def test_vizgraph(config_file):
+    VizGraph.from_yaml(config_file).draw()
