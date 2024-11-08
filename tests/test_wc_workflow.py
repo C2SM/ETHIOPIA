@@ -1,17 +1,30 @@
+from pathlib import Path
+
 import pytest
 
 from sirocco.core import Workflow
-from sirocco.parsing import load_workflow_config
-from pathlib import Path
+
 
 @pytest.fixture
 def config_file_small():
     return "files/configs/"
 
 
-@pytest.mark.parametrize(
-    "config_file", ["tests/files/configs/test_config_small.yml", "tests/files/configs/test_config_large.yml"]
-)
+config_test_files = ["tests/files/configs/test_config_small.yml", "tests/files/configs/test_config_large.yml"]
+
+
+@pytest.mark.parametrize("config_file", config_test_files)
 def test_parse_config_file(config_file):
-    workflow = Workflow.from_yaml(config_file)
-    assert str(workflow) == Path(config_file).with_suffix('.txt').read_text()
+    reference_str = Path(config_file).with_suffix(".txt").read_text()
+    test_str = str(Workflow.from_yaml(config_file))
+    if test_str != reference_str:
+        new_path = Path(config_file).with_suffix("new.txt")
+        new_path.write_text(test_str)
+        msg = f"Workflow graph doesn't match serialized data. New graph string dumped to {new_path}."
+        raise ValueError(msg)
+
+
+@pytest.mark.skip(reason="don't run it each time, uncomment to regenerate serilaized data")
+@pytest.mark.parametrize("config_file", config_test_files)
+def test_serialize_workflow(config_file):
+    Path(config_file).with_suffix(".txt").write_text(str(Workflow.from_yaml(config_file)))
