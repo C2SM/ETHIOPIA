@@ -29,7 +29,7 @@ jobs:
         pip install --upgrade pip
         pip install hatch
     - name: Setup Graphviz
-      uses: ts-graphviz/setup-graphviz@v2
+      uses: tlylt/install-graphviz@main
     - name: Install package
       run: |
         pip install .
