@@ -21,11 +21,12 @@ if TYPE_CHECKING:
 
     from sirocco.parsing._yaml_data_models import ConfigCycle, _DataBaseModel
 
+    type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
-type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
+
 TimeSeriesObject = TypeVar("TimeSeriesObject")
 
 
@@ -87,13 +88,15 @@ class Task(NodeStr):
         )  # this works because dataclass has generated this init for us
 
         # Store for actual linking in link_wait_on_tasks() once all tasks are created
-        new.wait_on_specs = task_ref.depends
+        new._wait_on_specs = task_ref.depends  # noqa: SLF001 we don't have access to self in a dataclass
+        #                                                     and setting an underscored attribute from
+        #                                                     the class itself raises SLF001
 
         return new
 
     def link_wait_on_tasks(self):
         self.wait_on: list[Task] = []
-        for wait_on_spec in self.wait_on_specs:
+        for wait_on_spec in self._wait_on_specs:
             self.wait_on.extend(task for task in self.workflow.tasks.get(wait_on_spec, self.date) if task is not None)
 
 
