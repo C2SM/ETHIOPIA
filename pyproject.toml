@@ -20,7 +20,7 @@ classifiers = [
   'Programming Language :: Python',
   'Programming Language :: Python :: 3.12',
   'Topic :: Scientific/Engineering',
-  'Topic :: Scientific/Engineering :: Atmospheric Science',
+  'Topic :: Scientific/Engineering :: Climate Science',
 ]
 keywords = ["workflow"," icon", "aiida", "aiida-workgraph"]
 requires-python = '>=3.12'
