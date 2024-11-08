@@ -6,14 +6,21 @@ cycles:
               - obs_data
             output:
               - extpar_file
+<<<<<<< HEAD
   - icon_bimonthly_2025-01-01 00:00:00:
       tasks:
         - preproc_2025-01-01 00:00:00:
+=======
+  - icon_bimonthly [2025-01-01 00:00:00]:
+      tasks:
+        - preproc [2025-01-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2025-01-01 00:00:00
         - icon_2025-01-01 00:00:00:
             input:
@@ -38,11 +45,38 @@ cycles:
   - icon_bimonthly_2025-03-01 00:00:00:
       tasks:
         - preproc_2025-03-01 00:00:00:
+=======
+              - icon_input [2025-01-01 00:00:00]
+        - icon [2025-01-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2025-01-01 00:00:00]
+            output:
+              - stream_1 [2025-01-01 00:00:00]
+              - stream_2 [2025-01-01 00:00:00]
+              - icon_restart [2025-01-01 00:00:00]
+        - postproc_1 [2025-01-01 00:00:00]:
+            input:
+              - stream_1 [2025-01-01 00:00:00]
+            output:
+              - postout_1 [2025-01-01 00:00:00]
+        - store_and_clean_1 [2025-01-01 00:00:00]:
+            input:
+              - postout_1 [2025-01-01 00:00:00]
+              - stream_1 [2025-01-01 00:00:00]
+              - icon_input [2025-01-01 00:00:00]
+            output:
+              - stored_data_1 [2025-01-01 00:00:00]
+  - icon_bimonthly [2025-03-01 00:00:00]:
+      tasks:
+        - preproc [2025-03-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2025-03-01 00:00:00
         - icon_2025-03-01 00:00:00:
             input:
@@ -68,11 +102,39 @@ cycles:
   - icon_bimonthly_2025-05-01 00:00:00:
       tasks:
         - preproc_2025-05-01 00:00:00:
+=======
+              - icon_input [2025-03-01 00:00:00]
+        - icon [2025-03-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2025-03-01 00:00:00]
+              - icon_restart [2025-01-01 00:00:00]
+            output:
+              - stream_1 [2025-03-01 00:00:00]
+              - stream_2 [2025-03-01 00:00:00]
+              - icon_restart [2025-03-01 00:00:00]
+        - postproc_1 [2025-03-01 00:00:00]:
+            input:
+              - stream_1 [2025-03-01 00:00:00]
+            output:
+              - postout_1 [2025-03-01 00:00:00]
+        - store_and_clean_1 [2025-03-01 00:00:00]:
+            input:
+              - postout_1 [2025-03-01 00:00:00]
+              - stream_1 [2025-03-01 00:00:00]
+              - icon_input [2025-03-01 00:00:00]
+            output:
+              - stored_data_1 [2025-03-01 00:00:00]
+  - icon_bimonthly [2025-05-01 00:00:00]:
+      tasks:
+        - preproc [2025-05-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2025-05-01 00:00:00
             wait on:
               - icon_2025-01-01 00:00:00
@@ -100,11 +162,41 @@ cycles:
   - icon_bimonthly_2025-07-01 00:00:00:
       tasks:
         - preproc_2025-07-01 00:00:00:
+=======
+              - icon_input [2025-05-01 00:00:00]
+            wait on:
+              - icon [2025-01-01 00:00:00]
+        - icon [2025-05-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2025-05-01 00:00:00]
+              - icon_restart [2025-03-01 00:00:00]
+            output:
+              - stream_1 [2025-05-01 00:00:00]
+              - stream_2 [2025-05-01 00:00:00]
+              - icon_restart [2025-05-01 00:00:00]
+        - postproc_1 [2025-05-01 00:00:00]:
+            input:
+              - stream_1 [2025-05-01 00:00:00]
+            output:
+              - postout_1 [2025-05-01 00:00:00]
+        - store_and_clean_1 [2025-05-01 00:00:00]:
+            input:
+              - postout_1 [2025-05-01 00:00:00]
+              - stream_1 [2025-05-01 00:00:00]
+              - icon_input [2025-05-01 00:00:00]
+            output:
+              - stored_data_1 [2025-05-01 00:00:00]
+  - icon_bimonthly [2025-07-01 00:00:00]:
+      tasks:
+        - preproc [2025-07-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2025-07-01 00:00:00
             wait on:
               - icon_2025-03-01 00:00:00
@@ -132,11 +224,41 @@ cycles:
   - icon_bimonthly_2025-09-01 00:00:00:
       tasks:
         - preproc_2025-09-01 00:00:00:
+=======
+              - icon_input [2025-07-01 00:00:00]
+            wait on:
+              - icon [2025-03-01 00:00:00]
+        - icon [2025-07-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2025-07-01 00:00:00]
+              - icon_restart [2025-05-01 00:00:00]
+            output:
+              - stream_1 [2025-07-01 00:00:00]
+              - stream_2 [2025-07-01 00:00:00]
+              - icon_restart [2025-07-01 00:00:00]
+        - postproc_1 [2025-07-01 00:00:00]:
+            input:
+              - stream_1 [2025-07-01 00:00:00]
+            output:
+              - postout_1 [2025-07-01 00:00:00]
+        - store_and_clean_1 [2025-07-01 00:00:00]:
+            input:
+              - postout_1 [2025-07-01 00:00:00]
+              - stream_1 [2025-07-01 00:00:00]
+              - icon_input [2025-07-01 00:00:00]
+            output:
+              - stored_data_1 [2025-07-01 00:00:00]
+  - icon_bimonthly [2025-09-01 00:00:00]:
+      tasks:
+        - preproc [2025-09-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2025-09-01 00:00:00
             wait on:
               - icon_2025-05-01 00:00:00
@@ -164,11 +286,41 @@ cycles:
   - icon_bimonthly_2025-11-01 00:00:00:
       tasks:
         - preproc_2025-11-01 00:00:00:
+=======
+              - icon_input [2025-09-01 00:00:00]
+            wait on:
+              - icon [2025-05-01 00:00:00]
+        - icon [2025-09-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2025-09-01 00:00:00]
+              - icon_restart [2025-07-01 00:00:00]
+            output:
+              - stream_1 [2025-09-01 00:00:00]
+              - stream_2 [2025-09-01 00:00:00]
+              - icon_restart [2025-09-01 00:00:00]
+        - postproc_1 [2025-09-01 00:00:00]:
+            input:
+              - stream_1 [2025-09-01 00:00:00]
+            output:
+              - postout_1 [2025-09-01 00:00:00]
+        - store_and_clean_1 [2025-09-01 00:00:00]:
+            input:
+              - postout_1 [2025-09-01 00:00:00]
+              - stream_1 [2025-09-01 00:00:00]
+              - icon_input [2025-09-01 00:00:00]
+            output:
+              - stored_data_1 [2025-09-01 00:00:00]
+  - icon_bimonthly [2025-11-01 00:00:00]:
+      tasks:
+        - preproc [2025-11-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2025-11-01 00:00:00
             wait on:
               - icon_2025-07-01 00:00:00
@@ -196,11 +348,41 @@ cycles:
   - icon_bimonthly_2026-01-01 00:00:00:
       tasks:
         - preproc_2026-01-01 00:00:00:
+=======
+              - icon_input [2025-11-01 00:00:00]
+            wait on:
+              - icon [2025-07-01 00:00:00]
+        - icon [2025-11-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2025-11-01 00:00:00]
+              - icon_restart [2025-09-01 00:00:00]
+            output:
+              - stream_1 [2025-11-01 00:00:00]
+              - stream_2 [2025-11-01 00:00:00]
+              - icon_restart [2025-11-01 00:00:00]
+        - postproc_1 [2025-11-01 00:00:00]:
+            input:
+              - stream_1 [2025-11-01 00:00:00]
+            output:
+              - postout_1 [2025-11-01 00:00:00]
+        - store_and_clean_1 [2025-11-01 00:00:00]:
+            input:
+              - postout_1 [2025-11-01 00:00:00]
+              - stream_1 [2025-11-01 00:00:00]
+              - icon_input [2025-11-01 00:00:00]
+            output:
+              - stored_data_1 [2025-11-01 00:00:00]
+  - icon_bimonthly [2026-01-01 00:00:00]:
+      tasks:
+        - preproc [2026-01-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2026-01-01 00:00:00
             wait on:
               - icon_2025-09-01 00:00:00
@@ -228,11 +410,41 @@ cycles:
   - icon_bimonthly_2026-03-01 00:00:00:
       tasks:
         - preproc_2026-03-01 00:00:00:
+=======
+              - icon_input [2026-01-01 00:00:00]
+            wait on:
+              - icon [2025-09-01 00:00:00]
+        - icon [2026-01-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2026-01-01 00:00:00]
+              - icon_restart [2025-11-01 00:00:00]
+            output:
+              - stream_1 [2026-01-01 00:00:00]
+              - stream_2 [2026-01-01 00:00:00]
+              - icon_restart [2026-01-01 00:00:00]
+        - postproc_1 [2026-01-01 00:00:00]:
+            input:
+              - stream_1 [2026-01-01 00:00:00]
+            output:
+              - postout_1 [2026-01-01 00:00:00]
+        - store_and_clean_1 [2026-01-01 00:00:00]:
+            input:
+              - postout_1 [2026-01-01 00:00:00]
+              - stream_1 [2026-01-01 00:00:00]
+              - icon_input [2026-01-01 00:00:00]
+            output:
+              - stored_data_1 [2026-01-01 00:00:00]
+  - icon_bimonthly [2026-03-01 00:00:00]:
+      tasks:
+        - preproc [2026-03-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2026-03-01 00:00:00
             wait on:
               - icon_2025-11-01 00:00:00
@@ -260,11 +472,41 @@ cycles:
   - icon_bimonthly_2026-05-01 00:00:00:
       tasks:
         - preproc_2026-05-01 00:00:00:
+=======
+              - icon_input [2026-03-01 00:00:00]
+            wait on:
+              - icon [2025-11-01 00:00:00]
+        - icon [2026-03-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2026-03-01 00:00:00]
+              - icon_restart [2026-01-01 00:00:00]
+            output:
+              - stream_1 [2026-03-01 00:00:00]
+              - stream_2 [2026-03-01 00:00:00]
+              - icon_restart [2026-03-01 00:00:00]
+        - postproc_1 [2026-03-01 00:00:00]:
+            input:
+              - stream_1 [2026-03-01 00:00:00]
+            output:
+              - postout_1 [2026-03-01 00:00:00]
+        - store_and_clean_1 [2026-03-01 00:00:00]:
+            input:
+              - postout_1 [2026-03-01 00:00:00]
+              - stream_1 [2026-03-01 00:00:00]
+              - icon_input [2026-03-01 00:00:00]
+            output:
+              - stored_data_1 [2026-03-01 00:00:00]
+  - icon_bimonthly [2026-05-01 00:00:00]:
+      tasks:
+        - preproc [2026-05-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2026-05-01 00:00:00
             wait on:
               - icon_2026-01-01 00:00:00
@@ -292,11 +534,41 @@ cycles:
   - icon_bimonthly_2026-07-01 00:00:00:
       tasks:
         - preproc_2026-07-01 00:00:00:
+=======
+              - icon_input [2026-05-01 00:00:00]
+            wait on:
+              - icon [2026-01-01 00:00:00]
+        - icon [2026-05-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2026-05-01 00:00:00]
+              - icon_restart [2026-03-01 00:00:00]
+            output:
+              - stream_1 [2026-05-01 00:00:00]
+              - stream_2 [2026-05-01 00:00:00]
+              - icon_restart [2026-05-01 00:00:00]
+        - postproc_1 [2026-05-01 00:00:00]:
+            input:
+              - stream_1 [2026-05-01 00:00:00]
+            output:
+              - postout_1 [2026-05-01 00:00:00]
+        - store_and_clean_1 [2026-05-01 00:00:00]:
+            input:
+              - postout_1 [2026-05-01 00:00:00]
+              - stream_1 [2026-05-01 00:00:00]
+              - icon_input [2026-05-01 00:00:00]
+            output:
+              - stored_data_1 [2026-05-01 00:00:00]
+  - icon_bimonthly [2026-07-01 00:00:00]:
+      tasks:
+        - preproc [2026-07-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2026-07-01 00:00:00
             wait on:
               - icon_2026-03-01 00:00:00
@@ -324,11 +596,41 @@ cycles:
   - icon_bimonthly_2026-09-01 00:00:00:
       tasks:
         - preproc_2026-09-01 00:00:00:
+=======
+              - icon_input [2026-07-01 00:00:00]
+            wait on:
+              - icon [2026-03-01 00:00:00]
+        - icon [2026-07-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2026-07-01 00:00:00]
+              - icon_restart [2026-05-01 00:00:00]
+            output:
+              - stream_1 [2026-07-01 00:00:00]
+              - stream_2 [2026-07-01 00:00:00]
+              - icon_restart [2026-07-01 00:00:00]
+        - postproc_1 [2026-07-01 00:00:00]:
+            input:
+              - stream_1 [2026-07-01 00:00:00]
+            output:
+              - postout_1 [2026-07-01 00:00:00]
+        - store_and_clean_1 [2026-07-01 00:00:00]:
+            input:
+              - postout_1 [2026-07-01 00:00:00]
+              - stream_1 [2026-07-01 00:00:00]
+              - icon_input [2026-07-01 00:00:00]
+            output:
+              - stored_data_1 [2026-07-01 00:00:00]
+  - icon_bimonthly [2026-09-01 00:00:00]:
+      tasks:
+        - preproc [2026-09-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2026-09-01 00:00:00
             wait on:
               - icon_2026-05-01 00:00:00
@@ -356,11 +658,41 @@ cycles:
   - icon_bimonthly_2026-11-01 00:00:00:
       tasks:
         - preproc_2026-11-01 00:00:00:
+=======
+              - icon_input [2026-09-01 00:00:00]
+            wait on:
+              - icon [2026-05-01 00:00:00]
+        - icon [2026-09-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2026-09-01 00:00:00]
+              - icon_restart [2026-07-01 00:00:00]
+            output:
+              - stream_1 [2026-09-01 00:00:00]
+              - stream_2 [2026-09-01 00:00:00]
+              - icon_restart [2026-09-01 00:00:00]
+        - postproc_1 [2026-09-01 00:00:00]:
+            input:
+              - stream_1 [2026-09-01 00:00:00]
+            output:
+              - postout_1 [2026-09-01 00:00:00]
+        - store_and_clean_1 [2026-09-01 00:00:00]:
+            input:
+              - postout_1 [2026-09-01 00:00:00]
+              - stream_1 [2026-09-01 00:00:00]
+              - icon_input [2026-09-01 00:00:00]
+            output:
+              - stored_data_1 [2026-09-01 00:00:00]
+  - icon_bimonthly [2026-11-01 00:00:00]:
+      tasks:
+        - preproc [2026-11-01 00:00:00]:
+>>>>>>> IR_graph
             input:
               - grid_file
               - extpar_file
               - ERA5
             output:
+<<<<<<< HEAD
               - icon_input_2026-11-01 00:00:00
             wait on:
               - icon_2026-07-01 00:00:00
@@ -431,3 +763,75 @@ cycles:
               - stream_2_2026-11-01 00:00:00
             output:
               - stored_data_2_2026-01-01 00:00:00
+=======
+              - icon_input [2026-11-01 00:00:00]
+            wait on:
+              - icon [2026-07-01 00:00:00]
+        - icon [2026-11-01 00:00:00]:
+            input:
+              - grid_file
+              - icon_input [2026-11-01 00:00:00]
+              - icon_restart [2026-09-01 00:00:00]
+            output:
+              - stream_1 [2026-11-01 00:00:00]
+              - stream_2 [2026-11-01 00:00:00]
+              - icon_restart [2026-11-01 00:00:00]
+        - postproc_1 [2026-11-01 00:00:00]:
+            input:
+              - stream_1 [2026-11-01 00:00:00]
+            output:
+              - postout_1 [2026-11-01 00:00:00]
+        - store_and_clean_1 [2026-11-01 00:00:00]:
+            input:
+              - postout_1 [2026-11-01 00:00:00]
+              - stream_1 [2026-11-01 00:00:00]
+              - icon_input [2026-11-01 00:00:00]
+            output:
+              - stored_data_1 [2026-11-01 00:00:00]
+  - yearly [2025-01-01 00:00:00]:
+      tasks:
+        - postproc_2 [2025-01-01 00:00:00]:
+            input:
+              - stream_2 [2025-01-01 00:00:00]
+              - stream_2 [2025-03-01 00:00:00]
+              - stream_2 [2025-05-01 00:00:00]
+              - stream_2 [2025-07-01 00:00:00]
+              - stream_2 [2025-09-01 00:00:00]
+              - stream_2 [2025-11-01 00:00:00]
+            output:
+              - postout_2 [2025-01-01 00:00:00]
+        - store_and_clean_2 [2025-01-01 00:00:00]:
+            input:
+              - postout_2 [2025-01-01 00:00:00]
+              - stream_2 [2025-01-01 00:00:00]
+              - stream_2 [2025-03-01 00:00:00]
+              - stream_2 [2025-05-01 00:00:00]
+              - stream_2 [2025-07-01 00:00:00]
+              - stream_2 [2025-09-01 00:00:00]
+              - stream_2 [2025-11-01 00:00:00]
+            output:
+              - stored_data_2 [2025-01-01 00:00:00]
+  - yearly [2026-01-01 00:00:00]:
+      tasks:
+        - postproc_2 [2026-01-01 00:00:00]:
+            input:
+              - stream_2 [2026-01-01 00:00:00]
+              - stream_2 [2026-03-01 00:00:00]
+              - stream_2 [2026-05-01 00:00:00]
+              - stream_2 [2026-07-01 00:00:00]
+              - stream_2 [2026-09-01 00:00:00]
+              - stream_2 [2026-11-01 00:00:00]
+            output:
+              - postout_2 [2026-01-01 00:00:00]
+        - store_and_clean_2 [2026-01-01 00:00:00]:
+            input:
+              - postout_2 [2026-01-01 00:00:00]
+              - stream_2 [2026-01-01 00:00:00]
+              - stream_2 [2026-03-01 00:00:00]
+              - stream_2 [2026-05-01 00:00:00]
+              - stream_2 [2026-07-01 00:00:00]
+              - stream_2 [2026-09-01 00:00:00]
+              - stream_2 [2026-11-01 00:00:00]
+            output:
+              - stored_data_2 [2026-01-01 00:00:00]
+>>>>>>> IR_graph
