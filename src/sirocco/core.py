@@ -97,7 +97,9 @@ class Task(NodeStr):
     def link_wait_on_tasks(self):
         self.wait_on: list[Task] = []
         for wait_on_spec in self._wait_on_specs:
-            self.wait_on.extend(task for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.date) if task is not None)
+            self.wait_on.extend(
+                task for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.date) if task is not None
+            )
 
 
 @dataclass(kw_only=True)
@@ -228,7 +230,9 @@ class Store(Generic[TimeSeriesObject]):
         if spec.date:
             yield from spec.date
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, ref_date: datetime | None = None) -> Iterator[TimeSeriesObject]:
+    def iter_from_cycle_spec(
+        self, spec: ConfigCycleSpec, ref_date: datetime | None = None
+    ) -> Iterator[TimeSeriesObject]:
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None and spec.date is []:
