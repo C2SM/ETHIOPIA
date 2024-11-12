@@ -1,689 +1,348 @@
 from __future__ import annotations
 
-from datetime import datetime
-from itertools import chain
-from os.path import expandvars
-from pathlib import Path
-from typing import TYPE_CHECKING
+import logging
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Generic, Literal, Self, TypeVar
 
-from isoduration import parse_duration
-from isoduration.types import Duration
+from termcolor import colored
 
-from sirocco.parsing._utils import TimeUtils
+from sirocco.parsing._yaml_data_models import (
+    ConfigCycleTask,
+    ConfigCycleTaskDepend,
+    ConfigCycleTaskInput,
+    ConfigTask,
+    ConfigWorkflow,
+    load_workflow_config,
+)
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
+    from collections.abc import Iterator
+    from datetime import datetime
+
+    from sirocco.parsing._yaml_data_models import ConfigCycle, DataBaseModel
+
+    type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 
-class _DataBase:
-    def __init__(
-        self,
-        name: str,
-        type: str,  # noqa: A002
-        src: str,
-        lag: list[Duration],
-        date: list[datetime],
-        arg_option: str | None,
-        *,
-        available: bool,
-    ):
-        self._name = name
+TimeSeriesObject = TypeVar("TimeSeriesObject")
 
-        self._src = src
-        self._path = Path(expandvars(self._src))
 
-        self._type = type
-        if self._type not in ["file", "dir"]:
-            msg = f"Data type {self._type!r} not supported. Please use 'file' or 'dir'."
+class NodeStr:
+    color: str
+
+    def _str_pretty_(self) -> str:
+        repr_str = colored(self.name, self.color, attrs=["bold"])
+        if self.date is not None:
+            repr_str += colored(f" [{self.date}]", self.color)
+        return repr_str
+
+    def __str__(self) -> str:
+        if self.date is None:
+            return self.name
+        return f"{self.name} [{self.date}]"
+
+
+@dataclass
+class Task(NodeStr):
+    name: str
+    workflow: Workflow
+    outputs: list[Data] = field(default_factory=list)
+    inputs: list[Data] = field(default_factory=list)
+    wait_on: list[Task] = field(default_factory=list)
+    date: datetime | None = None
+    color: str = "light_red"
+    # TODO: This list is too long. We should start with the set of supported
+    #       keywords and extend it as we support more
+    command: str | None = None
+    command_option: str | None = None
+    input_arg_options: dict[str, str] | None = None
+    host: str | None = None
+    account: str | None = None
+    plugin: str | None = None
+    config: str | None = None
+    uenv: dict | None = None
+    nodes: int | None = None
+    walltime: str | None = None
+    src: str | None = None
+    conda_env: str | None = None
+
+    # use classmethod instead of custom init
+    @classmethod
+    def from_config(
+        cls, config: ConfigTask, task_ref: ConfigCycleTask, workflow: Workflow, date: datetime | None = None
+    ) -> Self:
+        inputs: list[Data] = []
+        for input_spec in task_ref.inputs:
+            inputs.extend(data for data in workflow.data.iter_from_cycle_spec(input_spec, date) if data is not None)
+        outputs: list[Data] = [workflow.data[output_spec.name, date] for output_spec in task_ref.outputs]
+
+        new = cls(
+            date=date,
+            inputs=inputs,
+            outputs=outputs,
+            workflow=workflow,
+            **dict(config),  # use the fact that pydantic models can be turned into dicts easily
+        )  # this works because dataclass has generated this init for us
+
+        # Store for actual linking in link_wait_on_tasks() once all tasks are created
+        new._wait_on_specs = task_ref.depends  # noqa: SLF001 we don't have access to self in a dataclass
+        #                                                     and setting an underscored attribute from
+        #                                                     the class itself raises SLF001
+
+        return new
+
+    def link_wait_on_tasks(self):
+        self.wait_on: list[Task] = []
+        for wait_on_spec in self._wait_on_specs:
+            self.wait_on.extend(
+                task for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.date) if task is not None
+            )
+
+
+@dataclass(kw_only=True)
+class Data(NodeStr):
+    """Internal representation of a data node"""
+
+    color: str = "light_blue"
+    name: str
+    type: str
+    src: str
+    available: bool
+    date: datetime | None = None
+
+    @classmethod
+    def from_config(cls, config: DataBaseModel, *, date: datetime | None = None):
+        return cls(
+            name=config.name,
+            type=config.type,
+            src=config.src,
+            available=config.available,
+            date=date,
+        )
+
+
+@dataclass(kw_only=True)
+class Cycle(NodeStr):
+    """Internal reprenstation of a cycle"""
+
+    color: str = "light_green"
+    name: str
+    tasks: list[Task]
+    date: datetime | None = None
+
+
+class TimeSeries(Generic[TimeSeriesObject]):
+    """Dictionnary of objects accessed by date, checking start and end dates"""
+
+    def __init__(self) -> None:
+        self.start_date: datetime | None = None
+        self.end_date: datetime | None = None
+        self._dict: dict[str:TimeSeriesObject] = {}
+
+    def __setitem__(self, date: datetime, data: TimeSeriesObject) -> None:
+        if date in self._dict:
+            msg = f"date {date} already used, cannot set twice"
+            raise KeyError(msg)
+        self._dict[date] = data
+        if self.start_date is None:
+            self.start_date = date
+            self.end_date = date
+        elif date < self.start_date:
+            self.start_date = date
+        elif date > self.end_date:
+            self.end_date = date
+
+    def __getitem__(self, date: datetime) -> TimeSeriesObject:
+        if self.start_date is None:
+            msg = "TimeSeries still empty, cannot access by date"
             raise ValueError(msg)
-
-        if len(lag) > 0 and len(date) > 0:
-            msg = "Either 'lag' or 'date' can be nonempty. Not both."
-            raise ValueError(msg)
-
-        # COMMENT I think we should just disallow multiple lags, and enforce the user to write multiple lags
-        #         I am not sure how this work with icon as it does not need positional arguments
-        #         or rather how does it work with plugins
-        if arg_option is not None and (len(lag) > 1 or len(date) > 1):
+        if date < self.start_date or date > self.end_date:
+            item = next(iter(self._dict.values()))
             msg = (
-                "You cannot give an arg_option when multiple lags and dates are given. "
-                "They must be positional arguments, since passing them to one option is ambiguous."
+                f"date {date} for item '{item.name}' is out of bounds [{self.start_date} - {self.end_date}], ignoring."
             )
-            raise ValueError(msg)
+            logger.warning(msg)
+            return
+        if date not in self._dict:
+            item = next(iter(self._dict.values()))
+            msg = f"date {date} for item '{item.name}' not found"
+            raise KeyError(msg)
+        return self._dict[date]
 
-        self._lag = lag
-        self._date = date
-        self._arg_option = arg_option
-        self._available = available
-
-    @property
-    def name(self) -> str:
-        """The name of this data instance that is used as identifier."""
-        return self._name
-
-    @property
-    def type(self) -> str:
-        """The data type."""
-        return self._type
-
-    @property
-    def src(self) -> str:
-        return self._src
-
-    @property
-    def path(self) -> Path:
-        return self._path
-
-    @property
-    def lag(self) -> list[Duration]:
-        return self._lag
-
-    @property
-    def date(self) -> list[datetime]:
-        return self._date
-
-    @property
-    def arg_option(self) -> str | None:
-        return self._arg_option
-
-    @property
-    def available(self) -> bool:
-        return self._available
+    def values(self) -> Iterator[TimeSeriesObject]:
+        yield from self._dict.values()
 
 
-class Data(_DataBase):
-    def __init__(
-        self,
-        name: str,
-        type: str,  # noqa: A002
-        src: str,
-        lag: list[Duration],
-        date: list[datetime],
-        arg_option: str | None,
-        *,
-        available: bool,
-    ):
-        super().__init__(name, type, src, lag, date, arg_option, available=available)
-        self._task: Task | None = None
+class Store(Generic[TimeSeriesObject]):
+    """Container for TimeSeries or unique data"""
 
-    def unroll(self, unrolled_task: UnrolledTask) -> Generator[UnrolledData, None, None]:
-        if len(self._date) == 0 and len(self._lag) == 0:
-            yield UnrolledData.from_data(self, unrolled_task, unrolled_task.unrolled_date)
+    def __init__(self):
+        self._dict: dict[str, TimeSeries | TimeSeriesObject] = {}
 
-        for lag in self._lag:
-            lagged_date = unrolled_task.unrolled_date + lag
-            if (
-                lagged_date >= unrolled_task.unrolled_cycle.start_date
-                and lagged_date <= unrolled_task.unrolled_cycle.end_date
-            ):
-                yield UnrolledData.from_data(self, unrolled_task, lagged_date)
-
-        for date in self._date:
-            yield UnrolledData.from_data(self, unrolled_task, date)
-
-    def __repr__(self) -> str:
-        if self.task is None:
-            identifier = f"{self.__class__.__name__} '{self.name}'"
+    def __setitem__(self, key: str | tuple(str, datetime | None), value: TimeSeriesObject) -> None:
+        if isinstance(key, tuple):
+            name, date = key
         else:
-            identifier = f"{self.__class__.__name__} '{self.name}' attached task '{self.task}'"
-        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
-
-    @property
-    def task(self) -> Task | None:
-        return self._task
-
-    @task.setter
-    def task(self, task: Task):
-        if self._task is not None:
-            msg = f"Data {self} was already assigned to task {self._task}. Cannot assign task to task {task}."
-            raise ValueError(msg)
-        self._task = task
-
-
-class UnrolledData(_DataBase):
-    """
-    Data that are created during the unrolling of a cycle.
-    This class should be only initiated through unrolling a cycle.
-    """
-
-    @classmethod
-    def from_data(cls, data: Data, unrolled_task: UnrolledTask, unrolled_date: datetime):
-        return cls(
-            unrolled_task,
-            unrolled_date,
-            data.name,
-            data.type,
-            data.src,
-            data.lag,
-            data.date,
-            data.arg_option,
-            available=data.available,
-        )
-
-    def __init__(
-        self,
-        unrolled_task: UnrolledTask,
-        unrolled_date: datetime,
-        name: str,
-        type: str,  # noqa: A002
-        src: str,
-        lag: list[Duration],
-        date: list[datetime],
-        arg_option: str | None,
-        *,
-        available: bool,
-    ):
-        super().__init__(name, type, src, lag, date, arg_option, available=available)
-        self._unrolled_task = unrolled_task
-        self._unrolled_date = unrolled_date
-
-    def __repr__(self) -> str:
-        if self.unrolled_task is None:
-            identifier = f"{self.__class__.__name__} '{self.name}' with date {self.unrolled_date}"
+            name, date = key, None
+        if name in self._dict:
+            if not isinstance(self._dict[name], TimeSeries):
+                msg = f"single entry {name} already set"
+                raise KeyError(msg)
+            if date is None:
+                msg = f"entry {name} is a TimeSeries, must be accessed by date"
+                raise KeyError(msg)
+            self._dict[name][date] = value
+        elif date is None:
+            self._dict[name] = value
         else:
-            identifier = f"{self.__class__.__name__} '{self.name}' with date {self.unrolled_date} attached to task {self.unrolled_task}"
-        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
+            self._dict[name] = TimeSeries()
+            self._dict[name][date] = value
 
-    @property
-    def unrolled_date(self) -> datetime:
-        return self._unrolled_date
-
-    @property
-    def unrolled_task(self) -> UnrolledTask:
-        return self._unrolled_task
-
-
-class _DependencyBase:
-    def __init__(self, depend_on_task_name: str, lag: list[Duration], date: list[datetime], cycle_name: str | None):
-        self._depend_on_task_name = depend_on_task_name
-        if len(lag) > 0 and len(date) > 0:
-            msg = "Only one key 'lag' or 'date' is allowed. Not both."
-            raise ValueError(msg)
-
-        self._lag = lag
-        self._date = date
-        self._cycle_name = cycle_name
-
-    @property
-    def depend_on_task_name(self) -> str:
-        return self._depend_on_task_name
-
-    @property
-    def lag(self) -> list[Duration]:
-        return self._lag
-
-    @property
-    def date(self) -> list[datetime]:
-        return self._date
-
-    @property
-    def cycle_name(self) -> str | None:
-        return self._cycle_name
-
-
-class Dependency(_DependencyBase):
-    def __init__(self, depend_on_task_name: str, lag: list[Duration], date: list[datetime], cycle_name: str | None):
-        super().__init__(depend_on_task_name, lag, date, cycle_name)
-        self._task: Task | None = None
-
-    def unroll(self, unrolled_task: UnrolledTask) -> Generator[UnrolledDependency, None, None]:
-        if len(self._date) == 0 and len(self._lag) == 0:
-            yield UnrolledDependency.from_dependency(self, unrolled_task, unrolled_task.unrolled_date)
-
-        for lag in self._lag:
-            lagged_date = unrolled_task.unrolled_date + lag
-            if (
-                lagged_date >= unrolled_task.unrolled_cycle.start_date
-                and lagged_date <= unrolled_task.unrolled_cycle.end_date
-            ):
-                yield UnrolledDependency.from_dependency(self, unrolled_task, lagged_date)
-
-        for date in self._date:
-            yield UnrolledDependency.from_dependency(self, unrolled_task, date)
-
-    @property
-    def task(self) -> Task | None:
-        return self._task
-
-    @task.setter
-    def task(self, task: Task):
-        if self.task is not None:
-            msg = f"Dependency was already assigned to task {self.task}. Cannot assign to task {task}."
-            raise ValueError(msg)
-        self._task = task
-
-    def __repr__(self) -> str:
-        if self._cycle_name is None:
-            identifier = f"{self.__class__.__name__} on task '{self.depend_on_task_name}' attached to task {self.task}"
+    def __getitem__(self, key: str | tuple(str, datetime | None)) -> TimeSeriesObject:
+        if isinstance(key, tuple):
+            name, date = key
         else:
-            identifier = f"{self.__class__.__name__} on task '{self.depend_on_task_name}' in cycle '{self.cycle_name}' attached to task {self.task}"
-        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
+            name, date = key, None
 
+        if name not in self._dict:
+            msg = f"entry {name} not found in Store"
+            raise KeyError(msg)
+        if isinstance(self._dict[name], TimeSeries):
+            if date is None:
+                msg = f"entry {name} is a TimeSeries, must be accessed by date"
+                raise KeyError(msg)
+            return self._dict[name][date]
+        if date is not None:
+            msg = f"entry {name} is not a TimeSeries, cannot be accessed by date"
+            raise KeyError(msg)
+        return self._dict[name]
 
-class UnrolledDependency(_DependencyBase):
-    """
-    This class should be only initiated through unrolling a cycle.
-    """
+    @staticmethod
+    def _resolve_target_dates(spec, ref_date: datetime | None) -> Iterator[datetime]:
+        if not spec.lag and not spec.date:
+            yield ref_date
+        if spec.lag:
+            for lag in spec.lag:
+                yield ref_date + lag
+        if spec.date:
+            yield from spec.date
 
-    @classmethod
-    def from_dependency(cls, depend: Dependency, unrolled_task: UnrolledTask, unrolled_date: datetime):
-        return cls(unrolled_task, unrolled_date, depend.depend_on_task_name, depend.lag, depend.date, depend.cycle_name)
-
-    def __init__(
-        self,
-        unrolled_task: UnrolledTask,
-        unrolled_date: datetime,
-        depend_on_task_name: str,
-        lag: list[Duration],
-        date: list[datetime],
-        cycle_name: str | None,
-    ):
-        super().__init__(depend_on_task_name, lag, date, cycle_name)
-        self._unrolled_task = unrolled_task
-        self._unrolled_date = unrolled_date
-
-    def __repr__(self) -> str:
-        if self._cycle_name is None:
-            identifier = (
-                f"{self.__class__.__name__} on task '{self.depend_on_task_name}' with date {self.unrolled_date}"
-            )
-        else:
-            identifier = f"{self.__class__.__name__} on task '{self.depend_on_task_name}' in cycle '{self.cycle_name}' with date {self.unrolled_date}"
-        return super().__repr__().replace(f"{self.__class__.__name__}", identifier)
-
-    @property
-    def depend_on_task(self) -> UnrolledTask:
-        """
-        throws error if not found
-        """
-        # for now we only support looking in the same cycle
-        workflow = self._unrolled_task.unrolled_cycle.workflow
-        if self._cycle_name is None:
-            tasks_to_search = [
-                cycle.unrolled_tasks for cycle in workflow.unrolled_cycles if cycle.unrolled_date == self._unrolled_date
-            ]
-            potential_tasks = [
-                task for task in chain.from_iterable(tasks_to_search) if task.name == self._depend_on_task_name
-            ]
-            if len(potential_tasks) > 1:
-                msg = (
-                    f"Found multiple instances of the task '{self._depend_on_task_name}' with date {self._unrolled_date}"
-                    " for dependency of the task {self._unrolled_task}. Please specify a cycle name."
-                )
+    def iter_from_cycle_spec(
+        self, spec: ConfigCycleSpec, ref_date: datetime | None = None
+    ) -> Iterator[TimeSeriesObject]:
+        name = spec.name
+        if isinstance(self._dict[name], TimeSeries):
+            if ref_date is None and spec.date is []:
+                msg = "TimeSeries object must be referenced by dates"
                 raise ValueError(msg)
-            if len(potential_tasks) == 0:
-                msg = (
-                    f"Found no instance of the task '{self._depend_on_task_name}' with date {self._unrolled_date}"
-                    f" for dependency attached to task {self._unrolled_task}."
-                )
-                raise ValueError(msg)
-            return potential_tasks[0]
-
-        cycle = workflow.unrolled_cycles_map[(self._cycle_name, self._unrolled_date)]
-        return cycle.unrolled_tasks_map[self._depend_on_task_name]
-
-    @property
-    def unrolled_task(self) -> UnrolledTask:
-        return self._unrolled_task
-
-    @property
-    def unrolled_date(self) -> datetime:
-        return self._unrolled_date
-
-
-class _TaskBase:
-    """
-    Common class for Task and UnrolledTask to reduce code duplications
-    """
-
-    def __init__(
-        self,
-        name: str,
-        command: str,
-        inputs: list[Data],
-        outputs: list[Data],
-        depends: list[Dependency],
-        command_option: str | None,
-    ):
-        self._name = name
-        self._command = expandvars(command)
-        self._inputs = inputs
-        self._outputs = outputs
-        self._depends = depends
-        self._command_option = command_option
-
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @property
-    def command(self) -> str:
-        return self._command
-
-    @property
-    def inputs(self) -> list[Data]:
-        return self._inputs
-
-    @property
-    def outputs(self) -> list[Data]:
-        return self._outputs
-
-    @property
-    def command_option(self) -> str | None:
-        return self._command_option
-
-    @property
-    def depends(self) -> list[Dependency]:
-        return self._depends
-
-
-class Task(_TaskBase):
-    """A task that is created during the unrolling of a cycle."""
-
-    def __init__(
-        self,
-        name: str,
-        command: str,
-        inputs: list[Data],
-        outputs: list[Data],
-        depends: list[Dependency],
-        command_option: str | None,
-    ):
-        super().__init__(name, command, inputs, outputs, depends, command_option)
-        for input_ in inputs:
-            input_.task = self
-        for output in outputs:
-            output.task = self
-        for depend in depends:
-            depend.task = self
-        self._cycle: Cycle | None = None
-
-    def __repr__(self) -> str:
-        identifier = f"Task '{self.name}'"
-        if self.cycle is not None:
-            identifier += f" in cycle {self.cycle.name}"
-        return super().__repr__().replace("Task", identifier)
-
-    def unroll(self, unrolled_cycle: UnrolledCycle) -> Generator[tuple[str, UnrolledTask], None, None]:
-        # an unrolled task is just one task, since the date is determined
-        # by the cycle, but we keep the pattern for consistency
-        unrolled_task = UnrolledTask.from_task(self, unrolled_cycle)
-        yield unrolled_task.name, unrolled_task
-
-    @property
-    def cycle(self) -> Cycle | None:
-        return self._cycle
-
-    @cycle.setter
-    def cycle(self, cycle: Cycle):
-        if self._cycle is not None:
-            msg = f"Task {self} was already assigned to cycle {self._cycle}. Cannot assign task to cycle {cycle}."
-            raise ValueError(msg)
-        self._cycle = cycle
-
-
-class UnrolledTask(_TaskBase):
-    """
-    This class should be only initiated through unrolling a cycle.
-    """
-
-    @classmethod
-    def from_task(cls, task: Task, unrolled_cycle: UnrolledCycle):
-        return cls(
-            unrolled_cycle, task.name, task.command, task.inputs, task.outputs, task.depends, task.command_option
-        )
-
-    def __init__(
-        self,
-        unrolled_cycle: UnrolledCycle,
-        name: str,
-        command: str,
-        inputs: list[Data],
-        outputs: list[Data],
-        depends: list[Dependency],
-        command_option: str | None,
-    ):
-        super().__init__(name, command, inputs, outputs, depends, command_option)
-        self._unrolled_cycle = unrolled_cycle
-        self._unrolled_inputs = list(self.unroll_inputs())
-        self._unrolled_outputs = list(self.unroll_outputs())
-        self._unrolled_depends = list(self.unroll_depends())
-
-    def __repr__(self) -> str:
-        if self.unrolled_cycle is None:
-            identifier = f"Task '{self.name}' with date {self.unrolled_date}"
+            for target_date in self._resolve_target_dates(spec, ref_date):
+                yield self._dict[name][target_date]
         else:
-            identifier = f"Task '{self.name}' in cycle {self.unrolled_cycle.name} with date {self.unrolled_date}"
-        return super().__repr__().replace("Task", identifier)
-
-    def unroll_inputs(self) -> Generator[UnrolledData, None, None]:
-        """
-        Outputs the inputs together with a unique identifier within the task
-        """
-        for input_ in self._inputs:
-            yield from input_.unroll(self)
-
-    def unroll_outputs(self) -> Generator[UnrolledData, None, None]:
-        for output in self._outputs:
-            yield from output.unroll(self)
-
-    def unroll_depends(self) -> Generator[UnrolledDependency, None, None]:
-        for depend in self._depends:
-            yield from depend.unroll(self)
-
-    @property
-    def unrolled_inputs(self) -> list[UnrolledData]:
-        return self._unrolled_inputs
-
-    @property
-    def unrolled_outputs(self) -> list[UnrolledData]:
-        return self._unrolled_outputs
-
-    @property
-    def unrolled_depends(self) -> list[UnrolledDependency]:
-        return self._unrolled_depends
-
-    @property
-    def unrolled_date(self) -> datetime:
-        return self._unrolled_cycle.unrolled_date
-
-    @property
-    def unrolled_cycle(self) -> UnrolledCycle:
-        return self._unrolled_cycle
-
-
-class _CycleBase:
-    def __init__(
-        self,
-        name: str,
-        tasks: list[Task],
-        start_date: str | datetime,
-        end_date: str | datetime,
-        period: str | Duration | None = None,
-    ):
-        self._name = name
-        self._tasks = tasks
-        self._start_date = start_date if isinstance(start_date, datetime) else datetime.fromisoformat(start_date)
-        self._end_date = end_date if isinstance(end_date, datetime) else datetime.fromisoformat(end_date)
-
-        if self._start_date > self._end_date:
-            msg = "For cycle {self} the start_date {start_date} lies after given end_date {end_date}."
-            raise ValueError(msg)
-
-        self._period = period if period is None or isinstance(period, Duration) else parse_duration(period)
-        if self._period is not None and TimeUtils.duration_is_less_equal_zero(self._period):
-            msg = f"For cycle {self} the period {period} is negative or zero."
-            raise ValueError(msg)
-
-        task_names = set()
-        for task in self._tasks:
-            if task.name in task_names:
-                msg = f"List of tasks does contain tasks with duplicate names. The task name '{task.name}' has been found twice."
+            if spec.lag or spec.date:
+                msg = f"item {name} is not a TimeSeries, cannot be referenced via date or lag"
                 raise ValueError(msg)
-            task_names.add(task.name)
+            yield self._dict[name]
 
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @property
-    def start_date(self) -> datetime:
-        return self._start_date
-
-    @property
-    def end_date(self) -> datetime:
-        return self._end_date
-
-    @property
-    def period(self) -> Duration | None:
-        return self._period
-
-    @property
-    def tasks(self) -> list[Task]:
-        return self._tasks
-
-
-class Cycle(_CycleBase):
-    def __init__(
-        self,
-        name: str,
-        tasks: list[Task],
-        start_date: str | datetime,
-        end_date: str | datetime,
-        period: str | Duration | None,
-    ):
-        super().__init__(name, tasks, start_date, end_date, period)
-        for task in self._tasks:
-            task.cycle = self
-
-        self._workflow: Workflow | None = None
-
-    def __repr__(self) -> str:
-        if self.workflow is None:
-            identifier = f"Cycle '{self.name}'"
-        else:
-            identifier = f"Cycle '{self.name}' in workflow {self.workflow.name}"
-        return super().__repr__().replace("Cycle", identifier)
-
-    def unroll(self) -> Generator[tuple[str, datetime, UnrolledCycle], None, None]:
-        if self._workflow is None:
-            msg = f"Cannot unroll cycle {self} because it was not attached to a workflow before."
-            raise ValueError(msg)
-        current_date = self._start_date
-        while current_date <= self._end_date:
-            unrolled_cycle = UnrolledCycle.from_cycle(self, current_date, self._workflow)
-            yield unrolled_cycle.name, unrolled_cycle.unrolled_date, unrolled_cycle
-            if self._period is None:
-                break
+    def values(self) -> Iterator[TimeSeriesObject]:
+        for item in self._dict.values():
+            if isinstance(item, TimeSeries):
+                yield from item.values()
             else:
-                current_date += self._period
-
-    @property
-    def workflow(self) -> Workflow | None:
-        return self._workflow
-
-    @workflow.setter
-    def workflow(self, workflow: Workflow):
-        if self._workflow is not None:
-            msg = f"Cycle {self} was already assigned to workflow {self._workflow}. Cannot assign cycle to workflow {workflow}."
-            raise ValueError(msg)
-        self._workflow = workflow
-
-
-class UnrolledCycle(_CycleBase):
-    """
-    This class should be only initiated through unrolling a cycle.
-    """
-
-    @classmethod
-    def from_cycle(cls, cycle: Cycle, unrolled_date: datetime, workflow: Workflow):
-        return cls(unrolled_date, cycle.name, cycle.tasks, cycle.start_date, cycle.end_date, cycle.period, workflow)
-
-    def __init__(
-        self,
-        unrolled_date: datetime,
-        name: str,
-        tasks: list[Task],
-        start_date: str | datetime,
-        end_date: str | datetime,
-        period: str | Duration | None,
-        workflow: Workflow,
-    ):
-        super().__init__(name, tasks, start_date, end_date, period)
-
-        self._unrolled_date = unrolled_date
-
-        self._unrolled_tasks_map = dict(self.unroll_tasks())
-        self._workflow = workflow
-
-    def __repr__(self) -> str:
-        if self.workflow is None:
-            identifier = f"UnrolledCycle '{self.name}' with date {self.unrolled_date}"
-        else:
-            identifier = f"UnrolledCycle '{self.name}' in workflow {self.workflow.name} with date {self.unrolled_date}"
-        return super().__repr__().replace("UnrolledCycle", identifier)
-
-    def unroll_tasks(self) -> Generator[tuple[str, UnrolledTask], None, None]:
-        for task in self._tasks:
-            yield from task.unroll(self)
-
-    @property
-    def unrolled_tasks(self) -> list[UnrolledTask]:
-        return list(self._unrolled_tasks_map.values())
-
-    @property
-    def unrolled_tasks_map(self) -> dict[str, UnrolledTask]:
-        return self._unrolled_tasks_map
-
-    @property
-    def unrolled_date(self) -> datetime:
-        return self._unrolled_date
-
-    @property
-    def workflow(self) -> Workflow:
-        return self._workflow
+                yield item
 
 
 class Workflow:
-    def __init__(self, name: str, cycles: list[Cycle]):
-        self._name = name
-        self._cycles = cycles
-        for cycle in self._cycles:
-            cycle.workflow = self
-        self._validate_cycles()
-        self._unrolled_cycles_map = {(name, date): cycle for name, date, cycle in self.unroll_cycles()}
+    """Internal reprensentation of a workflow"""
 
-        unrolled_outputs = []
-        for unrolled_cycle in self.unrolled_cycles:
-            for unrolled_task in unrolled_cycle.unrolled_tasks:
-                unrolled_outputs.extend(unrolled_task.unrolled_outputs)
-        self._unrolled_outputs = unrolled_outputs
+    def __init__(self, workflow_config: ConfigWorkflow) -> None:
+        self.tasks = Store()
+        self.data = Store()
+        self.cycles = Store()
 
-    def _validate_cycles(self):
-        """Checks if the defined workflow is correctly referencing key names."""
-        cycle_names = set()
-        for cycle in self._cycles:
-            if cycle.name in cycle_names:
-                msg = f"List of cycles does contain cycles with duplicate names. The cycle name '{cycle.name}' has been found twice."
-                raise ValueError(msg)
-            cycle_names.add(cycle.name)
+        # 1 - create availalbe data nodes
+        for data_config in workflow_config.data.available:
+            self.data[data_config.name] = Data.from_config(data_config, date=None)
 
-    def unroll_cycles(self) -> Generator[tuple[str, datetime, UnrolledCycle], None, None]:
-        for cycle in self._cycles:
-            yield from cycle.unroll()
+        # 2 - create output data nodes
+        for cycle_config in workflow_config.cycles:
+            for date in self.cycle_dates(cycle_config):
+                for task_ref in cycle_config.tasks:
+                    for data_ref in task_ref.outputs:
+                        data_name = data_ref.name
+                        data_config = workflow_config.data_dict[data_name]
+                        self.data[data_name, date] = Data.from_config(data_config, date=date)
 
-    @property
-    def name(self) -> str:
-        return self._name
+        # 3 - create cycles and tasks
+        for cycle_config in workflow_config.cycles:
+            cycle_name = cycle_config.name
+            for date in self.cycle_dates(cycle_config):
+                cycle_tasks = []
+                for task_ref in cycle_config.tasks:
+                    task_name = task_ref.name
+                    task_config = workflow_config.task_dict[task_name]
+                    self.tasks[task_name, date] = (
+                        task := Task.from_config(task_config, task_ref, workflow=self, date=date)
+                    )
+                    cycle_tasks.append(task)
+                self.cycles[cycle_name, date] = Cycle(name=cycle_name, tasks=cycle_tasks, date=date)
 
-    @property
-    def cycles(self) -> list[Cycle]:
-        return self._cycles
+        # 4 - Link wait on tasks
+        for task in self.tasks.values():
+            task.link_wait_on_tasks()
 
-    @property
-    def unrolled_cycles(self) -> list[UnrolledCycle]:
-        return list(self._unrolled_cycles_map.values())
+    def cycle_dates(self, cycle_config: ConfigCycle) -> Iterator[datetime]:
+        yield (date := cycle_config.start_date)
+        if cycle_config.period is not None:
+            while (date := date + cycle_config.period) < cycle_config.end_date:
+                yield date
 
-    @property
-    def unrolled_cycles_map(self) -> dict[tuple[str, datetime], UnrolledCycle]:
-        return self._unrolled_cycles_map
+    def _str_from_method(self, method_name: Literal["__str__", "_str_pretty_"]) -> str:
+        str_method = getattr(NodeStr, method_name)
+        ind = ""
+        lines = []
+        lines.append(f"{ind}cycles:")
+        ind += "  "
+        for cycle in self.cycles.values():
+            lines.append(f"{ind}- {str_method(cycle)}:")
+            ind += "    "
+            lines.append(f"{ind}tasks:")
+            ind += "  "
+            for task in cycle.tasks:
+                lines.append(f"{ind}- {str_method(task)}:")
+                ind += "    "
+                if task.inputs:
+                    lines.append(f"{ind}input:")
+                    ind += "  "
+                    lines.extend(f"{ind}- {str_method(data)}" for data in task.inputs)
+                    ind = ind[:-2]
+                if task.outputs:
+                    lines.append(f"{ind}output:")
+                    ind += "  "
+                    lines.extend(f"{ind}- {str_method(data)}" for data in task.outputs)
+                    ind = ind[:-2]
+                if task.wait_on:
+                    lines.append(f"{ind}wait on:")
+                    ind += "  "
+                    lines.extend(f"{ind}- {str_method(wait_task)}" for wait_task in task.wait_on)
+                    ind = ind[:-2]
+                ind = ind[:-4]
+            ind = ind[:-4]
+            ind = ind[:-2]
+        ind = ind[:-2]
+        return "\n".join(lines)
+
+    def __str__(self):
+        return self._str_from_method("__str__")
+
+    def _str_pretty_(self):
+        return self._str_from_method("_str_pretty_")
+
+    def _repr_pretty_(self, p, cycle):
+        p.text(self._str_pretty_() if not cycle else "...")
+
+    @classmethod
+    def from_yaml(cls, config_path: str):
+        return cls(load_workflow_config(config_path))
