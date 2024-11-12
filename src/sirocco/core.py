@@ -76,7 +76,7 @@ class Task(NodeStr):
     ) -> Self:
         inputs: list[Data] = []
         for input_spec in task_ref.inputs:
-            inputs.extend(data for data in workflow.data.get(input_spec, date) if data is not None)
+            inputs.extend(data for data in workflow.data.iter_from_cycle_spec(input_spec, date) if data is not None)
         outputs: list[Data] = [workflow.data[output_spec.name, date] for output_spec in task_ref.outputs]
 
         new = cls(
@@ -97,7 +97,9 @@ class Task(NodeStr):
     def link_wait_on_tasks(self):
         self.wait_on: list[Task] = []
         for wait_on_spec in self._wait_on_specs:
-            self.wait_on.extend(task for task in self.workflow.tasks.get(wait_on_spec, self.date) if task is not None)
+            self.wait_on.extend(
+                task for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.date) if task is not None
+            )
 
 
 @dataclass(kw_only=True)
@@ -228,7 +230,9 @@ class Store(Generic[TimeSeriesObject]):
         if spec.date:
             yield from spec.date
 
-    def get(self, spec: ConfigCycleSpec, ref_date: datetime | None = None) -> Iterator[TimeSeriesObject]:
+    def iter_from_cycle_spec(
+        self, spec: ConfigCycleSpec, ref_date: datetime | None = None
+    ) -> Iterator[TimeSeriesObject]:
         name = spec.name
         if isinstance(self._dict[name], TimeSeries):
             if ref_date is None and spec.date is []:
@@ -251,10 +255,9 @@ class Store(Generic[TimeSeriesObject]):
 
 
 class Workflow:
-    """Internal reprensentation of a worflow"""
+    """Internal reprensentation of a workflow"""
 
     def __init__(self, workflow_config: ConfigWorkflow) -> None:
-        self.name = workflow_config.name
         self.tasks = Store()
         self.data = Store()
         self.cycles = Store()
