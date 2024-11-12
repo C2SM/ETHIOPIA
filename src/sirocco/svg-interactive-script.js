@@ -1,9 +1,9 @@
 function addInteractivity(evt) {
 
-	var svg = evt.target;
+    var svg = evt.target;
     var edges = document.getElementsByClassName('edge');
     var nodes = document.getElementsByClassName('node');
-	var clusters = document.getElementsByClassName('cluster');
+    var clusters = document.getElementsByClassName('cluster');
     var selectedElement, offset, transform, nodrag, origmousepos;
 
     svg.addEventListener('mousedown', startDrag);
@@ -58,7 +58,7 @@ function addInteractivity(evt) {
             transform = transforms.getItem(0);
             offset.x -= transform.matrix.e;
             offset.y -= transform.matrix.f;
-		}
+        }
     }
 
     function drag(evt) {
@@ -73,21 +73,21 @@ function addInteractivity(evt) {
             <!-- comment out the following line if you wnat drags to stay in place, with this line they snap back to their original position after drag end -->
             //if statement to avoid the header section being affected of the translate (0,0)
         if (selectedElement){
-			if (selectedElement.classList.contains('header')){
-				selectedElement = false;
-			} else {
-				selectedElement = false;
-				transform.setTranslate(0,0);
-			}
-		}
-		var currentmousepos=getMousePosition(evt);
-		if (currentmousepos.x===origmousepos.x|currentmousepos.y===origmousepos.y){
-			nodrag=true;
-		} else {
-			nodrag=false;
-		}
+            if (selectedElement.classList.contains('header')){
+                selectedElement = false;
+            } else {
+                selectedElement = false;
+                transform.setTranslate(0,0);
+            }
+        }
+        var currentmousepos=getMousePosition(evt);
+        if (currentmousepos.x===origmousepos.x|currentmousepos.y===origmousepos.y){
+            nodrag=true;
+        } else {
+            nodrag=false;
+        }
 
-	}
+    }
 
     function clickEdge() {
         if (nodrag) {
@@ -137,28 +137,28 @@ function addInteractivity(evt) {
     }
 
     function animateEdge(edge){
-		var path = edge.querySelector('path');
-		var polygon = edge.querySelector('polygon');
-		var length = path.getTotalLength();
-		// Clear any previous transition
-		path.style.transition = path.style.WebkitTransition = 'none';
-		if (polygon){polygon.style.transition = polygon.style.WebkitTransition = 'none';};
-		// Set up the starting positions
-		path.style.strokeDasharray = length + ' ' + length;
-		path.style.strokeDashoffset = length;
-		if(polygon){polygon.style.opacity='0';};
-		// Trigger a layout so styles are calculated & the browser
-		// picks up the starting position before animating
-		path.getBoundingClientRect();
-		// Define our transition
-		path.style.transition = path.style.WebkitTransition =
-		    'stroke-dashoffset 2s ease-in-out';
-		if (polygon){polygon.style.transition = polygon.style.WebkitTransition =
-		             'fill-opacity 1s ease-in-out 2s';};
-		// Go!
-		path.style.strokeDashoffset = '0';
+        var path = edge.querySelector('path');
+        var polygon = edge.querySelector('polygon');
+        var length = path.getTotalLength();
+        // Clear any previous transition
+        path.style.transition = path.style.WebkitTransition = 'none';
+        if (polygon){polygon.style.transition = polygon.style.WebkitTransition = 'none';};
+        // Set up the starting positions
+        path.style.strokeDasharray = length + ' ' + length;
+        path.style.strokeDashoffset = length;
+        if(polygon){polygon.style.opacity='0';};
+        // Trigger a layout so styles are calculated & the browser
+        // picks up the starting position before animating
+        path.getBoundingClientRect();
+        // Define our transition
+        path.style.transition = path.style.WebkitTransition =
+            'stroke-dashoffset 2s ease-in-out';
+        if (polygon){polygon.style.transition = polygon.style.WebkitTransition =
+                     'fill-opacity 1s ease-in-out 2s';};
+        // Go!
+        path.style.strokeDashoffset = '0';
         if (polygon){setTimeout(function(){polygon.style.opacity='1';},2000)};
-	}
+    }
 }
 
 function adjustViewBox(svg) {
