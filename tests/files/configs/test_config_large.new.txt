@@ -1,0 +1,433 @@
+cycles:
+  - init:
+    tasks:
+      - extpar:
+        inputs:
+        - obs_data
+      outputs:
+        - extpar_file
+  - icon_bimonthly [2025-01-01 00:00:00]:
+    tasks:
+      - preproc [2025-01-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2025-01-01 00:00:00]
+    - icon [2025-01-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2025-01-01 00:00:00]
+      outputs:
+        - stream_1 [2025-01-01 00:00:00]
+        - stream_2 [2025-01-01 00:00:00]
+        - icon_restart [2025-01-01 00:00:00]
+    - postproc_1 [2025-01-01 00:00:00]:
+        inputs:
+        - stream_1 [2025-01-01 00:00:00]
+      outputs:
+        - postout_1 [2025-01-01 00:00:00]
+    - store_and_clean_1 [2025-01-01 00:00:00]:
+        inputs:
+        - postout_1 [2025-01-01 00:00:00]
+        - stream_1 [2025-01-01 00:00:00]
+        - icon_input [2025-01-01 00:00:00]
+      outputs:
+        - stored_data_1 [2025-01-01 00:00:00]
+  - icon_bimonthly [2025-03-01 00:00:00]:
+    tasks:
+      - preproc [2025-03-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2025-03-01 00:00:00]
+    - icon [2025-03-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2025-03-01 00:00:00]
+        - icon_restart [2025-01-01 00:00:00]
+      outputs:
+        - stream_1 [2025-03-01 00:00:00]
+        - stream_2 [2025-03-01 00:00:00]
+        - icon_restart [2025-03-01 00:00:00]
+    - postproc_1 [2025-03-01 00:00:00]:
+        inputs:
+        - stream_1 [2025-03-01 00:00:00]
+      outputs:
+        - postout_1 [2025-03-01 00:00:00]
+    - store_and_clean_1 [2025-03-01 00:00:00]:
+        inputs:
+        - postout_1 [2025-03-01 00:00:00]
+        - stream_1 [2025-03-01 00:00:00]
+        - icon_input [2025-03-01 00:00:00]
+      outputs:
+        - stored_data_1 [2025-03-01 00:00:00]
+  - icon_bimonthly [2025-05-01 00:00:00]:
+    tasks:
+      - preproc [2025-05-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2025-05-01 00:00:00]
+      wait on:
+        - icon [2025-01-01 00:00:00]
+    - icon [2025-05-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2025-05-01 00:00:00]
+        - icon_restart [2025-03-01 00:00:00]
+      outputs:
+        - stream_1 [2025-05-01 00:00:00]
+        - stream_2 [2025-05-01 00:00:00]
+        - icon_restart [2025-05-01 00:00:00]
+    - postproc_1 [2025-05-01 00:00:00]:
+        inputs:
+        - stream_1 [2025-05-01 00:00:00]
+      outputs:
+        - postout_1 [2025-05-01 00:00:00]
+    - store_and_clean_1 [2025-05-01 00:00:00]:
+        inputs:
+        - postout_1 [2025-05-01 00:00:00]
+        - stream_1 [2025-05-01 00:00:00]
+        - icon_input [2025-05-01 00:00:00]
+      outputs:
+        - stored_data_1 [2025-05-01 00:00:00]
+  - icon_bimonthly [2025-07-01 00:00:00]:
+    tasks:
+      - preproc [2025-07-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2025-07-01 00:00:00]
+      wait on:
+        - icon [2025-03-01 00:00:00]
+    - icon [2025-07-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2025-07-01 00:00:00]
+        - icon_restart [2025-05-01 00:00:00]
+      outputs:
+        - stream_1 [2025-07-01 00:00:00]
+        - stream_2 [2025-07-01 00:00:00]
+        - icon_restart [2025-07-01 00:00:00]
+    - postproc_1 [2025-07-01 00:00:00]:
+        inputs:
+        - stream_1 [2025-07-01 00:00:00]
+      outputs:
+        - postout_1 [2025-07-01 00:00:00]
+    - store_and_clean_1 [2025-07-01 00:00:00]:
+        inputs:
+        - postout_1 [2025-07-01 00:00:00]
+        - stream_1 [2025-07-01 00:00:00]
+        - icon_input [2025-07-01 00:00:00]
+      outputs:
+        - stored_data_1 [2025-07-01 00:00:00]
+  - icon_bimonthly [2025-09-01 00:00:00]:
+    tasks:
+      - preproc [2025-09-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2025-09-01 00:00:00]
+      wait on:
+        - icon [2025-05-01 00:00:00]
+    - icon [2025-09-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2025-09-01 00:00:00]
+        - icon_restart [2025-07-01 00:00:00]
+      outputs:
+        - stream_1 [2025-09-01 00:00:00]
+        - stream_2 [2025-09-01 00:00:00]
+        - icon_restart [2025-09-01 00:00:00]
+    - postproc_1 [2025-09-01 00:00:00]:
+        inputs:
+        - stream_1 [2025-09-01 00:00:00]
+      outputs:
+        - postout_1 [2025-09-01 00:00:00]
+    - store_and_clean_1 [2025-09-01 00:00:00]:
+        inputs:
+        - postout_1 [2025-09-01 00:00:00]
+        - stream_1 [2025-09-01 00:00:00]
+        - icon_input [2025-09-01 00:00:00]
+      outputs:
+        - stored_data_1 [2025-09-01 00:00:00]
+  - icon_bimonthly [2025-11-01 00:00:00]:
+    tasks:
+      - preproc [2025-11-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2025-11-01 00:00:00]
+      wait on:
+        - icon [2025-07-01 00:00:00]
+    - icon [2025-11-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2025-11-01 00:00:00]
+        - icon_restart [2025-09-01 00:00:00]
+      outputs:
+        - stream_1 [2025-11-01 00:00:00]
+        - stream_2 [2025-11-01 00:00:00]
+        - icon_restart [2025-11-01 00:00:00]
+    - postproc_1 [2025-11-01 00:00:00]:
+        inputs:
+        - stream_1 [2025-11-01 00:00:00]
+      outputs:
+        - postout_1 [2025-11-01 00:00:00]
+    - store_and_clean_1 [2025-11-01 00:00:00]:
+        inputs:
+        - postout_1 [2025-11-01 00:00:00]
+        - stream_1 [2025-11-01 00:00:00]
+        - icon_input [2025-11-01 00:00:00]
+      outputs:
+        - stored_data_1 [2025-11-01 00:00:00]
+  - icon_bimonthly [2026-01-01 00:00:00]:
+    tasks:
+      - preproc [2026-01-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2026-01-01 00:00:00]
+      wait on:
+        - icon [2025-09-01 00:00:00]
+    - icon [2026-01-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2026-01-01 00:00:00]
+        - icon_restart [2025-11-01 00:00:00]
+      outputs:
+        - stream_1 [2026-01-01 00:00:00]
+        - stream_2 [2026-01-01 00:00:00]
+        - icon_restart [2026-01-01 00:00:00]
+    - postproc_1 [2026-01-01 00:00:00]:
+        inputs:
+        - stream_1 [2026-01-01 00:00:00]
+      outputs:
+        - postout_1 [2026-01-01 00:00:00]
+    - store_and_clean_1 [2026-01-01 00:00:00]:
+        inputs:
+        - postout_1 [2026-01-01 00:00:00]
+        - stream_1 [2026-01-01 00:00:00]
+        - icon_input [2026-01-01 00:00:00]
+      outputs:
+        - stored_data_1 [2026-01-01 00:00:00]
+  - icon_bimonthly [2026-03-01 00:00:00]:
+    tasks:
+      - preproc [2026-03-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2026-03-01 00:00:00]
+      wait on:
+        - icon [2025-11-01 00:00:00]
+    - icon [2026-03-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2026-03-01 00:00:00]
+        - icon_restart [2026-01-01 00:00:00]
+      outputs:
+        - stream_1 [2026-03-01 00:00:00]
+        - stream_2 [2026-03-01 00:00:00]
+        - icon_restart [2026-03-01 00:00:00]
+    - postproc_1 [2026-03-01 00:00:00]:
+        inputs:
+        - stream_1 [2026-03-01 00:00:00]
+      outputs:
+        - postout_1 [2026-03-01 00:00:00]
+    - store_and_clean_1 [2026-03-01 00:00:00]:
+        inputs:
+        - postout_1 [2026-03-01 00:00:00]
+        - stream_1 [2026-03-01 00:00:00]
+        - icon_input [2026-03-01 00:00:00]
+      outputs:
+        - stored_data_1 [2026-03-01 00:00:00]
+  - icon_bimonthly [2026-05-01 00:00:00]:
+    tasks:
+      - preproc [2026-05-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2026-05-01 00:00:00]
+      wait on:
+        - icon [2026-01-01 00:00:00]
+    - icon [2026-05-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2026-05-01 00:00:00]
+        - icon_restart [2026-03-01 00:00:00]
+      outputs:
+        - stream_1 [2026-05-01 00:00:00]
+        - stream_2 [2026-05-01 00:00:00]
+        - icon_restart [2026-05-01 00:00:00]
+    - postproc_1 [2026-05-01 00:00:00]:
+        inputs:
+        - stream_1 [2026-05-01 00:00:00]
+      outputs:
+        - postout_1 [2026-05-01 00:00:00]
+    - store_and_clean_1 [2026-05-01 00:00:00]:
+        inputs:
+        - postout_1 [2026-05-01 00:00:00]
+        - stream_1 [2026-05-01 00:00:00]
+        - icon_input [2026-05-01 00:00:00]
+      outputs:
+        - stored_data_1 [2026-05-01 00:00:00]
+  - icon_bimonthly [2026-07-01 00:00:00]:
+    tasks:
+      - preproc [2026-07-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2026-07-01 00:00:00]
+      wait on:
+        - icon [2026-03-01 00:00:00]
+    - icon [2026-07-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2026-07-01 00:00:00]
+        - icon_restart [2026-05-01 00:00:00]
+      outputs:
+        - stream_1 [2026-07-01 00:00:00]
+        - stream_2 [2026-07-01 00:00:00]
+        - icon_restart [2026-07-01 00:00:00]
+    - postproc_1 [2026-07-01 00:00:00]:
+        inputs:
+        - stream_1 [2026-07-01 00:00:00]
+      outputs:
+        - postout_1 [2026-07-01 00:00:00]
+    - store_and_clean_1 [2026-07-01 00:00:00]:
+        inputs:
+        - postout_1 [2026-07-01 00:00:00]
+        - stream_1 [2026-07-01 00:00:00]
+        - icon_input [2026-07-01 00:00:00]
+      outputs:
+        - stored_data_1 [2026-07-01 00:00:00]
+  - icon_bimonthly [2026-09-01 00:00:00]:
+    tasks:
+      - preproc [2026-09-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2026-09-01 00:00:00]
+      wait on:
+        - icon [2026-05-01 00:00:00]
+    - icon [2026-09-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2026-09-01 00:00:00]
+        - icon_restart [2026-07-01 00:00:00]
+      outputs:
+        - stream_1 [2026-09-01 00:00:00]
+        - stream_2 [2026-09-01 00:00:00]
+        - icon_restart [2026-09-01 00:00:00]
+    - postproc_1 [2026-09-01 00:00:00]:
+        inputs:
+        - stream_1 [2026-09-01 00:00:00]
+      outputs:
+        - postout_1 [2026-09-01 00:00:00]
+    - store_and_clean_1 [2026-09-01 00:00:00]:
+        inputs:
+        - postout_1 [2026-09-01 00:00:00]
+        - stream_1 [2026-09-01 00:00:00]
+        - icon_input [2026-09-01 00:00:00]
+      outputs:
+        - stored_data_1 [2026-09-01 00:00:00]
+  - icon_bimonthly [2026-11-01 00:00:00]:
+    tasks:
+      - preproc [2026-11-01 00:00:00]:
+        inputs:
+        - grid_file
+        - extpar_file
+        - ERA5
+      outputs:
+        - icon_input [2026-11-01 00:00:00]
+      wait on:
+        - icon [2026-07-01 00:00:00]
+    - icon [2026-11-01 00:00:00]:
+        inputs:
+        - grid_file
+        - icon_input [2026-11-01 00:00:00]
+        - icon_restart [2026-09-01 00:00:00]
+      outputs:
+        - stream_1 [2026-11-01 00:00:00]
+        - stream_2 [2026-11-01 00:00:00]
+        - icon_restart [2026-11-01 00:00:00]
+    - postproc_1 [2026-11-01 00:00:00]:
+        inputs:
+        - stream_1 [2026-11-01 00:00:00]
+      outputs:
+        - postout_1 [2026-11-01 00:00:00]
+    - store_and_clean_1 [2026-11-01 00:00:00]:
+        inputs:
+        - postout_1 [2026-11-01 00:00:00]
+        - stream_1 [2026-11-01 00:00:00]
+        - icon_input [2026-11-01 00:00:00]
+      outputs:
+        - stored_data_1 [2026-11-01 00:00:00]
+  - yearly [2025-01-01 00:00:00]:
+    tasks:
+      - postproc_2 [2025-01-01 00:00:00]:
+        inputs:
+        - stream_2 [2025-01-01 00:00:00]
+        - stream_2 [2025-03-01 00:00:00]
+        - stream_2 [2025-05-01 00:00:00]
+        - stream_2 [2025-07-01 00:00:00]
+        - stream_2 [2025-09-01 00:00:00]
+        - stream_2 [2025-11-01 00:00:00]
+      outputs:
+        - postout_2 [2025-01-01 00:00:00]
+    - store_and_clean_2 [2025-01-01 00:00:00]:
+        inputs:
+        - postout_2 [2025-01-01 00:00:00]
+        - stream_2 [2025-01-01 00:00:00]
+        - stream_2 [2025-03-01 00:00:00]
+        - stream_2 [2025-05-01 00:00:00]
+        - stream_2 [2025-07-01 00:00:00]
+        - stream_2 [2025-09-01 00:00:00]
+        - stream_2 [2025-11-01 00:00:00]
+      outputs:
+        - stored_data_2 [2025-01-01 00:00:00]
+  - yearly [2026-01-01 00:00:00]:
+    tasks:
+      - postproc_2 [2026-01-01 00:00:00]:
+        inputs:
+        - stream_2 [2026-01-01 00:00:00]
+        - stream_2 [2026-03-01 00:00:00]
+        - stream_2 [2026-05-01 00:00:00]
+        - stream_2 [2026-07-01 00:00:00]
+        - stream_2 [2026-09-01 00:00:00]
+        - stream_2 [2026-11-01 00:00:00]
+      outputs:
+        - postout_2 [2026-01-01 00:00:00]
+    - store_and_clean_2 [2026-01-01 00:00:00]:
+        inputs:
+        - postout_2 [2026-01-01 00:00:00]
+        - stream_2 [2026-01-01 00:00:00]
+        - stream_2 [2026-03-01 00:00:00]
+        - stream_2 [2026-05-01 00:00:00]
+        - stream_2 [2026-07-01 00:00:00]
+        - stream_2 [2026-09-01 00:00:00]
+        - stream_2 [2026-11-01 00:00:00]
+      outputs:
+        - stored_data_2 [2026-01-01 00:00:00]
