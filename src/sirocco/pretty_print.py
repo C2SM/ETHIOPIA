@@ -11,7 +11,7 @@ from . import core
 @dataclasses.dataclass
 class PrettyPrinter:
     """
-    Pretty print unrolled workflow graph elements in a reproducable and human readable format.
+    Pretty print unrolled workflow graph elements in a reproducible and human readable format.
 
     This can be used to compare workflow graphs by their string representation.
     Colored output can be enabled by setting ".colors" to True, this will use terminal control characters,
