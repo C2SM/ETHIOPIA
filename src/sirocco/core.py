@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Generic, Literal, Self, TypeVar
-
-from termcolor import colored
+from typing import TYPE_CHECKING, Generic, Self, TypeVar
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
@@ -30,23 +28,13 @@ logger = logging.getLogger(__name__)
 TimeSeriesObject = TypeVar("TimeSeriesObject")
 
 
-class NodeStr:
+class BaseNode:
+    name: str
     color: str
-
-    def _str_pretty_(self) -> str:
-        repr_str = colored(self.name, self.color, attrs=["bold"])
-        if self.date is not None:
-            repr_str += colored(f" [{self.date}]", self.color)
-        return repr_str
-
-    def __str__(self) -> str:
-        if self.date is None:
-            return self.name
-        return f"{self.name} [{self.date}]"
 
 
 @dataclass
-class Task(NodeStr):
+class Task(BaseNode):
     name: str
     workflow: Workflow
     outputs: list[Data] = field(default_factory=list)
@@ -72,7 +60,11 @@ class Task(NodeStr):
     # use classmethod instead of custom init
     @classmethod
     def from_config(
-        cls, config: ConfigTask, task_ref: ConfigCycleTask, workflow: Workflow, date: datetime | None = None
+        cls,
+        config: ConfigTask,
+        task_ref: ConfigCycleTask,
+        workflow: Workflow,
+        date: datetime | None = None,
     ) -> Self:
         inputs: list[Data] = []
         for input_spec in task_ref.inputs:
@@ -103,7 +95,7 @@ class Task(NodeStr):
 
 
 @dataclass(kw_only=True)
-class Data(NodeStr):
+class Data(BaseNode):
     """Internal representation of a data node"""
 
     color: str = "light_blue"
@@ -125,7 +117,7 @@ class Data(NodeStr):
 
 
 @dataclass(kw_only=True)
-class Cycle(NodeStr):
+class Cycle(BaseNode):
     """Internal reprenstation of a cycle"""
 
     color: str = "light_green"
@@ -298,50 +290,6 @@ class Workflow:
         if cycle_config.period is not None:
             while (date := date + cycle_config.period) < cycle_config.end_date:
                 yield date
-
-    def _str_from_method(self, method_name: Literal["__str__", "_str_pretty_"]) -> str:
-        str_method = getattr(NodeStr, method_name)
-        ind = ""
-        lines = []
-        lines.append(f"{ind}cycles:")
-        ind += "  "
-        for cycle in self.cycles.values():
-            lines.append(f"{ind}- {str_method(cycle)}:")
-            ind += "    "
-            lines.append(f"{ind}tasks:")
-            ind += "  "
-            for task in cycle.tasks:
-                lines.append(f"{ind}- {str_method(task)}:")
-                ind += "    "
-                if task.inputs:
-                    lines.append(f"{ind}input:")
-                    ind += "  "
-                    lines.extend(f"{ind}- {str_method(data)}" for data in task.inputs)
-                    ind = ind[:-2]
-                if task.outputs:
-                    lines.append(f"{ind}output:")
-                    ind += "  "
-                    lines.extend(f"{ind}- {str_method(data)}" for data in task.outputs)
-                    ind = ind[:-2]
-                if task.wait_on:
-                    lines.append(f"{ind}wait on:")
-                    ind += "  "
-                    lines.extend(f"{ind}- {str_method(wait_task)}" for wait_task in task.wait_on)
-                    ind = ind[:-2]
-                ind = ind[:-4]
-            ind = ind[:-4]
-            ind = ind[:-2]
-        ind = ind[:-2]
-        return "\n".join(lines)
-
-    def __str__(self):
-        return self._str_from_method("__str__")
-
-    def _str_pretty_(self):
-        return self._str_from_method("_str_pretty_")
-
-    def _repr_pretty_(self, p, cycle):
-        p.text(self._str_pretty_() if not cycle else "...")
 
     @classmethod
     def from_yaml(cls, config_path: str):
