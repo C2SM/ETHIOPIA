@@ -105,9 +105,7 @@ class PrettyPrinter:
 
     @format.register
     def format_cycle(self, obj: core.Cycle) -> str:
-        tasks = self.as_block(
-            "tasks", "\n".join(self.format(task) for task in obj.tasks)
-        )
+        tasks = self.as_block("tasks", "\n".join(self.format(task) for task in obj.tasks))
         return self.as_item(self.as_block(self.format_basic(obj), tasks))
 
     @format.register
@@ -117,29 +115,21 @@ class PrettyPrinter:
             sections.append(
                 self.as_block(
                     "input",
-                    "\n".join(
-                        self.as_item(self.format_basic(inp)) for inp in obj.inputs
-                    ),
+                    "\n".join(self.as_item(self.format_basic(inp)) for inp in obj.inputs),
                 )
             )
         if obj.outputs:
             sections.append(
                 self.as_block(
                     "output",
-                    "\n".join(
-                        self.as_item(self.format_basic(output))
-                        for output in obj.outputs
-                    ),
+                    "\n".join(self.as_item(self.format_basic(output)) for output in obj.outputs),
                 )
             )
         if obj.wait_on:
             sections.append(
                 self.as_block(
                     "wait on",
-                    "\n".join(
-                        self.as_item(self.format_basic(waiton))
-                        for waiton in obj.wait_on
-                    ),
+                    "\n".join(self.as_item(self.format_basic(waiton)) for waiton in obj.wait_on),
                 )
             )
         return self.as_item(

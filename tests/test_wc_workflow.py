@@ -38,9 +38,7 @@ def test_parse_config_file(config_case, pprinter):
         raise ValueError(msg)
 
 
-@pytest.mark.skip(
-    reason="don't run it each time, uncomment to regenerate serilaized data"
-)
+@pytest.mark.skip(reason="don't run it each time, uncomment to regenerate serilaized data")
 def test_serialize_workflow(config_case):
     config_path, reference_path = config_case
     reference_path.write_text(pprinter.format(Workflow.from_yaml(config_path)))
