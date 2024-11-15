@@ -71,7 +71,7 @@ function addInteractivity(evt) {
 
     function endDrag(evt) {
             <!-- comment out the following line if you wnat drags to stay in place, with this line they snap back to their original position after drag end -->
-            //if statement to avoid the header section being affected of the translate (0,0)
+            //if statement to avoid the header section being affected by the translate (0,0)
         if (selectedElement){
             if (selectedElement.classList.contains('header')){
                 selectedElement = false;
