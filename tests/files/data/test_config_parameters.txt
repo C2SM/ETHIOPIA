@@ -3,42 +3,42 @@ cycles:
       tasks:
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
