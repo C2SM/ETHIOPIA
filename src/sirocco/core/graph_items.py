@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from itertools import chain, product
+from os.path import expandvars
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, Self
 
 from sirocco.parsing._yaml_data_models import (
@@ -105,6 +107,11 @@ class Data(ConfigBaseDataSpecs, GraphItem):
             available=isinstance(config, ConfigAvailableData),
             coordinates=coordinates,
         )
+
+    @property
+    def path(self) -> Path:
+        # TODO yaml level?
+        return Path(expandvars(self.src))
 
 
 @dataclass
