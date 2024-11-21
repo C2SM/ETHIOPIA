@@ -44,12 +44,42 @@ class _NamedBaseModel(BaseModel):
         super().__init__(**name_and_spec)
 
 
+class _WhenBaseModel(BaseModel):
+    """Base class for when specifications"""
+
+    before: datetime | None = None
+    after: datetime | None = None
+    at: datetime | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_before_after_at_combination(cls, data: Any) -> Any:
+        if "at" in data and any(k in data for k in ("before", "after")):
+            msg = "'at' key is incompatible with 'before' and after'"
+            raise ValueError(msg)
+        if not any(k in data for k in ("at", "before", "after")):
+            msg = "use at least one of 'at', 'before' or 'after' keys"
+            raise ValueError(msg)
+        return data
+
+    @field_validator("before", "after", "at", mode="before")
+    @classmethod
+    def convert_datetime(cls, value) -> datetime:
+        if value is None:
+            return None
+        return datetime.fromisoformat(value)
+
+
+# TODO: Change class name, does not fit anymore wit hthe addition of `when` and `parameters`
+#       find something more related to graph specification in general
 class _LagDateBaseModel(BaseModel):
     """Base class for all classes containg a list of dates or time lags."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     date: list[datetime] = []  # this is safe in pydantic
     lag: list[Duration] = []  # this is safe in pydantic
+    when: _WhenBaseModel | None = None
+    parameters: dict | None = None
 
     @model_validator(mode="before")
     @classmethod
@@ -74,6 +104,19 @@ class _LagDateBaseModel(BaseModel):
             return []
         values = value if isinstance(value, list) else [value]
         return [datetime.fromisoformat(value) for value in values]
+
+    @field_validator("parameters", mode="before")
+    @classmethod
+    def check_dict_single_item(cls, params) -> dict:
+        if params is None:
+            return None
+        msg = "parameters must be mappings of a string to a single item"
+        if not isinstance(params, dict):
+            raise TypeError(msg)
+        for k, v in params.items():
+            if not isinstance(k, str) or isinstance(v, (list, dict)):
+                raise TypeError(msg)
+        return params
 
 
 class ConfigTask(_NamedBaseModel):
@@ -153,13 +196,13 @@ class ConfigData(BaseModel):
     generated: list[ConfigGeneratedData]
 
 
-class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
+class ConfigCycleTaskWaitOn(_NamedBaseModel, _LagDateBaseModel):
     """
     To create an instance of a input or output in a task in a cycle defined in a workflow file.
     """
 
     # TODO: Move to "wait_on" keyword in yaml instead of "depend"
-    name: str  # name of the task it depends on
+    name: str  # name of the task it waits on
     cycle_name: str | None = None
 
 
@@ -192,7 +235,7 @@ class ConfigCycleTask(_NamedBaseModel):
 
     inputs: list[ConfigCycleTaskInput | str] | None = Field(default_factory=list)
     outputs: list[ConfigCycleTaskOutput | str] | None = Field(default_factory=list)
-    depends: list[ConfigCycleTaskDepend | str] | None = Field(default_factory=list)
+    wait_on: list[ConfigCycleTaskWaitOn | str] | None = Field(default_factory=list)
 
     @field_validator("inputs", mode="before")
     @classmethod
@@ -220,19 +263,18 @@ class ConfigCycleTask(_NamedBaseModel):
                 outputs.append(value)
         return outputs
 
-    @field_validator("depends", mode="before")
+    @field_validator("wait_on", mode="before")
     @classmethod
-    def convert_cycle_task_depends(cls, values) -> list[ConfigCycleTaskDepend]:
-        depends = []
+    def convert_cycle_task_wait_on(cls, values) -> list[ConfigCycleTaskWaitOn]:
+        wait_on = []
         if values is None:
-            return depends
+            return wait_on
         for value in values:
             if isinstance(value, str):
-                depends.append({value: None})
+                wait_on.append({value: None})
             elif isinstance(value, dict):
-                depends.append(value)
-
-        return depends
+                wait_on.append(value)
+        return wait_on
 
 
 class ConfigCycle(_NamedBaseModel):

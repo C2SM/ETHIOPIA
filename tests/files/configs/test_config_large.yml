@@ -10,20 +10,24 @@ cycles:
   - icon_bimonthly:
       start_date: *root_start_date
       end_date: *root_end_date
-      period: P2M
+      period: 'P2M'
       tasks:
         - preproc:
             inputs: [grid_file, extpar_file, ERA5]
             outputs: [icon_input]
-            depends:
+            wait_on:
               - icon:
-                  lag: -P4M
+                  lag: '-P4M'
+                  when:
+                    after: '2025-03-01T00:00'
         - icon:
             inputs:
               - grid_file
               - icon_input
               - icon_restart:
                   lag: '-P2M'
+                  when:
+                    after: *root_start_date
             outputs: [stream_1, stream_2, icon_restart]
         - postproc_1:
             inputs: [stream_1]
@@ -34,7 +38,7 @@ cycles:
   - yearly:
       start_date: *root_start_date
       end_date: *root_end_date
-      period: P1Y
+      period: 'P1Y'
       tasks:
         - postproc_2:
             inputs:

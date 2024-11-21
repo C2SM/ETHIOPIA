@@ -11,11 +11,13 @@ cycles:
             inputs:
               - icon_restart:
                   lag: -P2M
+                  when:
+                    after: *root_start_date
             outputs: [icon_output, icon_restart]
   - lastly:
       tasks:
         - cleanup:
-            depends:
+            wait_on:
               - icon:
                   date: 2026-05-01T00:00
 tasks:
