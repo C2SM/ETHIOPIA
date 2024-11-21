@@ -23,7 +23,7 @@ scheduling:
             - ERA5
           output:
             - icon input
-          depends:
+          wait_on:
             - ICON:
                 lag: '-P4M'
                 # lag: '-P6M'

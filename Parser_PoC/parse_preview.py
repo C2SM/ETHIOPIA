@@ -29,7 +29,7 @@ class WcTask():
         self.run_spec = run_spec
         self.input = []
         self.output = []
-        self.depends = []
+        self.wait_on = []
 
 
 class WcData():
@@ -279,12 +279,12 @@ class WcGraph():
                         if not out_node.is_concrete():
                             cluster.append(out_node)
                 # add dependencies
-                for dep_spec in task_graph_spec.get('depends', []):
+                for dep_spec in task_graph_spec.get('wait_on', []):
                     if (dep_node := self.get_task(dep_spec)):
                         if isinstance(dep_node, list):
-                            task_node.depends.extend(dep_node)
+                            task_node.wait_on.extend(dep_node)
                         else:
-                            task_node.depends.append(dep_node)
+                            task_node.wait_on.append(dep_node)
                         self.add_edge(dep_node, task_node)
             # Add clsuter
             d1 = self.cycling_date
