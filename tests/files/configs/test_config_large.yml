@@ -17,17 +17,17 @@ cycles:
             outputs: [icon_input]
             wait_on:
               - icon:
-                  lag: '-P4M'
                   when:
                     after: '2025-03-01T00:00'
+                  lag: '-P4M'
         - icon:
             inputs:
               - grid_file
               - icon_input
               - icon_restart:
-                  lag: '-P2M'
                   when:
                     after: *root_start_date
+                  lag: '-P2M'
             outputs: [stream_1, stream_2, icon_restart]
         - postproc_1:
             inputs: [stream_1]
