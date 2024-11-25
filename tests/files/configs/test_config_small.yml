@@ -10,9 +10,9 @@ cycles:
         - icon:
             inputs:
               - icon_restart:
-                  lag: -P2M
                   when:
                     after: *root_start_date
+                  lag: -P2M
             outputs: [icon_output, icon_restart]
   - lastly:
       tasks:

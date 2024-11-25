@@ -86,17 +86,21 @@ class PrettyPrinter:
         >>> from datetime import datetime
         >>> print(
         ...     PrettyPrinter().format_basic(
-        ...         Task(name=foo, date=datetime(1000, 1, 1).date(), workflow=None)
+        ...         Task(name=foo, parameters={'date': datetime(1000, 1, 1).date()}, workflow=None)
         ...     )
         ... )
         foo [1000-01-01]
         """
         name = obj.name
-        date = f"[{obj.date}]" if obj.date else None
+        if obj.parameters:
+            params = ", ".join([f"{name}: {value}" for name, value in obj.parameters.items()])
+            params = f"[{params}]"
+        else:
+            params = None
         if self.colors:
             name = colored(name, obj.color, attrs=["bold"])
-            date = colored(date, obj.color) if date else None
-        return f"{name} {date}" if date else name
+            params = colored(params, obj.color) if params else None
+        return f"{name} {params}" if params else name
 
     @format.register
     def format_workflow(self, obj: core.Workflow) -> str:

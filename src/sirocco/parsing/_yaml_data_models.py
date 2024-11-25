@@ -4,13 +4,17 @@ import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
+from numpy import arange
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from ._utils import TimeUtils
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class _NamedBaseModel(BaseModel):
@@ -71,7 +75,7 @@ class _WhenBaseModel(BaseModel):
 
 
 # TODO: Change class name, does not fit anymore wit hthe addition of `when` and `parameters`
-#       find something more related to graph specification in general
+#       find something more related to graph specification in general like _GraphTargetBaseModel
 class _LagDateBaseModel(BaseModel):
     """Base class for all classes containg a list of dates or time lags."""
 
@@ -79,7 +83,7 @@ class _LagDateBaseModel(BaseModel):
     date: list[datetime] = []  # this is safe in pydantic
     lag: list[Duration] = []  # this is safe in pydantic
     when: _WhenBaseModel | None = None
-    parameters: dict | None = None
+    parameters: dict = {}
 
     @model_validator(mode="before")
     @classmethod
@@ -107,15 +111,13 @@ class _LagDateBaseModel(BaseModel):
 
     @field_validator("parameters", mode="before")
     @classmethod
-    def check_dict_single_item(cls, params) -> dict:
-        if params is None:
-            return None
-        msg = "parameters must be mappings of a string to a single item"
-        if not isinstance(params, dict):
-            raise TypeError(msg)
+    def check_dict_single_item(cls, params: dict) -> dict:
+        if not params:
+            return {}
         for k, v in params.items():
-            if not isinstance(k, str) or isinstance(v, (list, dict)):
-                raise TypeError(msg)
+            if v not in ("single", "all"):
+                msg = "parameter reference can only be 'single' or 'all'"
+                raise ValueError(msg)
         return params
 
 
@@ -129,6 +131,7 @@ class ConfigTask(_NamedBaseModel):
     command: str
     command_option: str | None = None
     input_arg_options: dict[str, str] | None = None
+    parameters: list[str] = []
     host: str | None = None
     account: str | None = None
     plugin: str | None = None
@@ -166,6 +169,7 @@ class DataBaseModel(_NamedBaseModel):
     type: str
     src: str
     format: str | None = None
+    parameters: list[str] = []
 
     @field_validator("type")
     @classmethod
@@ -329,8 +333,31 @@ class ConfigWorkflow(BaseModel):
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: ConfigData
+    parameters: dict = {}
     data_dict: dict = {}
     task_dict: dict = {}
+
+    @field_validator("parameters", mode="before")
+    @classmethod
+    def convert_to_parameters_dict(cls, data) -> dict[str:Iterable]:
+        for param_name, param_values in data.items():
+            msg = f"""Parameter values must be either / or:
+            - a list of single values
+            - a dict with one element of the form either / or:
+              * {{'parameter_name': value list}}
+              * {{'parameter_name': {{arange: arange spec}}}}
+            Got {param_values}."""
+            if isinstance(param_values, dict):
+                if len(param_values) != 1 or next(iter(param_values.keys())) != "arange":
+                    raise TypeError(msg)
+                data[param_name] = arange(*param_values["arange"])
+            elif isinstance(param_values, list):
+                for v in param_values:
+                    if isinstance(v, (dict, list)):
+                        raise TypeError(msg)
+            else:
+                raise TypeError(msg)
+        return data
 
     @model_validator(mode="after")
     def build_internal_dicts(self) -> ConfigWorkflow:
@@ -338,6 +365,18 @@ class ConfigWorkflow(BaseModel):
             data.name: data for data in self.data.generated
         }
         self.task_dict = {task.name: task for task in self.tasks}
+        return self
+
+    @model_validator(mode="after")
+    def check_parameters(self) -> ConfigWorkflow:
+        task_data_list = self.tasks + self.data.generated
+        if self.data.available:
+            task_data_list.extend(self.data.available)
+        for item in task_data_list:
+            for param_name in item.parameters:
+                if param_name not in self.parameters:
+                    msg = f"parameter {param_name} in {item.name} specification not declared in parameters section"
+                    raise ValueError(msg)
         return self
 
 
