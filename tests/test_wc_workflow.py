@@ -3,8 +3,8 @@ from pathlib import Path
 import pytest
 
 from sirocco.core import Workflow
-from sirocco.workgraph import AiidaWorkGraph
 from sirocco.pretty_print import PrettyPrinter
+from sirocco.workgraph import AiidaWorkGraph
 
 
 @pytest.fixture
@@ -17,7 +17,7 @@ config_test_files = [
     "tests/files/configs/test_config_large.yml",
 ]
 
-def test_run_workgraph(config_case, aiida_profile):
+def test_run_workgraph(config_case, aiida_profile):  # noqa: ARG001
     config_path, _ = config_case
     core_workflow = Workflow.from_yaml(config_path)
     aiida_workflow = AiidaWorkGraph(core_workflow)

@@ -9,7 +9,6 @@ from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
-
     from wcflow import core
 
 
@@ -173,7 +172,8 @@ class AiidaWorkGraph:
 
     def _link_wait_on_to_task(self, task: core.UnrolledTask):
         # TODO
-        raise NotImplementedError("")
+        msg = ""
+        raise NotImplementedError(msg)
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
         workgraph_task = self._aiida_task_nodes[label]
         wait_on_tasks = []
