@@ -86,7 +86,11 @@ class PrettyPrinter:
         >>> from datetime import datetime
         >>> print(
         ...     PrettyPrinter().format_basic(
-        ...         Task(name=foo, parameters={'date': datetime(1000, 1, 1).date()}, workflow=None)
+        ...         Task(
+        ...             name=foo,
+        ...             parameters={"date": datetime(1000, 1, 1).date()},
+        ...             workflow=None,
+        ...         )
         ...     )
         ... )
         foo [1000-01-01]
