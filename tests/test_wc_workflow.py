@@ -15,6 +15,7 @@ def pprinter():
 config_test_files = [
     "tests/files/configs/test_config_small.yml",
     "tests/files/configs/test_config_large.yml",
+    "tests/files/configs/test_config_parameters.yml",
 ]
 
 
