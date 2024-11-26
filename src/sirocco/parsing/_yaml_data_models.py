@@ -196,8 +196,8 @@ class ConfigGeneratedData(DataBaseModel):
 class ConfigData(BaseModel):
     """To create the container of available and generated data"""
 
-    available: list[ConfigAvailableData] | None = None
-    generated: list[ConfigGeneratedData]
+    available: list[ConfigAvailableData] = []
+    generated: list[ConfigGeneratedData] = []
 
 
 class ConfigCycleTaskWaitOn(_NamedBaseModel, _LagDateBaseModel):
