@@ -116,7 +116,7 @@ class _LagDateBaseModel(BaseModel):
             return {}
         for k, v in params.items():
             if v not in ("single", "all"):
-                msg = "parameter reference can only be 'single' or 'all'"
+                msg = f"parameter {k}: reference can only be 'single' or 'all', got {v}"
                 raise ValueError(msg)
         return params
 

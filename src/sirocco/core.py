@@ -33,10 +33,13 @@ class BaseNode:
 
     @classmethod
     def parameters_combinations(cls, config_parameters: dict, workflow_parameters: dict, date: datetime) -> list[dict]:
-        parameters_list = [{} if date is None else {'date': date}]
+        parameters_list = [{} if date is None else {"date": date}]
         for param_name in config_parameters:
-            parameters_list = [parameters | {param_name: value} for parameters in parameters_list
-                               for value in workflow_parameters[param_name]]
+            parameters_list = [
+                parameters | {param_name: value}
+                for parameters in parameters_list
+                for value in workflow_parameters[param_name]
+            ]
         return parameters_list
 
 
@@ -70,24 +73,24 @@ class Task(BaseNode):
     def from_config(
         cls,
         config: ConfigTask,
-        workflow_parameters: dict[str: Iterable],
+        workflow_parameters: dict[str:Iterable],
         graph_spec: ConfigCycleTask,
         workflow: Workflow,
         *,
         date: datetime | None = None,
     ) -> Iterator[Self]:
-
         for parameters in cls.parameters_combinations(config.parameters, workflow_parameters, date):
-
             inputs: list[Data] = []
             for input_spec in graph_spec.inputs:
-                inputs.extend(data for data in workflow.data.iter_from_cycle_spec(input_spec, parameters) if data is not None)
+                inputs.extend(
+                    data for data in workflow.data.iter_from_cycle_spec(input_spec, parameters) if data is not None
+                )
 
             outputs: list[Data] = [workflow.data[output_spec.name, parameters] for output_spec in graph_spec.outputs]
 
             # use the fact that pydantic models can be turned into dicts easily
             cls_config = dict(config)
-            del(cls_config["parameters"])
+            del cls_config["parameters"]
 
             new = cls(
                 parameters=parameters,
@@ -108,7 +111,9 @@ class Task(BaseNode):
         self.wait_on: list[Task] = []
         for wait_on_spec in self._wait_on_specs:
             self.wait_on.extend(
-                task for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.parameters) if task is not None
+                task
+                for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.parameters)
+                if task is not None
             )
 
 
@@ -123,7 +128,9 @@ class Data(BaseNode):
     parameters: dict = field(default_factory=dict)
 
     @classmethod
-    def from_config(cls, config: DataBaseModel, workflow_parameters: dict[str: Iterable], *, date: datetime | None = None) -> Iterator[Self]:
+    def from_config(
+        cls, config: DataBaseModel, workflow_parameters: dict[str:Iterable], *, date: datetime | None = None
+    ) -> Iterator[Self]:
         for parameters in cls.parameters_combinations(config.parameters, workflow_parameters, date):
             yield cls(
                 name=config.name,
@@ -204,15 +211,15 @@ class ParamSeries:
             yield self._dict[key]
 
     def _resolve_target_dim(self, spec: ConfigCycleSpec, dim: str, ref_params: Any) -> Iterator[Any]:
-        if dim == 'date':
+        if dim == "date":
             if not spec.lag and not spec.date:
-                yield ref_params['date']
+                yield ref_params["date"]
             if spec.lag:
                 for lag in spec.lag:
-                    yield ref_params['date'] + lag
+                    yield ref_params["date"] + lag
             if spec.date:
                 yield from spec.date
-        elif spec.parameters.get(dim) == 'single':
+        elif spec.parameters.get(dim) == "single":
             yield ref_params[dim]
         else:
             yield from self._axes[dim]
@@ -267,12 +274,10 @@ class Store(BaseNode):
             raise KeyError(msg)
         return self._dict[name]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, ref_params: dict = None) -> Iterator[BaseNode]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, ref_params: dict) -> Iterator[BaseNode]:
         # Check if target items should be querried at all
-        if ref_params is None:
-            ref_params = {}
         if (when := spec.when) is not None:
-            if (ref_date := ref_params.get('date')) is None:
+            if (ref_date := ref_params.get("date")) is None:
                 msg = "Cannot use a `when` specification without a `reference date`"
                 raise ValueError(msg)
             if (at := when.at) is not None and at != ref_date:
@@ -335,10 +340,12 @@ class Workflow:
                     task_name = task_graph_spec.name
                     task_config = workflow_config.task_dict[task_name]
                     # CONTINUE HERE
-                    for task in Task.from_config(task_config, workflow_config.parameters, task_graph_spec, workflow=self, date=date):
+                    for task in Task.from_config(
+                        task_config, workflow_config.parameters, task_graph_spec, workflow=self, date=date
+                    ):
                         self.tasks.add(task)
                         cycle_tasks.append(task)
-                parameters = {} if date is None else {'date':date}
+                parameters = {} if date is None else {"date": date}
                 self.cycles.add(Cycle(name=cycle_name, tasks=cycle_tasks, parameters=parameters))
 
         # 4 - Link wait on tasks
