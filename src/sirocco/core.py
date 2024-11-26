@@ -3,6 +3,8 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Generic, Self, TypeVar
+from os.path import expandvars
+from pathlib import Path
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
@@ -54,7 +56,7 @@ class Task(BaseNode):
     uenv: dict | None = None
     nodes: int | None = None
     walltime: str | None = None
-    src: str | None = None
+    src: str | None = None  # why does a task have a src?
     conda_env: str | None = None
 
     # use classmethod instead of custom init
@@ -115,6 +117,9 @@ class Data(BaseNode):
             date=date,
         )
 
+    @property
+    def path(self):
+        return Path(expandvars(self.src))
 
 @dataclass(kw_only=True)
 class Cycle(BaseNode):
