@@ -35,4 +35,4 @@ jobs:
     - name: "Build and deploy docs to gh-pages"
       run: |
         pip install hatch
-        hatch run docs:deploy
+        hatch run docs:deploy --force
