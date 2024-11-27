@@ -35,4 +35,11 @@ jobs:
     - name: "Build and deploy docs to gh-pages"
       run: |
         pip install hatch
-        hatch run docs:deploy --force
+        hatch run docs:build
+
+    - uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build
+        destination_dir: ${{ env.DOCS_VERSION }}
+        allow_empty_commit: true
