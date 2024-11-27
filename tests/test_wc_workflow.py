@@ -4,6 +4,7 @@ import pytest
 
 from sirocco.core import Workflow
 from sirocco.pretty_print import PrettyPrinter
+from sirocco.vizgraph import VizGraph
 
 
 @pytest.fixture
@@ -41,3 +42,8 @@ def test_parse_config_file(config_case, pprinter):
 def test_serialize_workflow(config_case):
     config_path, reference_path = config_case
     reference_path.write_text(pprinter.format(Workflow.from_yaml(config_path)))
+
+
+def test_vizgraph(config_case):
+    config_path, _ = config_case
+    VizGraph.from_yaml(config_path).draw()

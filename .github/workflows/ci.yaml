@@ -28,6 +28,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+    - name: Install Graphviz
+      run: sudo apt-get install graphviz graphviz-dev
     - name: Install package
       run: |
         pip install .
@@ -51,6 +53,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+    - name: Install Graphviz
+      run: sudo apt-get install graphviz graphviz-dev
     - name: Install package
       run: |
         pip install .
@@ -71,6 +75,8 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install hatch
+    - name: Install Graphviz
+      run: sudo apt-get install graphviz graphviz-dev
     - name: Install package
       run: |
         pip install .
