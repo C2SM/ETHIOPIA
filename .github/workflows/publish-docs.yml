@@ -1,8 +1,8 @@
 name: publish-docs
 on:
   push:
-    branches:
-    - main
+    #branches:
+    #- main
 
 permissions:
   contents: write
