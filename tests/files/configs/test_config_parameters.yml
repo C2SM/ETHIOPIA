@@ -10,7 +10,7 @@ cycles:
       tasks:
         - icon:
             inputs:
-              - initial conditions:
+              - initial_conditions:
                   when:
                     at: *root_start_date
               - icon_restart:
@@ -62,7 +62,7 @@ tasks:
 
 data:
   available:
-    - initial conditions:
+    - initial_conditions:
         type: file
         src: .
     - forcing:

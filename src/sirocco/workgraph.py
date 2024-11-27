@@ -117,22 +117,27 @@ class AiidaWorkGraph:
 
     @staticmethod
     def parse_to_aiida_label(label: str) -> str:
-        return label.replace("-", "_").replace(" ", "_").replace(":", "_")
+        invalid_chars = ["-", " ", ":", "."]
+        for invalid_char in invalid_chars:
+            label = label.replace(invalid_char, "_")
+        return label
 
     @staticmethod
-    def get_aiida_label_from_unrolled_data(data: core.UnrolledData) -> str:
+    def get_aiida_label_from_unrolled_data(obj: core.BaseNode) -> str:
         """ """
-        return AiidaWorkGraph.parse_to_aiida_label(f"{data.name}_{data.date}")
+        return AiidaWorkGraph.parse_to_aiida_label(
+            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.parameters.items())
+        )
 
     @staticmethod
-    def get_aiida_label_from_unrolled_task(task: core.UnrolledTask) -> str:
+    def get_aiida_label_from_unrolled_task(obj: core.BaseNode) -> str:
         """ """
         # TODO task is not anymore using cycle name because information is not there
         #      so do we check somewhere that a task is not used in multiple cycles?
         #      Otherwise the label is not unique
         # --> task name + date + parameters
         return AiidaWorkGraph.parse_to_aiida_label(
-            f"{task.name}_" f"{task.date}"
+            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.parameters.items())
         )
 
     def _add_aiida_input_data_node(self, input_: core.UnrolledData):
