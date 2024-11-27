@@ -86,3 +86,7 @@ build = [
 serve = [
   "mkdocs serve -f docs/mkdocs.yml",
 ]
+
+deploy = [
+  "mkdocs gh-deploy"
+]
