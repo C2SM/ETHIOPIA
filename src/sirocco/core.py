@@ -73,7 +73,7 @@ class Task(BaseNode):
     def from_config(
         cls,
         config: ConfigTask,
-        workflow_parameters: dict[str:Iterable],
+        workflow_parameters: dict[str, Iterable],
         graph_spec: ConfigCycleTask,
         workflow: Workflow,
         *,
@@ -129,7 +129,7 @@ class Data(BaseNode):
 
     @classmethod
     def from_config(
-        cls, config: DataBaseModel, workflow_parameters: dict[str:Iterable], *, date: datetime | None = None
+        cls, config: DataBaseModel, workflow_parameters: dict[str, Iterable], *, date: datetime | None = None
     ) -> Iterator[Self]:
         for parameters in cls.parameters_combinations(config.parameters, workflow_parameters, date):
             yield cls(
@@ -156,7 +156,7 @@ class ParamSeries:
         self._name = name
         self._dims: set | None = None
         self._axes: dict | None = None
-        self._dict: dict[tuple:BaseNode] | None = None
+        self._dict: dict[tuple, BaseNode] | None = None
 
     def __setitem__(self, parameters: dict, value: BaseNode) -> None:
         # First access: set axes and initialize dictionnary
@@ -254,7 +254,7 @@ class Store(BaseNode):
             self._dict[name] = ParamSeries(name)
             self._dict[name][parameters] = item
 
-    def __getitem__(self, key: str | tuple(str, dict)) -> BaseNode:
+    def __getitem__(self, key: str | tuple[str, dict]) -> BaseNode:
         if isinstance(key, tuple):
             name, parameters = key
             if "date" in parameters and parameters["date"] is None:
