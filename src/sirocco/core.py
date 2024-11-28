@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class BaseGraphItem:
+class GraphItem:
     """base class for Data Tasks and Cycles"""
 
     name: str
@@ -41,7 +41,7 @@ class BaseGraphItem:
 
 
 @dataclass
-class Task(BaseGraphItem):
+class Task(GraphItem):
     """Internal representation of a task node"""
 
     color: str = "light_red"
@@ -114,7 +114,7 @@ class Task(BaseGraphItem):
 
 
 @dataclass(kw_only=True)
-class Data(BaseGraphItem):
+class Data(GraphItem):
     """Internal representation of a data node"""
 
     color: str = "light_blue"
@@ -137,23 +137,23 @@ class Data(BaseGraphItem):
 
 
 @dataclass(kw_only=True)
-class Cycle(BaseGraphItem):
+class Cycle(GraphItem):
     """Internal reprenstation of a cycle"""
 
     color: str = "light_green"
     tasks: list[Task]
 
 
-class NodeArray:
-    """Dictionnary of objects accessed by arbitrary dimensions"""
+class Array:
+    """Dictionnary of GraphItem objects accessed by arbitrary dimensions"""
 
     def __init__(self, name: str) -> None:
         self._name = name
         self._dims: tuple[str] | None = None
         self._axes: dict | None = None
-        self._dict: dict[tuple, BaseGraphItem] | None = None
+        self._dict: dict[tuple, GraphItem] | None = None
 
-    def __setitem__(self, coordinates: dict, value: BaseGraphItem) -> None:
+    def __setitem__(self, coordinates: dict, value: GraphItem) -> None:
         # First access: set axes and initialize dictionnary
         input_dims = tuple(coordinates.keys())
         if self._dims is None:
@@ -162,14 +162,14 @@ class NodeArray:
             self._dict = {}
         # check dimensions
         elif self._dims != input_dims:
-            msg = f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
+            msg = f"Array {self._name}: coordinate names {input_dims} don't match Array dimensions {self._dims}"
             raise KeyError(msg)
         # Build internal key
         # use the order of self._dims instead of param_keys to ensure reproducibility
         key = tuple(coordinates[dim] for dim in self._dims)
         # Check if slot already taken
         if key in self._dict:
-            msg = f"NodeArray {self._name}: key {key} already used, cannot set item twice"
+            msg = f"Array {self._name}: key {key} already used, cannot set item twice"
             raise KeyError(msg)
         # Store new axes values
         for dim in self._dims:
@@ -177,21 +177,21 @@ class NodeArray:
         # Set item
         self._dict[key] = value
 
-    def __getitem__(self, coordinates: dict) -> BaseGraphItem:
+    def __getitem__(self, coordinates: dict) -> GraphItem:
         if self._dims != (input_dims := tuple(coordinates.keys())):
-            msg = f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
+            msg = f"Array {self._name}: coordinate names {input_dims} don't match Array dimensions {self._dims}"
             raise KeyError(msg)
         # use the order of self._dims instead of param_keys to ensure reproducibility
         key = tuple(coordinates[dim] for dim in self._dims)
         return self._dict[key]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseGraphItem]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
         # Check date references
         if "date" not in self._dims and (spec.lag or spec.date):
-            msg = f"NodeArray {self._name} has no date dimension, cannot be referenced by dates"
+            msg = f"Array {self._name} has no date dimension, cannot be referenced by dates"
             raise ValueError(msg)
         if "date" in self._dims and reference.get("date") is None and spec.date is []:
-            msg = f"NodeArray {self._name} has a date dimension, must be referenced by dates"
+            msg = f"Array {self._name} has a date dimension, must be referenced by dates"
             raise ValueError(msg)
 
         for key in product(*(self._resolve_target_dim(spec, dim, reference) for dim in self._dims)):
@@ -211,37 +211,36 @@ class NodeArray:
         else:
             yield from self._axes[dim]
 
-    def __iter__(self) -> Iterator[BaseGraphItem]:
+    def __iter__(self) -> Iterator[GraphItem]:
         yield from self._dict.values()
 
 
 class Store:
-    """Container for NodeArray or unique items"""
+    """Container for Array or unique items"""
 
     def __init__(self):
-        self._dict: dict[str, NodeArray | BaseGraphItem] = {}
+        self._dict: dict[str, Array | GraphItem] = {}
 
     def add(self, item) -> None:
-        if not hasattr(item, "coordinates") or not hasattr(item, "name"):
-            msg = "items in a Store must have 'coordinates' and 'name' attributes"
-            raise ValueError(msg)
+        if not isinstance(item, GraphItem):
+            msg = "items in a Store must be of instance GraphItem"
+            raise TypeError(msg)
         name, coordinates = item.name, item.coordinates
-
         if name in self._dict:
-            if not isinstance(self._dict[name], NodeArray):
+            if not isinstance(self._dict[name], Array):
                 msg = f"single entry {name} already set"
                 raise KeyError(msg)
             if not coordinates:
-                msg = f"entry {name} is a NodeArray, must be accessed by coordinates"
+                msg = f"entry {name} is an Array, must be accessed by coordinates"
                 raise KeyError(msg)
             self._dict[name][coordinates] = item
         elif not coordinates:
             self._dict[name] = item
         else:
-            self._dict[name] = NodeArray(name)
+            self._dict[name] = Array(name)
             self._dict[name][coordinates] = item
 
-    def __getitem__(self, key: str | tuple[str, dict]) -> BaseGraphItem:
+    def __getitem__(self, key: str | tuple[str, dict]) -> GraphItem:
         if isinstance(key, tuple):
             name, coordinates = key
             if "date" in coordinates and coordinates["date"] is None:
@@ -251,17 +250,17 @@ class Store:
         if name not in self._dict:
             msg = f"entry {name} not found in Store"
             raise KeyError(msg)
-        if isinstance(self._dict[name], NodeArray):
+        if isinstance(self._dict[name], Array):
             if not coordinates:
-                msg = f"entry {name} is a NodeArray, must be accessed by coordinates"
+                msg = f"entry {name} is an Array, must be accessed by coordinates"
                 raise KeyError(msg)
             return self._dict[name][coordinates]
         if coordinates:
-            msg = f"entry {name} is not a NodeArray, cannot be accessed by coordinates"
+            msg = f"entry {name} is not an Array, cannot be accessed by coordinates"
             raise KeyError(msg)
         return self._dict[name]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseGraphItem]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
         # Check if target items should be querried at all
         if (when := spec.when) is not None:
             if (ref_date := reference.get("date")) is None:
@@ -275,20 +274,20 @@ class Store:
                 return
         # Yield items
         name = spec.name
-        if isinstance(self._dict[name], NodeArray):
+        if isinstance(self._dict[name], Array):
             yield from self._dict[name].iter_from_cycle_spec(spec, reference)
         else:
             if spec.lag or spec.date:
-                msg = f"item {name} is not a NodeArray, cannot be referenced by date or lag"
+                msg = f"item {name} is not an Array, cannot be referenced by date or lag"
                 raise ValueError(msg)
             if spec.parameters:
-                msg = f"item {name} is not a NodeArray, cannot be referenced by parameters"
+                msg = f"item {name} is not an Array, cannot be referenced by parameters"
                 raise ValueError(msg)
             yield self._dict[name]
 
-    def __iter__(self) -> Iterator[BaseGraphItem]:
+    def __iter__(self) -> Iterator[GraphItem]:
         for item in self._dict.values():
-            if isinstance(item, NodeArray):
+            if isinstance(item, Array):
                 yield from item
             else:
                 yield item
@@ -326,7 +325,6 @@ class Workflow:
                 for task_graph_spec in cycle_config.tasks:
                     task_name = task_graph_spec.name
                     task_config = workflow_config.task_dict[task_name]
-                    # CONTINUE HERE
                     for task in Task.from_config(
                         task_config, workflow_config.parameters, task_graph_spec, workflow=self, date=date
                     ):
