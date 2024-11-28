@@ -44,12 +44,42 @@ class _NamedBaseModel(BaseModel):
         super().__init__(**name_and_spec)
 
 
+class _WhenBaseModel(BaseModel):
+    """Base class for when specifications"""
+
+    before: datetime | None = None
+    after: datetime | None = None
+    at: datetime | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_before_after_at_combination(cls, data: Any) -> Any:
+        if "at" in data and any(k in data for k in ("before", "after")):
+            msg = "'at' key is incompatible with 'before' and after'"
+            raise ValueError(msg)
+        if not any(k in data for k in ("at", "before", "after")):
+            msg = "use at least one of 'at', 'before' or 'after' keys"
+            raise ValueError(msg)
+        return data
+
+    @field_validator("before", "after", "at", mode="before")
+    @classmethod
+    def convert_datetime(cls, value) -> datetime:
+        if value is None:
+            return None
+        return datetime.fromisoformat(value)
+
+
+# TODO: Change class name, does not fit anymore wit hthe addition of `when` and `parameters`
+#       find something more related to graph specification in general like _GraphTargetBaseModel
 class _LagDateBaseModel(BaseModel):
     """Base class for all classes containg a list of dates or time lags."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     date: list[datetime] = []  # this is safe in pydantic
     lag: list[Duration] = []  # this is safe in pydantic
+    when: _WhenBaseModel | None = None
+    parameters: dict = {}
 
     @model_validator(mode="before")
     @classmethod
@@ -75,6 +105,17 @@ class _LagDateBaseModel(BaseModel):
         values = value if isinstance(value, list) else [value]
         return [datetime.fromisoformat(value) for value in values]
 
+    @field_validator("parameters", mode="before")
+    @classmethod
+    def check_dict_single_item(cls, params: dict) -> dict:
+        if not params:
+            return {}
+        for k, v in params.items():
+            if v not in ("single", "all"):
+                msg = f"parameter {k}: reference can only be 'single' or 'all', got {v}"
+                raise ValueError(msg)
+        return params
+
 
 class ConfigTask(_NamedBaseModel):
     """
@@ -86,6 +127,7 @@ class ConfigTask(_NamedBaseModel):
     command: str
     command_option: str | None = None
     input_arg_options: dict[str, str] | None = None
+    parameters: list[str] = []
     host: str | None = None
     account: str | None = None
     plugin: str | None = None
@@ -123,6 +165,7 @@ class DataBaseModel(_NamedBaseModel):
     type: str
     src: str
     format: str | None = None
+    parameters: list[str] = []
 
     @field_validator("type")
     @classmethod
@@ -149,17 +192,17 @@ class ConfigGeneratedData(DataBaseModel):
 class ConfigData(BaseModel):
     """To create the container of available and generated data"""
 
-    available: list[ConfigAvailableData] | None = None
-    generated: list[ConfigGeneratedData]
+    available: list[ConfigAvailableData] = []
+    generated: list[ConfigGeneratedData] = []
 
 
-class ConfigCycleTaskDepend(_NamedBaseModel, _LagDateBaseModel):
+class ConfigCycleTaskWaitOn(_NamedBaseModel, _LagDateBaseModel):
     """
     To create an instance of a input or output in a task in a cycle defined in a workflow file.
     """
 
     # TODO: Move to "wait_on" keyword in yaml instead of "depend"
-    name: str  # name of the task it depends on
+    name: str  # name of the task it waits on
     cycle_name: str | None = None
 
 
@@ -192,7 +235,7 @@ class ConfigCycleTask(_NamedBaseModel):
 
     inputs: list[ConfigCycleTaskInput | str] | None = Field(default_factory=list)
     outputs: list[ConfigCycleTaskOutput | str] | None = Field(default_factory=list)
-    depends: list[ConfigCycleTaskDepend | str] | None = Field(default_factory=list)
+    wait_on: list[ConfigCycleTaskWaitOn | str] | None = Field(default_factory=list)
 
     @field_validator("inputs", mode="before")
     @classmethod
@@ -220,19 +263,18 @@ class ConfigCycleTask(_NamedBaseModel):
                 outputs.append(value)
         return outputs
 
-    @field_validator("depends", mode="before")
+    @field_validator("wait_on", mode="before")
     @classmethod
-    def convert_cycle_task_depends(cls, values) -> list[ConfigCycleTaskDepend]:
-        depends = []
+    def convert_cycle_task_wait_on(cls, values) -> list[ConfigCycleTaskWaitOn]:
+        wait_on = []
         if values is None:
-            return depends
+            return wait_on
         for value in values:
             if isinstance(value, str):
-                depends.append({value: None})
+                wait_on.append({value: None})
             elif isinstance(value, dict):
-                depends.append(value)
-
-        return depends
+                wait_on.append(value)
+        return wait_on
 
 
 class ConfigCycle(_NamedBaseModel):
@@ -287,8 +329,22 @@ class ConfigWorkflow(BaseModel):
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: ConfigData
+    parameters: dict[str, list] = {}
     data_dict: dict = {}
     task_dict: dict = {}
+
+    @field_validator("parameters", mode="before")
+    @classmethod
+    def check_parameters_lists(cls, data) -> dict[str, list]:
+        for param_name, param_values in data.items():
+            msg = f"""{param_name}: parameters must map a string to list of single values, got {param_values}"""
+            if isinstance(param_values, list):
+                for v in param_values:
+                    if isinstance(v, (dict, list)):
+                        raise TypeError(msg)
+            else:
+                raise TypeError(msg)
+        return data
 
     @model_validator(mode="after")
     def build_internal_dicts(self) -> ConfigWorkflow:
@@ -296,6 +352,18 @@ class ConfigWorkflow(BaseModel):
             data.name: data for data in self.data.generated
         }
         self.task_dict = {task.name: task for task in self.tasks}
+        return self
+
+    @model_validator(mode="after")
+    def check_parameters(self) -> ConfigWorkflow:
+        task_data_list = self.tasks + self.data.generated
+        if self.data.available:
+            task_data_list.extend(self.data.available)
+        for item in task_data_list:
+            for param_name in item.parameters:
+                if param_name not in self.parameters:
+                    msg = f"parameter {param_name} in {item.name} specification not declared in parameters section"
+                    raise ValueError(msg)
         return self
 
 

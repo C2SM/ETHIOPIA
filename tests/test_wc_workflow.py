@@ -15,6 +15,7 @@ def pprinter():
 config_test_files = [
     "tests/files/configs/test_config_small.yml",
     "tests/files/configs/test_config_large.yml",
+    "tests/files/configs/test_config_parameters.yml",
 ]
 
 
@@ -39,7 +40,7 @@ def test_parse_config_file(config_case, pprinter):
 
 
 @pytest.mark.skip(reason="don't run it each time, uncomment to regenerate serilaized data")
-def test_serialize_workflow(config_case):
+def test_serialize_workflow(config_case, pprinter):
     config_path, reference_path = config_case
     reference_path.write_text(pprinter.format(Workflow.from_yaml(config_path)))
 

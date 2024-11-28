@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from colorsys import hsv_to_rgb
+from itertools import chain
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
@@ -41,20 +42,20 @@ class VizGraph:
     def __init__(self, name: str, cycles: Store, data: Store) -> None:
         self.name = name
         self.agraph = AGraph(name=name, fontname="Fira Sans", newrank=True)
-        for data_node in data.values():
+        for data_node in data:
             gv_kw = self.data_av_node_kw if data_node.available else self.data_gen_node_kw
-            tooltip = data_node.name if data_node.date is None else f"{data_node.name}\n {data_node.date}"
-            self.agraph.add_node(data_node, tooltip=tooltip, label=data_node.name, **gv_kw)
+            self.agraph.add_node(data_node, tooltip=self.tooltip(data_node), label=data_node.name, **gv_kw)
 
         k = 1
-        for cycle in cycles.values():
+        for cycle in cycles:
             # NOTE: For some reason, clusters need to have a unique name that starts with 'cluster'
             #       otherwise they are not taken into account. Hence the k index.
             cluster_nodes = []
             for task_node in cycle.tasks:
                 cluster_nodes.append(task_node)
-                tooltip = task_node.name if task_node.date is None else f"{task_node.name}\n {task_node.date}"
-                self.agraph.add_node(task_node, label=task_node.name, tooltip=tooltip, **self.task_node_kw)
+                self.agraph.add_node(
+                    task_node, label=task_node.name, tooltip=self.tooltip(task_node), **self.task_node_kw
+                )
                 for data_node in task_node.inputs:
                     self.agraph.add_edge(data_node, task_node, **self.io_edge_kw)
                 for data_node in task_node.outputs:
@@ -62,18 +63,19 @@ class VizGraph:
                     cluster_nodes.append(data_node)
                 for wait_task_node in task_node.wait_on:
                     self.agraph.add_edge(wait_task_node, task_node, **self.wait_on_edge_kw)
-            cluster_label = cycle.name
-            if cycle.date is not None:
-                cluster_label += "\n" + cycle.date.isoformat()
             self.agraph.add_subgraph(
                 cluster_nodes,
                 name=f"cluster_{cycle.name}_{k}",
                 clusterrank="global",
-                label=cluster_label,
-                tooltip=cluster_label,
+                label=self.tooltip(cycle),
+                tooltip=self.tooltip(cycle),
                 **self.cluster_kw,
             )
             k += 1
+
+    @staticmethod
+    def tooltip(node) -> str:
+        return "\n".join(chain([node.name], (f"  {k}: {v}" for k, v in node.coordinates.items())))
 
     def draw(self, **kwargs):
         # draw graphviz dot graph to svg file

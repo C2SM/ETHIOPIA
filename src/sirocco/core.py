@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Generic, Self, TypeVar
+from itertools import product
+from typing import TYPE_CHECKING, Any, Self
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
-    ConfigCycleTaskDepend,
     ConfigCycleTaskInput,
+    ConfigCycleTaskWaitOn,
     ConfigTask,
     ConfigWorkflow,
     load_workflow_config,
@@ -19,29 +20,35 @@ if TYPE_CHECKING:
 
     from sirocco.parsing._yaml_data_models import ConfigCycle, DataBaseModel
 
-    type ConfigCycleSpec = ConfigCycleTaskDepend | ConfigCycleTaskInput
+    type ConfigCycleSpec = ConfigCycleTaskWaitOn | ConfigCycleTaskInput
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-TimeSeriesObject = TypeVar("TimeSeriesObject")
+@dataclass
+class GraphItem:
+    """base class for Data Tasks and Cycles"""
 
-
-class BaseNode:
     name: str
     color: str
+    coordinates: dict = field(default_factory=dict)
+
+    @classmethod
+    def iter_coordinates(cls, param_refs: list, parameters: dict, date: datetime) -> Iterator[dict]:
+        space = ({} if date is None else {"date": [date]}) | {k: parameters[k] for k in param_refs}
+        yield from (dict(zip(space.keys(), x)) for x in product(*space.values()))
 
 
 @dataclass
-class Task(BaseNode):
-    name: str
-    workflow: Workflow
+class Task(GraphItem):
+    """Internal representation of a task node"""
+
+    color: str = "light_red"
+    workflow: Workflow | None = None
     outputs: list[Data] = field(default_factory=list)
     inputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
-    date: datetime | None = None
-    color: str = "light_red"
     # TODO: This list is too long. We should start with the set of supported
     #       keywords and extend it as we support more
     command: str | None = None
@@ -62,186 +69,226 @@ class Task(BaseNode):
     def from_config(
         cls,
         config: ConfigTask,
-        task_ref: ConfigCycleTask,
+        workflow_parameters: dict[str, list],
+        graph_spec: ConfigCycleTask,
         workflow: Workflow,
+        *,
         date: datetime | None = None,
-    ) -> Self:
-        inputs: list[Data] = []
-        for input_spec in task_ref.inputs:
-            inputs.extend(data for data in workflow.data.iter_from_cycle_spec(input_spec, date) if data is not None)
-        outputs: list[Data] = [workflow.data[output_spec.name, date] for output_spec in task_ref.outputs]
+    ) -> Iterator[Self]:
+        for coordinates in cls.iter_coordinates(config.parameters, workflow_parameters, date):
+            inputs: list[Data] = []
+            for input_spec in graph_spec.inputs:
+                inputs.extend(
+                    data for data in workflow.data.iter_from_cycle_spec(input_spec, coordinates) if data is not None
+                )
 
-        new = cls(
-            date=date,
-            inputs=inputs,
-            outputs=outputs,
-            workflow=workflow,
-            **dict(config),  # use the fact that pydantic models can be turned into dicts easily
-        )  # this works because dataclass has generated this init for us
+            outputs: list[Data] = [workflow.data[output_spec.name, coordinates] for output_spec in graph_spec.outputs]
 
-        # Store for actual linking in link_wait_on_tasks() once all tasks are created
-        new._wait_on_specs = task_ref.depends  # noqa: SLF001 we don't have access to self in a dataclass
-        #                                                     and setting an underscored attribute from
-        #                                                     the class itself raises SLF001
+            # use the fact that pydantic models can be turned into dicts easily
+            cls_config = dict(config)
+            del cls_config["parameters"]
 
-        return new
+            new = cls(
+                coordinates=coordinates,
+                inputs=inputs,
+                outputs=outputs,
+                workflow=workflow,
+                **cls_config,
+            )  # this works because dataclass has generated this init for us
+
+            # Store for actual linking in link_wait_on_tasks() once all tasks are created
+            new._wait_on_specs = graph_spec.wait_on  # noqa: SLF001 we don't have access to self in a dataclass
+            #                                                and setting an underscored attribute from
+            #                                                the class itself raises SLF001
+
+            yield new
 
     def link_wait_on_tasks(self):
         self.wait_on: list[Task] = []
         for wait_on_spec in self._wait_on_specs:
             self.wait_on.extend(
-                task for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.date) if task is not None
+                task
+                for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.coordinates)
+                if task is not None
             )
 
 
 @dataclass(kw_only=True)
-class Data(BaseNode):
+class Data(GraphItem):
     """Internal representation of a data node"""
 
     color: str = "light_blue"
-    name: str
     type: str
     src: str
     available: bool
-    date: datetime | None = None
 
     @classmethod
-    def from_config(cls, config: DataBaseModel, *, date: datetime | None = None):
-        return cls(
-            name=config.name,
-            type=config.type,
-            src=config.src,
-            available=config.available,
-            date=date,
-        )
+    def from_config(
+        cls, config: DataBaseModel, workflow_parameters: dict[str, list], *, date: datetime | None = None
+    ) -> Iterator[Self]:
+        for coordinates in cls.iter_coordinates(config.parameters, workflow_parameters, date):
+            yield cls(
+                name=config.name,
+                type=config.type,
+                src=config.src,
+                available=config.available,
+                coordinates=coordinates,
+            )
 
 
 @dataclass(kw_only=True)
-class Cycle(BaseNode):
+class Cycle(GraphItem):
     """Internal reprenstation of a cycle"""
 
     color: str = "light_green"
-    name: str
     tasks: list[Task]
-    date: datetime | None = None
 
 
-class TimeSeries(Generic[TimeSeriesObject]):
-    """Dictionnary of objects accessed by date, checking start and end dates"""
+class Array:
+    """Dictionnary of GraphItem objects accessed by arbitrary dimensions"""
 
-    def __init__(self) -> None:
-        self.start_date: datetime | None = None
-        self.end_date: datetime | None = None
-        self._dict: dict[str:TimeSeriesObject] = {}
+    def __init__(self, name: str) -> None:
+        self._name = name
+        self._dims: tuple[str] | None = None
+        self._axes: dict | None = None
+        self._dict: dict[tuple, GraphItem] | None = None
 
-    def __setitem__(self, date: datetime, data: TimeSeriesObject) -> None:
-        if date in self._dict:
-            msg = f"date {date} already used, cannot set twice"
+    def __setitem__(self, coordinates: dict, value: GraphItem) -> None:
+        # First access: set axes and initialize dictionnary
+        input_dims = tuple(coordinates.keys())
+        if self._dims is None:
+            self._dims = input_dims
+            self._axes = {k: set() for k in self._dims}
+            self._dict = {}
+        # check dimensions
+        elif self._dims != input_dims:
+            msg = f"Array {self._name}: coordinate names {input_dims} don't match Array dimensions {self._dims}"
             raise KeyError(msg)
-        self._dict[date] = data
-        if self.start_date is None:
-            self.start_date = date
-            self.end_date = date
-        elif date < self.start_date:
-            self.start_date = date
-        elif date > self.end_date:
-            self.end_date = date
+        # Build internal key
+        # use the order of self._dims instead of param_keys to ensure reproducibility
+        key = tuple(coordinates[dim] for dim in self._dims)
+        # Check if slot already taken
+        if key in self._dict:
+            msg = f"Array {self._name}: key {key} already used, cannot set item twice"
+            raise KeyError(msg)
+        # Store new axes values
+        for dim in self._dims:
+            self._axes[dim].add(coordinates[dim])
+        # Set item
+        self._dict[key] = value
 
-    def __getitem__(self, date: datetime) -> TimeSeriesObject:
-        if self.start_date is None:
-            msg = "TimeSeries still empty, cannot access by date"
+    def __getitem__(self, coordinates: dict) -> GraphItem:
+        if self._dims != (input_dims := tuple(coordinates.keys())):
+            msg = f"Array {self._name}: coordinate names {input_dims} don't match Array dimensions {self._dims}"
+            raise KeyError(msg)
+        # use the order of self._dims instead of param_keys to ensure reproducibility
+        key = tuple(coordinates[dim] for dim in self._dims)
+        return self._dict[key]
+
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
+        # Check date references
+        if "date" not in self._dims and (spec.lag or spec.date):
+            msg = f"Array {self._name} has no date dimension, cannot be referenced by dates"
             raise ValueError(msg)
-        if date < self.start_date or date > self.end_date:
-            item = next(iter(self._dict.values()))
-            msg = (
-                f"date {date} for item '{item.name}' is out of bounds [{self.start_date} - {self.end_date}], ignoring."
-            )
-            logger.warning(msg)
-            return
-        if date not in self._dict:
-            item = next(iter(self._dict.values()))
-            msg = f"date {date} for item '{item.name}' not found"
-            raise KeyError(msg)
-        return self._dict[date]
+        if "date" in self._dims and reference.get("date") is None and spec.date is []:
+            msg = f"Array {self._name} has a date dimension, must be referenced by dates"
+            raise ValueError(msg)
 
-    def values(self) -> Iterator[TimeSeriesObject]:
+        for key in product(*(self._resolve_target_dim(spec, dim, reference) for dim in self._dims)):
+            yield self._dict[key]
+
+    def _resolve_target_dim(self, spec: ConfigCycleSpec, dim: str, reference: Any) -> Iterator[Any]:
+        if dim == "date":
+            if not spec.lag and not spec.date:
+                yield reference["date"]
+            if spec.lag:
+                for lag in spec.lag:
+                    yield reference["date"] + lag
+            if spec.date:
+                yield from spec.date
+        elif spec.parameters.get(dim) == "single":
+            yield reference[dim]
+        else:
+            yield from self._axes[dim]
+
+    def __iter__(self) -> Iterator[GraphItem]:
         yield from self._dict.values()
 
 
-class Store(Generic[TimeSeriesObject]):
-    """Container for TimeSeries or unique data"""
+class Store:
+    """Container for Array or unique items"""
 
     def __init__(self):
-        self._dict: dict[str, TimeSeries | TimeSeriesObject] = {}
+        self._dict: dict[str, Array | GraphItem] = {}
 
-    def __setitem__(self, key: str | tuple(str, datetime | None), value: TimeSeriesObject) -> None:
-        if isinstance(key, tuple):
-            name, date = key
-        else:
-            name, date = key, None
+    def add(self, item) -> None:
+        if not isinstance(item, GraphItem):
+            msg = "items in a Store must be of instance GraphItem"
+            raise TypeError(msg)
+        name, coordinates = item.name, item.coordinates
         if name in self._dict:
-            if not isinstance(self._dict[name], TimeSeries):
+            if not isinstance(self._dict[name], Array):
                 msg = f"single entry {name} already set"
                 raise KeyError(msg)
-            if date is None:
-                msg = f"entry {name} is a TimeSeries, must be accessed by date"
+            if not coordinates:
+                msg = f"entry {name} is an Array, must be accessed by coordinates"
                 raise KeyError(msg)
-            self._dict[name][date] = value
-        elif date is None:
-            self._dict[name] = value
+            self._dict[name][coordinates] = item
+        elif not coordinates:
+            self._dict[name] = item
         else:
-            self._dict[name] = TimeSeries()
-            self._dict[name][date] = value
+            self._dict[name] = Array(name)
+            self._dict[name][coordinates] = item
 
-    def __getitem__(self, key: str | tuple(str, datetime | None)) -> TimeSeriesObject:
+    def __getitem__(self, key: str | tuple[str, dict]) -> GraphItem:
         if isinstance(key, tuple):
-            name, date = key
+            name, coordinates = key
+            if "date" in coordinates and coordinates["date"] is None:
+                del coordinates["date"]
         else:
-            name, date = key, None
-
+            name, coordinates = key, {}
         if name not in self._dict:
             msg = f"entry {name} not found in Store"
             raise KeyError(msg)
-        if isinstance(self._dict[name], TimeSeries):
-            if date is None:
-                msg = f"entry {name} is a TimeSeries, must be accessed by date"
+        if isinstance(self._dict[name], Array):
+            if not coordinates:
+                msg = f"entry {name} is an Array, must be accessed by coordinates"
                 raise KeyError(msg)
-            return self._dict[name][date]
-        if date is not None:
-            msg = f"entry {name} is not a TimeSeries, cannot be accessed by date"
+            return self._dict[name][coordinates]
+        if coordinates:
+            msg = f"entry {name} is not an Array, cannot be accessed by coordinates"
             raise KeyError(msg)
         return self._dict[name]
 
-    @staticmethod
-    def _resolve_target_dates(spec, ref_date: datetime | None) -> Iterator[datetime]:
-        if not spec.lag and not spec.date:
-            yield ref_date
-        if spec.lag:
-            for lag in spec.lag:
-                yield ref_date + lag
-        if spec.date:
-            yield from spec.date
-
-    def iter_from_cycle_spec(
-        self, spec: ConfigCycleSpec, ref_date: datetime | None = None
-    ) -> Iterator[TimeSeriesObject]:
-        name = spec.name
-        if isinstance(self._dict[name], TimeSeries):
-            if ref_date is None and spec.date is []:
-                msg = "TimeSeries object must be referenced by dates"
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
+        # Check if target items should be querried at all
+        if (when := spec.when) is not None:
+            if (ref_date := reference.get("date")) is None:
+                msg = "Cannot use a `when` specification without a `reference date`"
                 raise ValueError(msg)
-            for target_date in self._resolve_target_dates(spec, ref_date):
-                yield self._dict[name][target_date]
+            if (at := when.at) is not None and at != ref_date:
+                return
+            if (before := when.before) is not None and before <= ref_date:
+                return
+            if (after := when.after) is not None and after >= ref_date:
+                return
+        # Yield items
+        name = spec.name
+        if isinstance(self._dict[name], Array):
+            yield from self._dict[name].iter_from_cycle_spec(spec, reference)
         else:
             if spec.lag or spec.date:
-                msg = f"item {name} is not a TimeSeries, cannot be referenced via date or lag"
+                msg = f"item {name} is not an Array, cannot be referenced by date or lag"
+                raise ValueError(msg)
+            if spec.parameters:
+                msg = f"item {name} is not an Array, cannot be referenced by parameters"
                 raise ValueError(msg)
             yield self._dict[name]
 
-    def values(self) -> Iterator[TimeSeriesObject]:
+    def __iter__(self) -> Iterator[GraphItem]:
         for item in self._dict.values():
-            if isinstance(item, TimeSeries):
-                yield from item.values()
+            if isinstance(item, Array):
+                yield from item
             else:
                 yield item
 
@@ -257,7 +304,8 @@ class Workflow:
 
         # 1 - create availalbe data nodes
         for data_config in workflow_config.data.available:
-            self.data[data_config.name] = Data.from_config(data_config, date=None)
+            for data in Data.from_config(data_config, workflow_config.parameters, date=None):
+                self.data.add(data)
 
         # 2 - create output data nodes
         for cycle_config in workflow_config.cycles:
@@ -266,27 +314,31 @@ class Workflow:
                     for data_ref in task_ref.outputs:
                         data_name = data_ref.name
                         data_config = workflow_config.data_dict[data_name]
-                        self.data[data_name, date] = Data.from_config(data_config, date=date)
+                        for data in Data.from_config(data_config, workflow_config.parameters, date=date):
+                            self.data.add(data)
 
         # 3 - create cycles and tasks
         for cycle_config in workflow_config.cycles:
             cycle_name = cycle_config.name
             for date in self.cycle_dates(cycle_config):
                 cycle_tasks = []
-                for task_ref in cycle_config.tasks:
-                    task_name = task_ref.name
+                for task_graph_spec in cycle_config.tasks:
+                    task_name = task_graph_spec.name
                     task_config = workflow_config.task_dict[task_name]
-                    self.tasks[task_name, date] = (
-                        task := Task.from_config(task_config, task_ref, workflow=self, date=date)
-                    )
-                    cycle_tasks.append(task)
-                self.cycles[cycle_name, date] = Cycle(name=cycle_name, tasks=cycle_tasks, date=date)
+                    for task in Task.from_config(
+                        task_config, workflow_config.parameters, task_graph_spec, workflow=self, date=date
+                    ):
+                        self.tasks.add(task)
+                        cycle_tasks.append(task)
+                coordinates = {} if date is None else {"date": date}
+                self.cycles.add(Cycle(name=cycle_name, tasks=cycle_tasks, coordinates=coordinates))
 
         # 4 - Link wait on tasks
-        for task in self.tasks.values():
+        for task in self.tasks:
             task.link_wait_on_tasks()
 
-    def cycle_dates(self, cycle_config: ConfigCycle) -> Iterator[datetime]:
+    @staticmethod
+    def cycle_dates(cycle_config: ConfigCycle) -> Iterator[datetime]:
         yield (date := cycle_config.start_date)
         if cycle_config.period is not None:
             while (date := date + cycle_config.period) < cycle_config.end_date:

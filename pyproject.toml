@@ -25,6 +25,7 @@ classifiers = [
 keywords = ["workflow"," icon", "aiida", "aiida-workgraph"]
 requires-python = '>=3.12'
 dependencies = [
+  "numpy",
   "isoduration",
   "pydantic",
   "pydantic-yaml",

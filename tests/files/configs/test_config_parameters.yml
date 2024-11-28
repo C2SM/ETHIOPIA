@@ -1,0 +1,93 @@
+---
+start_date: &root_start_date '2026-01-01T00:00'
+end_date: &root_end_date '2028-01-01T00:00'
+
+cycles:
+  - bimonthly_tasks:
+      start_date: *root_start_date
+      end_date: *root_end_date
+      period: P2M
+      tasks:
+        - icon:
+            inputs:
+              - initial conditions:
+                  when:
+                    at: *root_start_date
+              - icon_restart:
+                  when:
+                    after: *root_start_date
+                  lag: -P2M
+                  parameters:
+                    foo: single
+                    bar: single
+              - forcing
+            outputs: [icon_output, icon_restart]
+        - statistics_foo:
+            inputs:
+              - icon_output:
+                  parameters:
+                    bar: single
+            outputs: [analysis_foo]
+        - statistics_foo_bar:
+            inputs: [analysis_foo]
+            outputs: [analysis_foo_bar]
+  - yearly:
+      start_date: *root_start_date
+      end_date: *root_end_date
+      period: P1Y
+      tasks:
+        - merge:
+            inputs:
+              - analysis_foo_bar:
+                  lag: ['P0M', 'P2M', 'P4M', 'P6M', 'P8M', 'P10M']
+            outputs: [yearly_analysis]
+
+tasks:
+  - icon:
+      plugin: shell
+      command: $PWD/tests/files/scripts/icon.py
+      input_arg_options:
+        icon_restart: '--restart'
+      parameters: [foo, bar]
+  - statistics_foo:
+      plugin: shell
+      command: $PWD/tests/files/scripts/statistics.py
+      parameters: [bar]
+  - statistics_foo_bar:
+      plugin: shell
+      command: $PWD/tests/files/scripts/statistics.py
+  - merge:
+      plugin: shell
+      command: $PWD/tests/files/scripts/merge.py
+
+data:
+  available:
+    - initial conditions:
+        type: file
+        src: .
+    - forcing:
+        type: file
+        src: .
+  generated:
+    - icon_output:
+        type: file
+        src: output
+        parameters: [foo, bar]
+    - icon_restart:
+        type: file
+        src: restart
+        parameters: [foo, bar]
+    - analysis_foo:
+        type: file
+        src: analysis_foo
+        parameters: [bar]
+    - analysis_foo_bar:
+        type: file
+        src: foo_analysis_bar
+    - yearly_analysis:
+        type: file
+        src: yearly_analysis
+
+parameters:
+  foo: [0, 1, 2]
+  bar: [3.0, 3.5]

@@ -75,9 +75,9 @@ class PrettyPrinter:
         return str(obj)
 
     @format.register
-    def format_basic(self, obj: core.BaseNode) -> str:
+    def format_basic(self, obj: core.GraphItem) -> str:
         """
-        Default formatting for BaseNode.
+        Default formatting for GraphItem.
 
         Can also be used explicitly to get a single line representation of any node.
 
@@ -86,21 +86,29 @@ class PrettyPrinter:
         >>> from datetime import datetime
         >>> print(
         ...     PrettyPrinter().format_basic(
-        ...         Task(name=foo, date=datetime(1000, 1, 1).date(), workflow=None)
+        ...         Task(
+        ...             name=foo,
+        ...             coordinates={"date": datetime(1000, 1, 1).date()},
+        ...             workflow=None,
+        ...         )
         ...     )
         ... )
         foo [1000-01-01]
         """
         name = obj.name
-        date = f"[{obj.date}]" if obj.date else None
+        if obj.coordinates:
+            coords = ", ".join([f"{name}: {value}" for name, value in obj.coordinates.items()])
+            coords = f"[{coords}]"
+        else:
+            coords = None
         if self.colors:
             name = colored(name, obj.color, attrs=["bold"])
-            date = colored(date, obj.color) if date else None
-        return f"{name} {date}" if date else name
+            coords = colored(coords, obj.color) if coords else None
+        return f"{name} {coords}" if coords else name
 
     @format.register
     def format_workflow(self, obj: core.Workflow) -> str:
-        cycles = "\n".join(self.format(cycle) for cycle in obj.cycles.values())
+        cycles = "\n".join(self.format(cycle) for cycle in obj.cycles)
         return self.as_block("cycles", cycles)
 
     @format.register
