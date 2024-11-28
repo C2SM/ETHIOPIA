@@ -4,17 +4,13 @@ import time
 from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
-from numpy import arange
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from ._utils import TimeUtils
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 
 class _NamedBaseModel(BaseModel):
@@ -333,25 +329,16 @@ class ConfigWorkflow(BaseModel):
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: ConfigData
-    parameters: dict = {}
+    parameters: dict[str, list] = {}
     data_dict: dict = {}
     task_dict: dict = {}
 
     @field_validator("parameters", mode="before")
     @classmethod
-    def convert_to_parameters_dict(cls, data) -> dict[str:Iterable]:
+    def check_parameters_lists(cls, data) -> dict[str, list]:
         for param_name, param_values in data.items():
-            msg = f"""Parameter values must be either / or:
-            - a list of single values
-            - a dict with one element of the form either / or:
-              * {{'parameter_name': value list}}
-              * {{'parameter_name': {{arange: arange spec}}}}
-            Got {param_values}."""
-            if isinstance(param_values, dict):
-                if len(param_values) != 1 or next(iter(param_values.keys())) != "arange":
-                    raise TypeError(msg)
-                data[param_name] = arange(*param_values["arange"])
-            elif isinstance(param_values, list):
+            msg = f"""{param_name}: parameters must map a string to list of single values, got {param_values}"""
+            if isinstance(param_values, list):
                 for v in param_values:
                     if isinstance(v, (dict, list)):
                         raise TypeError(msg)

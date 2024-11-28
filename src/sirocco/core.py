@@ -15,7 +15,7 @@ from sirocco.parsing._yaml_data_models import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator
+    from collections.abc import Iterator
     from datetime import datetime
 
     from sirocco.parsing._yaml_data_models import ConfigCycle, DataBaseModel
@@ -69,7 +69,7 @@ class Task(BaseGraphItem):
     def from_config(
         cls,
         config: ConfigTask,
-        workflow_parameters: dict[str, Iterable],
+        workflow_parameters: dict[str, list],
         graph_spec: ConfigCycleTask,
         workflow: Workflow,
         *,
@@ -124,7 +124,7 @@ class Data(BaseGraphItem):
 
     @classmethod
     def from_config(
-        cls, config: DataBaseModel, workflow_parameters: dict[str, Iterable], *, date: datetime | None = None
+        cls, config: DataBaseModel, workflow_parameters: dict[str, list], *, date: datetime | None = None
     ) -> Iterator[Self]:
         for coordinates in cls.iter_coordinates(config.parameters, workflow_parameters, date):
             yield cls(
