@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Self
+from itertools import product
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
@@ -29,18 +30,12 @@ logger = logging.getLogger(__name__)
 class BaseNode:
     name: str
     color: str
-    parameters: dict = field(default_factory=dict)
+    coordinates: dict = field(default_factory=dict)
 
     @classmethod
-    def parameters_combinations(cls, config_parameters: dict, workflow_parameters: dict, date: datetime) -> list[dict]:
-        parameters_list = [{} if date is None else {"date": date}]
-        for param_name in config_parameters:
-            parameters_list = [
-                parameters | {param_name: value}
-                for parameters in parameters_list
-                for value in workflow_parameters[param_name]
-            ]
-        return parameters_list
+    def iter_coordinates(cls, param_refs: list, parameters: dict, date: datetime) -> Iterator[dict]:
+        space = ({} if date is None else {"date": [date]}) | {k: parameters[k] for k in param_refs}
+        yield from (dict(zip(space.keys(), x)) for x in product(*space.values()))
 
 
 @dataclass
@@ -52,7 +47,6 @@ class Task(BaseNode):
     outputs: list[Data] = field(default_factory=list)
     inputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
-    parameters: dict = field(default_factory=dict)
     # TODO: This list is too long. We should start with the set of supported
     #       keywords and extend it as we support more
     command: str | None = None
@@ -79,21 +73,21 @@ class Task(BaseNode):
         *,
         date: datetime | None = None,
     ) -> Iterator[Self]:
-        for parameters in cls.parameters_combinations(config.parameters, workflow_parameters, date):
+        for coordinates in cls.iter_coordinates(config.parameters, workflow_parameters, date):
             inputs: list[Data] = []
             for input_spec in graph_spec.inputs:
                 inputs.extend(
-                    data for data in workflow.data.iter_from_cycle_spec(input_spec, parameters) if data is not None
+                    data for data in workflow.data.iter_from_cycle_spec(input_spec, coordinates) if data is not None
                 )
 
-            outputs: list[Data] = [workflow.data[output_spec.name, parameters] for output_spec in graph_spec.outputs]
+            outputs: list[Data] = [workflow.data[output_spec.name, coordinates] for output_spec in graph_spec.outputs]
 
             # use the fact that pydantic models can be turned into dicts easily
             cls_config = dict(config)
             del cls_config["parameters"]
 
             new = cls(
-                parameters=parameters,
+                coordinates=coordinates,
                 inputs=inputs,
                 outputs=outputs,
                 workflow=workflow,
@@ -112,7 +106,7 @@ class Task(BaseNode):
         for wait_on_spec in self._wait_on_specs:
             self.wait_on.extend(
                 task
-                for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.parameters)
+                for task in self.workflow.tasks.iter_from_cycle_spec(wait_on_spec, self.coordinates)
                 if task is not None
             )
 
@@ -125,19 +119,18 @@ class Data(BaseNode):
     type: str
     src: str
     available: bool
-    parameters: dict = field(default_factory=dict)
 
     @classmethod
     def from_config(
         cls, config: DataBaseModel, workflow_parameters: dict[str, Iterable], *, date: datetime | None = None
     ) -> Iterator[Self]:
-        for parameters in cls.parameters_combinations(config.parameters, workflow_parameters, date):
+        for coordinates in cls.iter_coordinates(config.parameters, workflow_parameters, date):
             yield cls(
                 name=config.name,
                 type=config.type,
                 src=config.src,
                 available=config.available,
-                parameters=parameters,
+                coordinates=coordinates,
             )
 
 
@@ -149,135 +142,138 @@ class Cycle(BaseNode):
     tasks: list[Task]
 
 
-class ParamSeries:
-    """Dictionnary of objects accessed by arbitrary parameters"""
+class NodeArray:
+    """Dictionnary of objects accessed by arbitrary dimensions"""
 
     def __init__(self, name: str) -> None:
         self._name = name
-        self._dims: set | None = None
+        self._dims: tuple[str] | None = None
         self._axes: dict | None = None
         self._dict: dict[tuple, BaseNode] | None = None
 
-    def __setitem__(self, parameters: dict, value: BaseNode) -> None:
+    def __setitem__(self, coordinates: dict, value: BaseNode) -> None:
         # First access: set axes and initialize dictionnary
-        param_keys = set(parameters.keys())
+        input_dims = tuple(coordinates.keys())
         if self._dims is None:
-            self._dims = param_keys
-            self._axes = {k: set() for k in param_keys}
+            self._dims = input_dims
+            self._axes = {k: set() for k in self._dims}
             self._dict = {}
         # check dimensions
-        elif self._dims != param_keys:
+        elif self._dims != input_dims:
             msg = (
-                f"ParamSeries {self._name}: parameter keys {param_keys} don't match ParamSeries dimensions {self._dims}"
+                f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
             )
             raise KeyError(msg)
         # Build internal key
         # use the order of self._dims instead of param_keys to ensure reproducibility
-        key = tuple(parameters[dim] for dim in self._dims)
+        key = tuple(coordinates[dim] for dim in self._dims)
         # Check if slot already taken
         if key in self._dict:
-            msg = f"ParamSeries {self._name}: key {key} already used, cannot set item twice"
+            msg = f"NodeArray {self._name}: key {key} already used, cannot set item twice"
             raise KeyError(msg)
         # Store new axes values
         for dim in self._dims:
-            self._axes[dim].add(parameters[dim])
+            self._axes[dim].add(coordinates[dim])
         # Set item
         self._dict[key] = value
 
-    def __getitem__(self, parameters: dict) -> BaseNode:
-        if self._dims != (param_keys := set(parameters.keys())):
+    def __getitem__(self, coordinates: dict) -> BaseNode:
+        if self._dims != (input_dims := tuple(coordinates.keys())):
             msg = (
-                f"ParamSeries {self._name}: parameter keys {param_keys} don't match ParamSeries dimensions {self._dims}"
+                f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
             )
             raise KeyError(msg)
         # use the order of self._dims instead of param_keys to ensure reproducibility
-        key = tuple(parameters[dim] for dim in self._dims)
+        key = tuple(coordinates[dim] for dim in self._dims)
         return self._dict[key]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, ref_params: dict) -> Iterator[BaseNode]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseNode]:
         # Check date references
         if "date" not in self._dims and (spec.lag or spec.date):
-            msg = f"ParamSeries {self._name} has no date dimension, cannot be referenced by dates"
+            msg = f"NodeArray {self._name} has no date dimension, cannot be referenced by dates"
             raise ValueError(msg)
-        if "date" in self._dims and ref_params.get("date") is None and spec.date is []:
-            msg = f"ParamSeries {self._name} has a date dimension, must be referenced by dates"
+        if "date" in self._dims and reference.get("date") is None and spec.date is []:
+            msg = f"NodeArray {self._name} has a date dimension, must be referenced by dates"
             raise ValueError(msg)
-        # Generate list of target item keys
-        keys = [()]
-        for dim in self._dims:
-            keys = [(*key, item) for key in keys for item in self._resolve_target_dim(spec, dim, ref_params)]
-        # Yield items
-        for key in keys:
+        # # Generate list of target item keys
+        # keys = [()]
+        # for dim in self._dims:
+        #     keys = [(*key, item) for key in keys for item in self._resolve_target_dim(spec, dim, reference)]
+        # # Yield items
+        # for key in keys:
+        #     yield self._dict[key]
+
+        for key in product(*(self._resolve_target_dim(spec, dim, reference) for dim in self._dims)):
             yield self._dict[key]
 
-    def _resolve_target_dim(self, spec: ConfigCycleSpec, dim: str, ref_params: Any) -> Iterator[Any]:
+    def _resolve_target_dim(self, spec: ConfigCycleSpec, dim: str, reference: Any) -> Iterator[Any]:
         if dim == "date":
             if not spec.lag and not spec.date:
-                yield ref_params["date"]
+                yield reference["date"]
             if spec.lag:
                 for lag in spec.lag:
-                    yield ref_params["date"] + lag
+                    yield reference["date"] + lag
             if spec.date:
                 yield from spec.date
         elif spec.parameters.get(dim) == "single":
-            yield ref_params[dim]
+            yield reference[dim]
         else:
             yield from self._axes[dim]
 
-    def values(self) -> Iterator[BaseNode]:
+    def __iter__(self) -> Iterator[BaseNode]:
         yield from self._dict.values()
 
 
-class Store(BaseNode):
-    """Container for ParamSeries or unique items"""
+class Store:
+    """Container for NodeArray or unique items"""
 
     def __init__(self):
-        self._dict: dict[str, ParamSeries | BaseNode] = {}
+        self._dict: dict[str, NodeArray | BaseNode] = {}
 
     def add(self, item) -> None:
-        if not hasattr(item, "parameters") or not hasattr(item, "name"):
-            msg = "items in a Store must have 'parameters' and 'name' attributes"
+        if not hasattr(item, "coordinates") or not hasattr(item, "name"):
+            msg = "items in a Store must have 'coordinates' and 'name' attributes"
             raise ValueError(msg)
-        name, parameters = item.name, item.parameters
+        name, coordinates = item.name, item.coordinates
 
         if name in self._dict:
-            if not isinstance(self._dict[name], ParamSeries):
+            if not isinstance(self._dict[name], NodeArray):
                 msg = f"single entry {name} already set"
                 raise KeyError(msg)
-            if not parameters:
-                msg = f"entry {name} is a ParamSeries, must be accessed by parameters"
+            if not coordinates:
+                msg = f"entry {name} is a NodeArray, must be accessed by coordinates"
                 raise KeyError(msg)
-            self._dict[name][parameters] = item
-        elif not parameters:
+            self._dict[name][coordinates] = item
+        elif not coordinates:
             self._dict[name] = item
         else:
-            self._dict[name] = ParamSeries(name)
-            self._dict[name][parameters] = item
+            self._dict[name] = NodeArray(name)
+            self._dict[name][coordinates] = item
 
     def __getitem__(self, key: str | tuple[str, dict]) -> BaseNode:
         if isinstance(key, tuple):
-            name, parameters = key
-            if "date" in parameters and parameters["date"] is None:
-                del parameters["date"]
+            name, coordinates = key
+            if "date" in coordinates and coordinates["date"] is None:
+                del coordinates["date"]
         else:
-            name, parameters = key, {}
+            name, coordinates = key, {}
         if name not in self._dict:
             msg = f"entry {name} not found in Store"
             raise KeyError(msg)
-        if isinstance(self._dict[name], ParamSeries):
-            if not parameters:
-                msg = f"entry {name} is a ParamSeries, must be accessed by parameters"
+        if isinstance(self._dict[name], NodeArray):
+            if not coordinates:
+                msg = f"entry {name} is a NodeArray, must be accessed by coordinates"
                 raise KeyError(msg)
-            return self._dict[name][parameters]
-        if parameters:
-            msg = f"entry {name} is not a ParamSeries, cannot be accessed by parameters"
+            return self._dict[name][coordinates]
+        if coordinates:
+            msg = f"entry {name} is not a NodeArray, cannot be accessed by coordinates"
             raise KeyError(msg)
         return self._dict[name]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, ref_params: dict) -> Iterator[BaseNode]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseNode]:
         # Check if target items should be querried at all
         if (when := spec.when) is not None:
-            if (ref_date := ref_params.get("date")) is None:
+            if (ref_date := reference.get("date")) is None:
                 msg = "Cannot use a `when` specification without a `reference date`"
                 raise ValueError(msg)
             if (at := when.at) is not None and at != ref_date:
@@ -288,21 +284,21 @@ class Store(BaseNode):
                 return
         # Yield items
         name = spec.name
-        if isinstance(self._dict[name], ParamSeries):
-            yield from self._dict[name].iter_from_cycle_spec(spec, ref_params)
+        if isinstance(self._dict[name], NodeArray):
+            yield from self._dict[name].iter_from_cycle_spec(spec, reference)
         else:
             if spec.lag or spec.date:
-                msg = f"item {name} is not a ParamSeries, cannot be referenced by date or lag"
+                msg = f"item {name} is not a NodeArray, cannot be referenced by date or lag"
                 raise ValueError(msg)
             if spec.parameters:
-                msg = f"item {name} is not a ParamSeries, cannot be referenced by parameters"
+                msg = f"item {name} is not a NodeArray, cannot be referenced by parameters"
                 raise ValueError(msg)
             yield self._dict[name]
 
-    def values(self) -> Iterator[BaseNode]:
+    def __iter__(self) -> Iterator[BaseNode]:
         for item in self._dict.values():
-            if isinstance(item, ParamSeries):
-                yield from item.values()
+            if isinstance(item, NodeArray):
+                yield from item
             else:
                 yield item
 
@@ -345,11 +341,11 @@ class Workflow:
                     ):
                         self.tasks.add(task)
                         cycle_tasks.append(task)
-                parameters = {} if date is None else {"date": date}
-                self.cycles.add(Cycle(name=cycle_name, tasks=cycle_tasks, parameters=parameters))
+                coordinates = {} if date is None else {"date": date}
+                self.cycles.add(Cycle(name=cycle_name, tasks=cycle_tasks, coordinates=coordinates))
 
         # 4 - Link wait on tasks
-        for task in self.tasks.values():
+        for task in self.tasks:
             task.link_wait_on_tasks()
 
     @staticmethod
