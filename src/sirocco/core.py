@@ -195,13 +195,6 @@ class NodeArray:
         if "date" in self._dims and reference.get("date") is None and spec.date is []:
             msg = f"NodeArray {self._name} has a date dimension, must be referenced by dates"
             raise ValueError(msg)
-        # # Generate list of target item keys
-        # keys = [()]
-        # for dim in self._dims:
-        #     keys = [(*key, item) for key in keys for item in self._resolve_target_dim(spec, dim, reference)]
-        # # Yield items
-        # for key in keys:
-        #     yield self._dict[key]
 
         for key in product(*(self._resolve_target_dim(spec, dim, reference) for dim in self._dims)):
             yield self._dict[key]
