@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from colorsys import hsv_to_rgb
+from itertools import chain
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
-from itertools import chain
 
 from lxml import etree
 from pygraphviz import AGraph
@@ -53,7 +53,9 @@ class VizGraph:
             cluster_nodes = []
             for task_node in cycle.tasks:
                 cluster_nodes.append(task_node)
-                self.agraph.add_node(task_node, label=task_node.name, tooltip=self.tooltip(task_node), **self.task_node_kw)
+                self.agraph.add_node(
+                    task_node, label=task_node.name, tooltip=self.tooltip(task_node), **self.task_node_kw
+                )
                 for data_node in task_node.inputs:
                     self.agraph.add_edge(data_node, task_node, **self.io_edge_kw)
                 for data_node in task_node.outputs:
@@ -73,7 +75,7 @@ class VizGraph:
 
     @staticmethod
     def tooltip(node) -> str:
-        return '\n'.join(chain([node.name], (f"  {k}: {v}" for k, v in node.coordinates.items())))
+        return "\n".join(chain([node.name], (f"  {k}: {v}" for k, v in node.coordinates.items())))
 
     def draw(self, **kwargs):
         # draw graphviz dot graph to svg file

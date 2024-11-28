@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Self
 from itertools import product
+from typing import TYPE_CHECKING, Any, Self
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
@@ -160,9 +160,7 @@ class NodeArray:
             self._dict = {}
         # check dimensions
         elif self._dims != input_dims:
-            msg = (
-                f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
-            )
+            msg = f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
             raise KeyError(msg)
         # Build internal key
         # use the order of self._dims instead of param_keys to ensure reproducibility
@@ -179,9 +177,7 @@ class NodeArray:
 
     def __getitem__(self, coordinates: dict) -> BaseNode:
         if self._dims != (input_dims := tuple(coordinates.keys())):
-            msg = (
-                f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
-            )
+            msg = f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
             raise KeyError(msg)
         # use the order of self._dims instead of param_keys to ensure reproducibility
         key = tuple(coordinates[dim] for dim in self._dims)
