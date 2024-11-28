@@ -64,10 +64,10 @@ data:
   available:
     - initial_conditions:
         type: file
-        src: .
+        src: initial_conditions
     - forcing:
         type: file
-        src: .
+        src: forcing
   generated:
     - icon_output:
         type: file

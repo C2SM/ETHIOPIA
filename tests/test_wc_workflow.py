@@ -12,17 +12,47 @@ def pprinter():
     return PrettyPrinter()
 
 
+# configs that are tested only tested parsing
 config_test_files = [
     "tests/files/configs/test_config_small.yml",
-    #"tests/files/configs/test_config_large.yml",
+    "tests/files/configs/test_config_large.yml",
     "tests/files/configs/test_config_parameters.yml",
 ]
 
-def test_run_workgraph(config_case, aiida_profile):  # noqa: ARG001
-    config_path, _ = config_case
+
+@pytest.mark.parametrize("config_path", [
+    "tests/files/configs/test_config_small.yml",
+    #"tests/files/configs/test_config_parameters.yml",
+])
+def test_run_workgraph(config_path):
     core_workflow = Workflow.from_yaml(config_path)
     aiida_workflow = AiidaWorkGraph(core_workflow)
-    aiida_workflow.run()
+    # ERROR that is not shown if not run manually:
+    #
+    # Continue workgraph.
+    # ------------------------------------------------------------
+    # ------------------------------------------------------------
+    # task:  icon_date_2026_01_01_00_00_00 RUNNING
+    # task:  icon_date_2026_03_01_00_00_00 PLANNED
+    # task:  icon_date_2026_05_01_00_00_00 PLANNED
+    # task:  cleanup RUNNING
+    # is workgraph finished:  False
+    # on awaitable finished:  icon_date_2026_01_01_00_00_00
+    # update task state:  icon_date_2026_01_01_00_00_00
+    # on awaitable finished:  cleanup
+    # update task state:  cleanup
+    # Continue workgraph.
+    # task:  icon_date_2026_01_01_00_00_00 FAILED
+    # task:  icon_date_2026_03_01_00_00_00 SKIPPED
+    # task:  icon_date_2026_05_01_00_00_00 SKIPPED
+    # task:  cleanup FAILED
+    # is workgraph finished:  True
+    # {}
+    #
+    # Figure out why output is not generated 
+    breakpoint()
+    out = aiida_workflow.run()
+    assert out != {} # should contain node id
 
 @pytest.fixture(params=config_test_files)
 def config_case(request):
