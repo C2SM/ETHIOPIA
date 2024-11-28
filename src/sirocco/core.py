@@ -27,7 +27,9 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class BaseNode:
+class BaseGraphItem:
+    """base class for Data Tasks and Cycles"""
+
     name: str
     color: str
     coordinates: dict = field(default_factory=dict)
@@ -39,7 +41,7 @@ class BaseNode:
 
 
 @dataclass
-class Task(BaseNode):
+class Task(BaseGraphItem):
     """Internal representation of a task node"""
 
     color: str = "light_red"
@@ -112,7 +114,7 @@ class Task(BaseNode):
 
 
 @dataclass(kw_only=True)
-class Data(BaseNode):
+class Data(BaseGraphItem):
     """Internal representation of a data node"""
 
     color: str = "light_blue"
@@ -135,7 +137,7 @@ class Data(BaseNode):
 
 
 @dataclass(kw_only=True)
-class Cycle(BaseNode):
+class Cycle(BaseGraphItem):
     """Internal reprenstation of a cycle"""
 
     color: str = "light_green"
@@ -149,9 +151,9 @@ class NodeArray:
         self._name = name
         self._dims: tuple[str] | None = None
         self._axes: dict | None = None
-        self._dict: dict[tuple, BaseNode] | None = None
+        self._dict: dict[tuple, BaseGraphItem] | None = None
 
-    def __setitem__(self, coordinates: dict, value: BaseNode) -> None:
+    def __setitem__(self, coordinates: dict, value: BaseGraphItem) -> None:
         # First access: set axes and initialize dictionnary
         input_dims = tuple(coordinates.keys())
         if self._dims is None:
@@ -175,7 +177,7 @@ class NodeArray:
         # Set item
         self._dict[key] = value
 
-    def __getitem__(self, coordinates: dict) -> BaseNode:
+    def __getitem__(self, coordinates: dict) -> BaseGraphItem:
         if self._dims != (input_dims := tuple(coordinates.keys())):
             msg = f"NodeArray {self._name}: coordinate names {input_dims} don't match NodeArray dimensions {self._dims}"
             raise KeyError(msg)
@@ -183,7 +185,7 @@ class NodeArray:
         key = tuple(coordinates[dim] for dim in self._dims)
         return self._dict[key]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseNode]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseGraphItem]:
         # Check date references
         if "date" not in self._dims and (spec.lag or spec.date):
             msg = f"NodeArray {self._name} has no date dimension, cannot be referenced by dates"
@@ -209,7 +211,7 @@ class NodeArray:
         else:
             yield from self._axes[dim]
 
-    def __iter__(self) -> Iterator[BaseNode]:
+    def __iter__(self) -> Iterator[BaseGraphItem]:
         yield from self._dict.values()
 
 
@@ -217,7 +219,7 @@ class Store:
     """Container for NodeArray or unique items"""
 
     def __init__(self):
-        self._dict: dict[str, NodeArray | BaseNode] = {}
+        self._dict: dict[str, NodeArray | BaseGraphItem] = {}
 
     def add(self, item) -> None:
         if not hasattr(item, "coordinates") or not hasattr(item, "name"):
@@ -239,7 +241,7 @@ class Store:
             self._dict[name] = NodeArray(name)
             self._dict[name][coordinates] = item
 
-    def __getitem__(self, key: str | tuple[str, dict]) -> BaseNode:
+    def __getitem__(self, key: str | tuple[str, dict]) -> BaseGraphItem:
         if isinstance(key, tuple):
             name, coordinates = key
             if "date" in coordinates and coordinates["date"] is None:
@@ -259,7 +261,7 @@ class Store:
             raise KeyError(msg)
         return self._dict[name]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseNode]:
+    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[BaseGraphItem]:
         # Check if target items should be querried at all
         if (when := spec.when) is not None:
             if (ref_date := reference.get("date")) is None:
@@ -284,7 +286,7 @@ class Store:
                 raise ValueError(msg)
             yield self._dict[name]
 
-    def __iter__(self) -> Iterator[BaseNode]:
+    def __iter__(self) -> Iterator[BaseGraphItem]:
         for item in self._dict.values():
             if isinstance(item, NodeArray):
                 yield from item
