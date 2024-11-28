@@ -75,9 +75,9 @@ class PrettyPrinter:
         return str(obj)
 
     @format.register
-    def format_basic(self, obj: core.BaseNode) -> str:
+    def format_basic(self, obj: core.BaseGraphItem) -> str:
         """
-        Default formatting for BaseNode.
+        Default formatting for BaseGraphItem.
 
         Can also be used explicitly to get a single line representation of any node.
 
