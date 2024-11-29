@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from itertools import product
+from itertools import chain, product
 from typing import TYPE_CHECKING, Any, Self
 
 from sirocco.parsing._yaml_data_models import (
@@ -76,13 +76,13 @@ class Task(GraphItem):
         date: datetime | None = None,
     ) -> Iterator[Self]:
         for coordinates in cls.iter_coordinates(config.parameters, workflow_parameters, date):
-            inputs: list[Data] = []
-            for input_spec in graph_spec.inputs:
-                inputs.extend(
-                    data for data in workflow.data.iter_from_cycle_spec(input_spec, coordinates) if data is not None
+            inputs = list(
+                chain(
+                    *(workflow.data.iter_from_cycle_spec(input_spec, coordinates) for input_spec in graph_spec.inputs)
                 )
+            )
 
-            outputs: list[Data] = [workflow.data[output_spec.name, coordinates] for output_spec in graph_spec.outputs]
+            outputs = [workflow.data[output_spec.name, coordinates] for output_spec in graph_spec.outputs]
 
             # use the fact that pydantic models can be turned into dicts easily
             cls_config = dict(config)
@@ -226,39 +226,18 @@ class Store:
             msg = "items in a Store must be of instance GraphItem"
             raise TypeError(msg)
         name, coordinates = item.name, item.coordinates
-        if name in self._dict:
-            if not isinstance(self._dict[name], Array):
-                msg = f"single entry {name} already set"
-                raise KeyError(msg)
-            if not coordinates:
-                msg = f"entry {name} is an Array, must be accessed by coordinates"
-                raise KeyError(msg)
-            self._dict[name][coordinates] = item
-        elif not coordinates:
-            self._dict[name] = item
-        else:
+        if name not in self._dict:
             self._dict[name] = Array(name)
-            self._dict[name][coordinates] = item
+        self._dict[name][coordinates] = item
 
-    def __getitem__(self, key: str | tuple[str, dict]) -> GraphItem:
-        if isinstance(key, tuple):
-            name, coordinates = key
-            if "date" in coordinates and coordinates["date"] is None:
-                del coordinates["date"]
-        else:
-            name, coordinates = key, {}
+    def __getitem__(self, key: tuple[str, dict]) -> GraphItem:
+        name, coordinates = key
+        if "date" in coordinates and coordinates["date"] is None:
+            del coordinates["date"]
         if name not in self._dict:
             msg = f"entry {name} not found in Store"
             raise KeyError(msg)
-        if isinstance(self._dict[name], Array):
-            if not coordinates:
-                msg = f"entry {name} is an Array, must be accessed by coordinates"
-                raise KeyError(msg)
-            return self._dict[name][coordinates]
-        if coordinates:
-            msg = f"entry {name} is not an Array, cannot be accessed by coordinates"
-            raise KeyError(msg)
-        return self._dict[name]
+        return self._dict[name][coordinates]
 
     def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
         # Check if target items should be querried at all
@@ -273,17 +252,7 @@ class Store:
             if (after := when.after) is not None and after >= ref_date:
                 return
         # Yield items
-        name = spec.name
-        if isinstance(self._dict[name], Array):
-            yield from self._dict[name].iter_from_cycle_spec(spec, reference)
-        else:
-            if spec.lag or spec.date:
-                msg = f"item {name} is not an Array, cannot be referenced by date or lag"
-                raise ValueError(msg)
-            if spec.parameters:
-                msg = f"item {name} is not an Array, cannot be referenced by parameters"
-                raise ValueError(msg)
-            yield self._dict[name]
+        yield from self._dict[spec.name].iter_from_cycle_spec(spec, reference)
 
     def __iter__(self) -> Iterator[GraphItem]:
         for item in self._dict.values():
