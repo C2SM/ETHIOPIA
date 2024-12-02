@@ -71,7 +71,7 @@ class _WhenBaseModel(BaseModel):
 
 
 class TargetNodesBaseModel(_NamedBaseModel):
-    """class for targetting other task or data nodes in the graph"""
+    """class for targeting other task or data nodes in the graph"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     date: list[datetime] = []  # this is safe in pydantic
