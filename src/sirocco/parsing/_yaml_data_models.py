@@ -70,10 +70,13 @@ class _WhenBaseModel(BaseModel):
         return datetime.fromisoformat(value)
 
 
-# TODO: Change class name, does not fit anymore wit hthe addition of `when` and `parameters`
-#       find something more related to graph specification in general like _GraphTargetBaseModel
-class _LagDateBaseModel(BaseModel):
-    """Base class for all classes containg a list of dates or time lags."""
+class TargetNodesBaseModel(_NamedBaseModel):
+    """class for targeting other task or data nodes in the graph
+
+    When specifying cycle tasks, this class gathers the required information for
+    targeting other nodes, either input data or wait on tasks.
+
+    """
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     date: list[datetime] = []  # this is safe in pydantic
@@ -117,109 +120,12 @@ class _LagDateBaseModel(BaseModel):
         return params
 
 
-class ConfigTask(_NamedBaseModel):
-    """
-    To create an instance of a task defined in a workflow file
-    """
-
-    # TODO: This list is too large. We should start with the set of supported
-    #       keywords and extend it as we support more
-    command: str
-    command_option: str | None = None
-    input_arg_options: dict[str, str] | None = None
-    parameters: list[str] = []
-    host: str | None = None
-    account: str | None = None
-    plugin: str | None = None
-    config: str | None = None
-    uenv: dict | None = None
-    nodes: int | None = None
-    walltime: str | None = None
-    src: str | None = None
-    conda_env: str | None = None
-
-    def __init__(self, /, **data):
-        # We have to treat root special as it does not typically define a command
-        if "ROOT" in data and "command" not in data["ROOT"]:
-            data["ROOT"]["command"] = "ROOT_PLACEHOLDER"
-        super().__init__(**data)
-
-    @field_validator("command")
-    @classmethod
-    def expand_env_vars(cls, value: str) -> str:
-        """Expands any environment variables in the value"""
-        return expandvars(value)
-
-    @field_validator("walltime")
-    @classmethod
-    def convert_to_struct_time(cls, value: str | None) -> time.struct_time | None:
-        """Converts a string of form "%H:%M:%S" to a time.time_struct"""
-        return None if value is None else time.strptime(value, "%H:%M:%S")
-
-
-class DataBaseModel(_NamedBaseModel):
-    """
-    To create an instance of a data defined in a workflow file.
-    """
-
-    type: str
-    src: str
-    format: str | None = None
-    parameters: list[str] = []
-
-    @field_validator("type")
-    @classmethod
-    def is_file_or_dir(cls, value: str) -> str:
-        """."""
-        if value not in ["file", "dir"]:
-            msg = "Must be one of 'file' or 'dir'."
-            raise ValueError(msg)
-        return value
-
-    @property
-    def available(self) -> bool:
-        return isinstance(self, ConfigAvailableData)
-
-
-class ConfigAvailableData(DataBaseModel):
+class ConfigCycleTaskInput(TargetNodesBaseModel):
     pass
 
 
-class ConfigGeneratedData(DataBaseModel):
+class ConfigCycleTaskWaitOn(TargetNodesBaseModel):
     pass
-
-
-class ConfigData(BaseModel):
-    """To create the container of available and generated data"""
-
-    available: list[ConfigAvailableData] = []
-    generated: list[ConfigGeneratedData] = []
-
-
-class ConfigCycleTaskWaitOn(_NamedBaseModel, _LagDateBaseModel):
-    """
-    To create an instance of a input or output in a task in a cycle defined in a workflow file.
-    """
-
-    # TODO: Move to "wait_on" keyword in yaml instead of "depend"
-    name: str  # name of the task it waits on
-    cycle_name: str | None = None
-
-
-class ConfigCycleTaskInput(_NamedBaseModel, _LagDateBaseModel):
-    """
-    To create an instance of an input in a task in a cycle defined in a workflow file.
-
-    For example:
-
-    .. yaml
-
-        - my_input:
-            date: ...
-            lag: ...
-    """
-
-    arg_option: str | None = None
 
 
 class ConfigCycleTaskOutput(_NamedBaseModel):
@@ -322,6 +228,85 @@ class ConfigCycle(_NamedBaseModel):
             msg = f"For cycle {self.name!r} the period {self.period!r} is negative or zero."
             raise ValueError(msg)
         return self
+
+
+class ConfigTask(_NamedBaseModel):
+    """
+    To create an instance of a task defined in a workflow file
+    """
+
+    # TODO: This list is too large. We should start with the set of supported
+    #       keywords and extend it as we support more
+    command: str
+    command_option: str | None = None
+    input_arg_options: dict[str, str] | None = None
+    parameters: list[str] = []
+    host: str | None = None
+    account: str | None = None
+    plugin: str | None = None
+    config: str | None = None
+    uenv: dict | None = None
+    nodes: int | None = None
+    walltime: str | None = None
+    src: str | None = None
+    conda_env: str | None = None
+
+    def __init__(self, /, **data):
+        # We have to treat root special as it does not typically define a command
+        if "ROOT" in data and "command" not in data["ROOT"]:
+            data["ROOT"]["command"] = "ROOT_PLACEHOLDER"
+        super().__init__(**data)
+
+    @field_validator("command")
+    @classmethod
+    def expand_env_vars(cls, value: str) -> str:
+        """Expands any environment variables in the value"""
+        return expandvars(value)
+
+    @field_validator("walltime")
+    @classmethod
+    def convert_to_struct_time(cls, value: str | None) -> time.struct_time | None:
+        """Converts a string of form "%H:%M:%S" to a time.time_struct"""
+        return None if value is None else time.strptime(value, "%H:%M:%S")
+
+
+class DataBaseModel(_NamedBaseModel):
+    """
+    To create an instance of a data defined in a workflow file.
+    """
+
+    type: str
+    src: str
+    format: str | None = None
+    parameters: list[str] = []
+
+    @field_validator("type")
+    @classmethod
+    def is_file_or_dir(cls, value: str) -> str:
+        """."""
+        if value not in ["file", "dir"]:
+            msg = "Must be one of 'file' or 'dir'."
+            raise ValueError(msg)
+        return value
+
+    @property
+    def available(self) -> bool:
+        return isinstance(self, ConfigAvailableData)
+
+
+class ConfigAvailableData(DataBaseModel):
+    pass
+
+
+class ConfigGeneratedData(DataBaseModel):
+    pass
+
+
+class ConfigData(BaseModel):
+    """To create the container of available and generated data"""
+
+    available: list[ConfigAvailableData] = []
+    generated: list[ConfigGeneratedData] = []
 
 
 class ConfigWorkflow(BaseModel):

@@ -7,8 +7,6 @@ from typing import TYPE_CHECKING, Any, Self
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,
-    ConfigCycleTaskInput,
-    ConfigCycleTaskWaitOn,
     ConfigTask,
     ConfigWorkflow,
     load_workflow_config,
@@ -18,9 +16,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
     from datetime import datetime
 
-    from sirocco.parsing._yaml_data_models import ConfigCycle, DataBaseModel
-
-    type ConfigCycleSpec = ConfigCycleTaskWaitOn | ConfigCycleTaskInput
+    from sirocco.parsing._yaml_data_models import ConfigCycle, DataBaseModel, TargetNodesBaseModel
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -185,7 +181,7 @@ class Array:
         key = tuple(coordinates[dim] for dim in self._dims)
         return self._dict[key]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
+    def iter_from_cycle_spec(self, spec: TargetNodesBaseModel, reference: dict) -> Iterator[GraphItem]:
         # Check date references
         if "date" not in self._dims and (spec.lag or spec.date):
             msg = f"Array {self._name} has no date dimension, cannot be referenced by dates"
@@ -197,7 +193,7 @@ class Array:
         for key in product(*(self._resolve_target_dim(spec, dim, reference) for dim in self._dims)):
             yield self._dict[key]
 
-    def _resolve_target_dim(self, spec: ConfigCycleSpec, dim: str, reference: Any) -> Iterator[Any]:
+    def _resolve_target_dim(self, spec: TargetNodesBaseModel, dim: str, reference: Any) -> Iterator[Any]:
         if dim == "date":
             if not spec.lag and not spec.date:
                 yield reference["date"]
@@ -239,7 +235,7 @@ class Store:
             raise KeyError(msg)
         return self._dict[name][coordinates]
 
-    def iter_from_cycle_spec(self, spec: ConfigCycleSpec, reference: dict) -> Iterator[GraphItem]:
+    def iter_from_cycle_spec(self, spec: TargetNodesBaseModel, reference: dict) -> Iterator[GraphItem]:
         # Check if target items should be querried at all
         if (when := spec.when) is not None:
             if (ref_date := reference.get("date")) is None:
