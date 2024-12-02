@@ -14,7 +14,7 @@ pip install -e .
 
 ## Developer tools
 
-To manage the repo we use [hatch]{.title-ref} please install it
+To manage the repo we use [hatch](https://hatch.pypa.io) please install it
 
 ``` bash
 pip install hatch

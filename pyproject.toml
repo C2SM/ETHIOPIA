@@ -39,6 +39,7 @@ license = {file = "LICENSE"}
 
 [project.urls]
 Repository = "https://github.com/C2SM/Sirocco.git"
+Documentation = "https://c2sm.github.io/Sirocco/"
 Changelog = "https://github.com/C2SM/Sirocco/blob/main/CHANGELOG.md"
 
 [tool.pytest.ini_options]
@@ -91,4 +92,8 @@ build = [
 ]
 serve = [
   "mkdocs serve -f docs/mkdocs.yml",
+]
+
+deploy = [
+  "mkdocs gh-deploy -f docs/mkdocs.yml"
 ]
