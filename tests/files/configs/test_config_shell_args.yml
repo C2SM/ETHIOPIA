@@ -24,8 +24,12 @@ tasks:
   - icon:
       plugin: shell
       command: $PWD/tests/files/scripts/icon.py
-      input_arg_options:
-        --restart: icon_restart
+      cli_arguments:
+        positional: [data1, data2]
+        keyword:
+          --input: obs_data
+        flags:
+          - --restart
   - cleanup:
       plugin: shell
       command: $PWD/tests/files/scripts/cleanup.py
