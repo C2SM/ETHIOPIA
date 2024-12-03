@@ -95,5 +95,5 @@ serve = [
 ]
 
 deploy = [
-  "mkdocs gh-deploy -f docs/mkdocs.yml"
+  "mkdocs gh-deploy --no-history -f docs/mkdocs.yml"
 ]
