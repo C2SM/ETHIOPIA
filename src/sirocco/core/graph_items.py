@@ -25,15 +25,17 @@ class Plugin(type):
 
     Used to register all plugin task classes"""
 
-    classes: dict[str, type] = field(default_factory=dict)
+    classes: dict[str, type] | None = None
 
     def __new__(cls, name, bases, dct):
+        if cls.classes is None:
+            cls.classes = {}
         plugin = dct["plugin"]
-        if plugin in Plugin.classes:
+        if plugin in cls.classes:
             msg = f"Task for plugin {plugin} already set"
             raise ValueError(msg)
         return_cls = super().__new__(cls, name, bases, dct)
-        Plugin.classes[plugin] = return_cls
+        cls.classes[plugin] = return_cls
         return return_cls
 
 
