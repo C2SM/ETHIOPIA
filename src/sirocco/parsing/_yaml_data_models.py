@@ -235,21 +235,21 @@ class ConfigTask(_NamedBaseModel):
     To create an instance of a task defined in a workflow file
     """
 
-    # TODO: This list is too large. We should start with the set of supported
-    #       keywords and extend it as we support more
-    command: str
-    command_option: str | None = None
-    input_arg_options: dict[str, str] | None = None
+    # config for genric task, no plugin specifics
     parameters: list[str] = []
     host: str | None = None
     account: str | None = None
     plugin: str | None = None
-    config: str | None = None
     uenv: dict | None = None
     nodes: int | None = None
     walltime: str | None = None
-    src: str | None = None
-    conda_env: str | None = None
+    # # config for the shell plugin
+    # src: str | None = None
+    # command: str
+    # command_option: str | None = None
+    # input_arg_options: dict[str, str] | None = None
+    # # config for the icon plugin
+    # namelists: dict[str, str] | None = None
 
     def __init__(self, /, **data):
         # We have to treat root special as it does not typically define a command
@@ -257,17 +257,19 @@ class ConfigTask(_NamedBaseModel):
             data["ROOT"]["command"] = "ROOT_PLACEHOLDER"
         super().__init__(**data)
 
-    @field_validator("command")
-    @classmethod
-    def expand_env_vars(cls, value: str) -> str:
-        """Expands any environment variables in the value"""
-        return expandvars(value)
+    # @field_validator("command")
+    # @classmethod
+    # def expand_env_vars(cls, value: str) -> str:
+    #     """Expands any environment variables in the value"""
+    #     return expandvars(value)
 
     @field_validator("walltime")
     @classmethod
     def convert_to_struct_time(cls, value: str | None) -> time.struct_time | None:
         """Converts a string of form "%H:%M:%S" to a time.time_struct"""
         return None if value is None else time.strptime(value, "%H:%M:%S")
+
+# TODO(maybe): ConfigTaskIcon(ConfigTask) and ConfigTaskShell(ConfigTask)
 
 
 class DataBaseModel(_NamedBaseModel):
