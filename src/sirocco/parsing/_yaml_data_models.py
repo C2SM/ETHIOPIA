@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import time
 from datetime import datetime
-from os.path import expandvars
 from pathlib import Path
 from typing import Any
 
@@ -268,6 +267,7 @@ class ConfigTask(_NamedBaseModel):
     def convert_to_struct_time(cls, value: str | None) -> time.struct_time | None:
         """Converts a string of form "%H:%M:%S" to a time.time_struct"""
         return None if value is None else time.strptime(value, "%H:%M:%S")
+
 
 # TODO(maybe): ConfigTaskIcon(ConfigTask) and ConfigTaskShell(ConfigTask)
 

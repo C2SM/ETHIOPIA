@@ -24,7 +24,9 @@ class Plugin(type):
     """Metaclass for plugin tasks inheriting from Task
 
     Used to register all plugin task classes"""
-    classes = {}
+
+    classes: dict[str, type] = field(default_factory=dict)
+
     def __new__(cls, name, bases, dct):
         plugin = dct["plugin"]
         if plugin in Plugin.classes:
@@ -72,7 +74,7 @@ class Task(GraphItem, metaclass=Plugin):
             inputs=inputs,
             outputs=outputs,
             **cls_config,
-        ) # this works because dataclass has generated this init for us
+        )  # this works because dataclass has generated this init for us
 
         # Store for actual linking in link_wait_on_tasks() once all tasks are created
         new._wait_on_specs = graph_spec.wait_on  # noqa: SLF001 we don't have access to self in a dataclass
