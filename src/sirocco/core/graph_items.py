@@ -171,7 +171,7 @@ class Array:
         if "date" not in self._dims and (spec.lag or spec.date):
             msg = f"Array {self._name} has no date dimension, cannot be referenced by dates"
             raise ValueError(msg)
-        if "date" in self._dims and reference.get("date") is None and spec.date == []:
+        if "date" in self._dims and reference.get("date") is None and len(spec.date) == 0:
             msg = f"Array {self._name} has a date dimension, must be referenced by dates"
             raise ValueError(msg)
 

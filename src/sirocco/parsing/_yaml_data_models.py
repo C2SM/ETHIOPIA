@@ -242,25 +242,12 @@ class ConfigTask(_NamedBaseModel):
     uenv: dict | None = None
     nodes: int | None = None
     walltime: str | None = None
-    # # config for the shell plugin
-    # src: str | None = None
-    # command: str
-    # command_option: str | None = None
-    # input_arg_options: dict[str, str] | None = None
-    # # config for the icon plugin
-    # namelists: dict[str, str] | None = None
 
     def __init__(self, /, **data):
         # We have to treat root special as it does not typically define a command
         if "ROOT" in data and "command" not in data["ROOT"]:
             data["ROOT"]["command"] = "ROOT_PLACEHOLDER"
         super().__init__(**data)
-
-    # @field_validator("command")
-    # @classmethod
-    # def expand_env_vars(cls, value: str) -> str:
-    #     """Expands any environment variables in the value"""
-    #     return expandvars(value)
 
     @field_validator("walltime")
     @classmethod
