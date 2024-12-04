@@ -226,9 +226,9 @@ class AiidaWorkGraph:
         if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
             msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
             raise ValueError(msg)
-        # TODO how do we to commands like `export -o output.txt`
-        #if input_.arg_option is not None:
-        #    workgraph_task_arguments.value.append(f"{input_.arg_option}")
+        # TODO think about that the yaml file should have aiida valid labels
+        if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
+            workgraph_task_arguments.value.append(f"{arg_option}")
         workgraph_task_arguments.value.append(f"{{{input_label}}}")
 
     def _link_output_to_task(self, task: core.Task, output: core.UnrolledData):

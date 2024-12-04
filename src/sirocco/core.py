@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Self
 from os.path import expandvars
 from pathlib import Path
+from typing import TYPE_CHECKING, Any, Self
 
 from sirocco.parsing._yaml_data_models import (
     ConfigCycleTask,

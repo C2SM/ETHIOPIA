@@ -3,6 +3,7 @@
 import argparse
 from pathlib import Path
 
+
 def main():
     parser = argparse.ArgumentParser(description='A simple script with an optional restart argument.')
     parser.add_argument('icon_input', type=str, help='The icon input.')
