@@ -21,8 +21,8 @@ config_test_files = [
 
 
 @pytest.mark.parametrize("config_path", [
-    "tests/files/configs/test_config_small.yml",
-    #"tests/files/configs/test_config_parameters.yml",
+    #"tests/files/configs/test_config_small.yml",
+    "tests/files/configs/test_config_parameters.yml",
 ])
 def test_run_workgraph(config_path):
     core_workflow = Workflow.from_yaml(config_path)
@@ -46,9 +46,7 @@ def test_parse_config_file(config_case, pprinter):
     if test_str != reference_str:
         new_path = Path(reference_path).with_suffix(".new.txt")
         new_path.write_text(test_str)
-        msg = f"Workflow graph doesn't match serialized data. New graph string dumped to {new_path}."
-        assert reference_str == test_str
-        raise ValueError(msg)
+        assert reference_str == test_str, f"Workflow graph doesn't match serialized data. New graph string dumped to {new_path}."
 
 
 @pytest.mark.skip(reason="don't run it each time, uncomment to regenerate serilaized data")

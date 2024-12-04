@@ -59,7 +59,7 @@ class Task(BaseNode):
     #       keywords and extend it as we support more
     command: str | None = None
     command_option: str | None = None
-    input_arg_options: dict[str, str] | None = None
+    input_arg_options: dict[str, str] = field(default_factory=dict)
     host: str | None = None
     account: str | None = None
     plugin: str | None = None
@@ -93,6 +93,15 @@ class Task(BaseNode):
             # use the fact that pydantic models can be turned into dicts easily
             cls_config = dict(config)
             del cls_config["parameters"]
+
+            # We remove the None values in the config, as these are not setted parameters.
+            # This way the default values are not overwritten to None (e.g. for input_arg_options)
+            none_keys = []
+            for key, value in cls_config.items():
+                if value is None:
+                    none_keys.append(key)
+            for key in none_keys:
+                del cls_config[key]
 
             new = cls(
                 parameters=parameters,
