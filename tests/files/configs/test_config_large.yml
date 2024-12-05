@@ -61,19 +61,18 @@ tasks:
       host: santis
       account: g110
   - extpar:
-      plugin: extpar
+      plugin: shell  # no extpar plugin available yet
       command: $PWD/examples/files/scripts/extpar
       command_option: '--verbose'  # todo implement support
       input_arg_options:
         obs_data: '--input'
-      config: path/to/namelists/dir
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
       nodes: 1
       walltime: 00:02:00
   - preproc:
-      plugin: AiiDA Shell
+      plugin: shell
       command: $PWD/examples/files/scripts/cleanup.sh
       input_arg_options:
         grid_file: '-g'
@@ -81,7 +80,6 @@ tasks:
         ERA5: '-e'
       nodes: 4
       walltime: 00:02:00
-      config: path/to/config/dir
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
@@ -93,35 +91,35 @@ tasks:
         icon_input: '--input'
       nodes: 40
       walltime: 23:59:59
-      config: path/to/namelists/dir
+      namelists:
+        master: path/to/mater_nml
+        model: path/to/model_nml
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
   - postproc_1:
-      plugin: AiiDA Shell
+      plugin: shell
       command: $PWD/examples/files/scripts/main_script_ocn.sh
       input_arg_options:
         stream_1: '--input'
       nodes: 2
       walltime: 00:05:00
-      conda_env: path/to/yaml/env/file
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
   - postproc_2:
-      plugin: AiiDA Shell
+      plugin: shell
       command: $PWD/examples/files/scripts/main_script_atm.sh
       input_arg_options:
         stream_2: '--input'
       nodes: 2
       walltime: 00:05:00
       src: path/to/src/dir
-      conda_env: path/to/yaml/env/file
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
   - store_and_clean_1:
-      plugin: AiiDA Shell
+      plugin: shell
       command: $PWD/examples/files/scripts/post_clean.sh
       input_arg_options:
         postout_1: '--input'
@@ -130,7 +128,7 @@ tasks:
       nodes: 1
       walltime: 00:01:00
   - store_and_clean_2:
-      plugin: AiiDA Shell
+      plugin: shell
       command: $PWD/examples/files/scripts/post_clean.sh
       input_arg_options:
         postout_2: '--input'
