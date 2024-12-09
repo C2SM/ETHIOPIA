@@ -20,31 +20,35 @@ class GraphItem:
     coordinates: dict = field(default_factory=dict)
 
 
-class Plugin(type):
+class TaskPlugin(type):
     """Metaclass for plugin tasks inheriting from Task
 
     Used to register all plugin task classes"""
 
-    classes: dict[str, type] | None = None
+    classes: ClassVar[dict[str, type[Task]]] = {}
 
-    def __new__(cls, name, bases, dct):
-        if cls.classes is None:
-            cls.classes = {}
-        plugin = dct["plugin"]
+    def __new__(cls, name: str, bases: tuple, attr: dict):
+        """Invoked on class definition when used as metaclass.
+
+        name: The name of the class
+        bases: The base classes from the class
+        attr: The attributes of the class
+        """
+        plugin = attr["plugin"]
         if plugin in cls.classes:
             msg = f"Task for plugin {plugin} already set"
             raise ValueError(msg)
-        return_cls = super().__new__(cls, name, bases, dct)
+        return_cls = super().__new__(cls, name, bases, attr)
         cls.classes[plugin] = return_cls
         return return_cls
 
 
 @dataclass
-class Task(GraphItem, metaclass=Plugin):
+class Task(GraphItem, metaclass=TaskPlugin):
     """Internal representation of a task node"""
 
     plugin: ClassVar[str] = "_BASE_TASK"
-    color: ClassVar[str] = "light_red"
+    color: ClassVar[str] = field(default="light_red", repr=False)
 
     inputs: list[Data] = field(default_factory=list)
     outputs: list[Data] = field(default_factory=list)
@@ -71,7 +75,11 @@ class Task(GraphItem, metaclass=Plugin):
         cls_config = dict(config)
         del cls_config["parameters"]
         del cls_config["plugin"]
-        new = Plugin.classes[config.plugin](
+        if (plugin_cls := TaskPlugin.classes.get(config.plugin, None)) is None:
+            msg = f"Plugin {config.plugin!r} is not supported."
+            raise ValueError(msg)
+
+        new = plugin_cls(
             coordinates=coordinates,
             inputs=inputs,
             outputs=outputs,
