@@ -31,7 +31,7 @@ def main():
     args = parser.parse_args()
     
 
-    output = Path('output')
+    output = Path('icon_output')
     output.write_text("")
 
     if args.restart and args.init:

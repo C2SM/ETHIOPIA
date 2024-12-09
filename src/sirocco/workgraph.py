@@ -126,7 +126,7 @@ class AiidaWorkGraph:
     def get_aiida_label_from_unrolled_data(obj: core.BaseNode) -> str:
         """ """
         return AiidaWorkGraph.parse_to_aiida_label(
-            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
+            f"{obj.name}" + "__".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
         )
 
     @staticmethod
@@ -136,9 +136,10 @@ class AiidaWorkGraph:
         #      so do we check somewhere that a task is not used in multiple cycles?
         #      Otherwise the label is not unique
         # --> task name + date + parameters
-        return AiidaWorkGraph.parse_to_aiida_label(
-            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
+        label = AiidaWorkGraph.parse_to_aiida_label(
+            "__".join([f"{obj.name}"] + [f"_{key}_{value}" for key, value in obj.coordinates.items()])
         )
+        return label
 
     def _add_aiida_input_data_node(self, input_: core.UnrolledData):
         """

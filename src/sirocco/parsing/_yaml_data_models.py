@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from os.path import expandvars
 import time
 from datetime import datetime
 from pathlib import Path
@@ -273,6 +274,12 @@ class ConfigTaskShell(ConfigTaskBase):
     input_arg_options: dict[str, str] = Field(default_factory=dict) 
     src: str | None = None
 
+    @field_validator("command", "command_option", "src")
+    @classmethod
+    def expand_var(cls, value: str | None) -> str | None:
+        """Expand environemnt variables"""
+        # TODO this might be not intended if we want to use environment variables on remote HPC
+        return None if value is None else expandvars(value)
 
 class ConfigTaskIcon(ConfigTaskBase):
     plugin: Literal["icon"]
