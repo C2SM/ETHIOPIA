@@ -79,7 +79,7 @@ class AiidaWorkGraph:
 
     def _validate_workflow(self):
         """Checks if the defined workflow is correctly referencing key names."""
-        for cycle in self._core_workflow.cycles.values():
+        for cycle in self._core_workflow.cycles:
             try:
                 aiida.common.validate_link_label(cycle.name)
             except ValueError as exception:
@@ -109,7 +109,7 @@ class AiidaWorkGraph:
         """
         Nodes that correspond to data that are available on initialization of the workflow
         """
-        for cycle in self._core_workflow.cycles.values():
+        for cycle in self._core_workflow.cycles:
             for task in cycle.tasks:
                 for input_ in task.inputs:
                     if input_.available:
@@ -126,7 +126,7 @@ class AiidaWorkGraph:
     def get_aiida_label_from_unrolled_data(obj: core.BaseNode) -> str:
         """ """
         return AiidaWorkGraph.parse_to_aiida_label(
-            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.parameters.items())
+            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
         )
 
     @staticmethod
@@ -137,7 +137,7 @@ class AiidaWorkGraph:
         #      Otherwise the label is not unique
         # --> task name + date + parameters
         return AiidaWorkGraph.parse_to_aiida_label(
-            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.parameters.items())
+            f"{obj.name}" + "_".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
         )
 
     def _add_aiida_input_data_node(self, input_: core.UnrolledData):
@@ -156,17 +156,19 @@ class AiidaWorkGraph:
             raise ValueError(msg)
 
     def _add_aiida_task_nodes(self):
-        for cycle in self._core_workflow.cycles.values():
+        for cycle in self._core_workflow.cycles:
             for task in cycle.tasks:
                 self._add_aiida_task_node(task)
         # after creation we can link the wait_on tasks
         # TODO check where this is now
-        #for cycle in self._core_workflow.cycles.values():
+        #for cycle in self._core_workflow.cycles:
         #    for task in cycle.tasks:
         #        self._link_wait_on_to_task(task)
 
     def _add_aiida_task_node(self, task: core.UnrolledTask):
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
+        if task.command is None:
+            raise ValueError(f"The command is None of task {task}.")
         workgraph_task = self._workgraph.tasks.new(
             "ShellJob",
             name=label,
@@ -189,7 +191,7 @@ class AiidaWorkGraph:
         workgraph_task.wait = wait_on_tasks
 
     def _add_aiida_links(self):
-        for cycle in self._core_workflow.cycles.values():
+        for cycle in self._core_workflow.cycles:
             self._add_aiida_links_from_cycle(cycle)
 
     def _add_aiida_links_from_cycle(self, cycle: core.UnrolledCycle):

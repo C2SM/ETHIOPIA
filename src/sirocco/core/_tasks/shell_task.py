@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import field, dataclass
 from typing import ClassVar
 
 from sirocco.core.graph_items import Task
@@ -12,5 +12,5 @@ class ShellTask(Task):
 
     command: str | None = None
     command_option: str | None = None
-    input_arg_options: dict[str, str] | None = None
+    input_arg_options: dict[str, str] = field(default_factory=dict) 
     src: str | None = None

@@ -29,9 +29,22 @@ class _NamedBaseModel(BaseModel):
     name: str
 
     def __init__(self, /, **data):
+        super().__init__(**self.merge_name_and_specs(data))
+
+    @staticmethod
+    def merge_name_and_specs(data: dict) -> dict:
+        """
+        Converts dict of form
+
+        `{my_name: {'spec_0': ..., ..., 'spec_n': ...}`
+
+        to
+
+        `{'name': my_name, 'spec_0': ..., ..., 'spec_n': ...}`
+
+        by copy.
+        """
         name_and_spec = {}
-        # - my_name:
-        #     ...
         if len(data) != 1:
             msg = f"Expected dict with one element of the form {{'name': specification}} but got {data}."
             raise ValueError(msg)
@@ -39,8 +52,7 @@ class _NamedBaseModel(BaseModel):
         # if no specification specified e.g. "- my_name:"
         if (spec := next(iter(data.values()))) is not None:
             name_and_spec.update(spec)
-
-        super().__init__(**name_and_spec)
+        return name_and_spec
 
 
 class _WhenBaseModel(BaseModel):
@@ -228,14 +240,11 @@ class ConfigCycle(_NamedBaseModel):
             raise ValueError(msg)
         return self
 
+from typing import Literal
 
-class ConfigTask(_NamedBaseModel):
-    """
-    To create an instance of a task defined in a workflow file
-    """
-
+class ConfigTaskBase(_NamedBaseModel):
     # config for genric task, no plugin specifics
-    parameters: list[str] = []
+    parameters: list[str] = Field(default_factory=list)
     host: str | None = None
     account: str | None = None
     plugin: str | None = None
@@ -256,7 +265,17 @@ class ConfigTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-# TODO(maybe): ConfigTaskIcon(ConfigTask) and ConfigTaskShell(ConfigTask)
+
+class ConfigTaskShell(ConfigTaskBase):
+    plugin: Literal["shell"]
+    command: str 
+    command_option: str = ""
+    input_arg_options: dict[str, str] = Field(default_factory=dict) 
+    src: str | None = None
+
+
+class ConfigTaskIcon(ConfigTaskBase):
+    plugin: Literal["icon"]
 
 
 class DataBaseModel(_NamedBaseModel):
@@ -297,11 +316,20 @@ class ConfigData(BaseModel):
     available: list[ConfigAvailableData] = []
     generated: list[ConfigGeneratedData] = []
 
+from typing import Annotated
+from pydantic import Discriminator, Tag
+
+def get_plugin_from_named_base_model(data: dict) -> str:
+    plugin =_NamedBaseModel.merge_name_and_specs(data).get("plugin", "")
+    return plugin
 
 class ConfigWorkflow(BaseModel):
     name: str | None = None
     cycles: list[ConfigCycle]
-    tasks: list[ConfigTask]
+    tasks: list[Annotated[
+        Annotated[ConfigTaskIcon, Tag("icon")] |
+        Annotated[ConfigTaskShell, Tag("shell")],
+        Discriminator(get_plugin_from_named_base_model)]]
     data: ConfigData
     parameters: dict[str, list] = {}
     data_dict: dict = {}

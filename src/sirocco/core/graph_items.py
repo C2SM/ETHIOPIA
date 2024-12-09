@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from itertools import chain, product
+from os.path import expandvars
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, Self
 
 if TYPE_CHECKING:
@@ -115,6 +117,11 @@ class Data(GraphItem):
             available=config.available,
             coordinates=coordinates,
         )
+
+    @property
+    def path(self) -> Path:
+        # TODO yaml level?
+        return Path(expandvars(self.src))
 
 
 @dataclass(kw_only=True)

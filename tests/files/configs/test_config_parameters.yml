@@ -91,5 +91,5 @@ data:
         src: yearly_analysis
 
 parameters:
-  foo: [0, 1]
-  bar: {arange: [3, 4]}
+  foo: [0, 1, 2]
+  bar: [3.0, 3.5]
