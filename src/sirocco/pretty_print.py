@@ -5,7 +5,7 @@ from typing import Any
 
 from termcolor import colored
 
-from . import core
+from sirocco import core
 
 
 @dataclasses.dataclass
@@ -66,13 +66,14 @@ class PrettyPrinter:
         return f"- {header}\n{body}"
 
     @functools.singledispatchmethod
-    def format(self, obj: Any):
+    def format(self, obj: Any) -> str:
         """
         Dispatch formatting based on node type.
 
         Default implementation simply calls str()
         """
-        return str(obj)
+        # this prevents empty strings being not visibliy displayed
+        return repr(obj) if isinstance(obj, str) else str(obj)
 
     @format.register
     def format_basic(self, obj: core.GraphItem) -> str:
@@ -140,6 +141,22 @@ class PrettyPrinter:
                     "\n".join(self.as_item(self.format_basic(waiton)) for waiton in obj.wait_on),
                 )
             )
+
+        # Handling remaining member variables
+        repr_attrs = [field_name for field_name, field in obj.__dataclass_fields__.items() if field.repr]
+        # removing attributs that are specifically handled above
+        repr_attrs.remove("inputs")
+        repr_attrs.remove("outputs")
+        repr_attrs.remove("wait_on")
+
+        for attr_name in repr_attrs:
+            attr = getattr(obj, attr_name)
+            if attr is None:
+                continue
+            formatted_attr = self.format(attr)
+            formatted_attr_name = attr_name.replace("_", " ")
+            sections.append(f"{formatted_attr_name}: {formatted_attr}")
+
         return self.as_item(
             self.as_block(
                 self.format_basic(obj),

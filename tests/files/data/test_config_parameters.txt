@@ -8,6 +8,12 @@ cycles:
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - initial conditions
@@ -15,6 +21,12 @@ cycles:
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - initial conditions
@@ -22,6 +34,12 @@ cycles:
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - initial conditions
@@ -29,6 +47,12 @@ cycles:
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - initial conditions
@@ -36,6 +60,12 @@ cycles:
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - initial conditions
@@ -43,6 +73,12 @@ cycles:
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2026-01-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
@@ -50,6 +86,12 @@ cycles:
               - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2026-01-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -57,12 +99,24 @@ cycles:
               - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2026-01-01 00:00:00]:
             input:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2026-01-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2026-03-01 00:00:00]:
       tasks:
         - icon [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]:
@@ -72,6 +126,12 @@ cycles:
             output:
               - icon_output [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -79,6 +139,12 @@ cycles:
             output:
               - icon_output [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
@@ -86,6 +152,12 @@ cycles:
             output:
               - icon_output [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
@@ -93,6 +165,12 @@ cycles:
             output:
               - icon_output [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
@@ -100,6 +178,12 @@ cycles:
             output:
               - icon_output [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
@@ -107,6 +191,12 @@ cycles:
             output:
               - icon_output [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2026-03-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
@@ -114,6 +204,12 @@ cycles:
               - icon_output [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2026-03-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
@@ -121,12 +217,24 @@ cycles:
               - icon_output [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2026-03-01 00:00:00]:
             input:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2026-03-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2026-05-01 00:00:00]:
       tasks:
         - icon [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]:
@@ -136,6 +244,12 @@ cycles:
             output:
               - icon_output [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
@@ -143,6 +257,12 @@ cycles:
             output:
               - icon_output [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
@@ -150,6 +270,12 @@ cycles:
             output:
               - icon_output [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
@@ -157,6 +283,12 @@ cycles:
             output:
               - icon_output [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
@@ -164,6 +296,12 @@ cycles:
             output:
               - icon_output [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
@@ -171,6 +309,12 @@ cycles:
             output:
               - icon_output [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2026-05-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
@@ -178,6 +322,12 @@ cycles:
               - icon_output [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2026-05-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
@@ -185,12 +335,24 @@ cycles:
               - icon_output [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2026-05-01 00:00:00]:
             input:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2026-05-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2026-07-01 00:00:00]:
       tasks:
         - icon [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]:
@@ -200,6 +362,12 @@ cycles:
             output:
               - icon_output [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
@@ -207,6 +375,12 @@ cycles:
             output:
               - icon_output [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
@@ -214,6 +388,12 @@ cycles:
             output:
               - icon_output [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
@@ -221,6 +401,12 @@ cycles:
             output:
               - icon_output [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
@@ -228,6 +414,12 @@ cycles:
             output:
               - icon_output [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
@@ -235,6 +427,12 @@ cycles:
             output:
               - icon_output [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2026-07-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
@@ -242,6 +440,12 @@ cycles:
               - icon_output [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2026-07-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
@@ -249,12 +453,24 @@ cycles:
               - icon_output [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2026-07-01 00:00:00]:
             input:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2026-07-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2026-09-01 00:00:00]:
       tasks:
         - icon [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]:
@@ -264,6 +480,12 @@ cycles:
             output:
               - icon_output [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
@@ -271,6 +493,12 @@ cycles:
             output:
               - icon_output [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
@@ -278,6 +506,12 @@ cycles:
             output:
               - icon_output [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
@@ -285,6 +519,12 @@ cycles:
             output:
               - icon_output [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
@@ -292,6 +532,12 @@ cycles:
             output:
               - icon_output [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
@@ -299,6 +545,12 @@ cycles:
             output:
               - icon_output [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2026-09-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
@@ -306,6 +558,12 @@ cycles:
               - icon_output [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2026-09-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
@@ -313,12 +571,24 @@ cycles:
               - icon_output [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2026-09-01 00:00:00]:
             input:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2026-09-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2026-11-01 00:00:00]:
       tasks:
         - icon [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]:
@@ -328,6 +598,12 @@ cycles:
             output:
               - icon_output [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
@@ -335,6 +611,12 @@ cycles:
             output:
               - icon_output [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
@@ -342,6 +624,12 @@ cycles:
             output:
               - icon_output [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
@@ -349,6 +637,12 @@ cycles:
             output:
               - icon_output [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
@@ -356,6 +650,12 @@ cycles:
             output:
               - icon_output [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
@@ -363,6 +663,12 @@ cycles:
             output:
               - icon_output [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2026-11-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
@@ -370,6 +676,12 @@ cycles:
               - icon_output [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2026-11-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
@@ -377,12 +689,24 @@ cycles:
               - icon_output [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2026-11-01 00:00:00]:
             input:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2026-11-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2027-01-01 00:00:00]:
       tasks:
         - icon [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]:
@@ -392,6 +716,12 @@ cycles:
             output:
               - icon_output [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
@@ -399,6 +729,12 @@ cycles:
             output:
               - icon_output [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
@@ -406,6 +742,12 @@ cycles:
             output:
               - icon_output [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
@@ -413,6 +755,12 @@ cycles:
             output:
               - icon_output [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
@@ -420,6 +768,12 @@ cycles:
             output:
               - icon_output [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
@@ -427,6 +781,12 @@ cycles:
             output:
               - icon_output [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2027-01-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
@@ -434,6 +794,12 @@ cycles:
               - icon_output [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2027-01-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -441,12 +807,24 @@ cycles:
               - icon_output [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2027-01-01 00:00:00]:
             input:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2027-01-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2027-03-01 00:00:00]:
       tasks:
         - icon [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]:
@@ -456,6 +834,12 @@ cycles:
             output:
               - icon_output [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -463,6 +847,12 @@ cycles:
             output:
               - icon_output [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
@@ -470,6 +860,12 @@ cycles:
             output:
               - icon_output [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
@@ -477,6 +873,12 @@ cycles:
             output:
               - icon_output [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
@@ -484,6 +886,12 @@ cycles:
             output:
               - icon_output [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
@@ -491,6 +899,12 @@ cycles:
             output:
               - icon_output [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2027-03-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
@@ -498,6 +912,12 @@ cycles:
               - icon_output [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2027-03-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
@@ -505,12 +925,24 @@ cycles:
               - icon_output [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2027-03-01 00:00:00]:
             input:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2027-03-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2027-05-01 00:00:00]:
       tasks:
         - icon [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]:
@@ -520,6 +952,12 @@ cycles:
             output:
               - icon_output [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
@@ -527,6 +965,12 @@ cycles:
             output:
               - icon_output [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
@@ -534,6 +978,12 @@ cycles:
             output:
               - icon_output [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
@@ -541,6 +991,12 @@ cycles:
             output:
               - icon_output [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
@@ -548,6 +1004,12 @@ cycles:
             output:
               - icon_output [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
@@ -555,6 +1017,12 @@ cycles:
             output:
               - icon_output [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2027-05-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
@@ -562,6 +1030,12 @@ cycles:
               - icon_output [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2027-05-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
@@ -569,12 +1043,24 @@ cycles:
               - icon_output [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2027-05-01 00:00:00]:
             input:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2027-05-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2027-07-01 00:00:00]:
       tasks:
         - icon [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]:
@@ -584,6 +1070,12 @@ cycles:
             output:
               - icon_output [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
@@ -591,6 +1083,12 @@ cycles:
             output:
               - icon_output [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
@@ -598,6 +1096,12 @@ cycles:
             output:
               - icon_output [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
@@ -605,6 +1109,12 @@ cycles:
             output:
               - icon_output [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
@@ -612,6 +1122,12 @@ cycles:
             output:
               - icon_output [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
@@ -619,6 +1135,12 @@ cycles:
             output:
               - icon_output [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2027-07-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
@@ -626,6 +1148,12 @@ cycles:
               - icon_output [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2027-07-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
@@ -633,12 +1161,24 @@ cycles:
               - icon_output [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2027-07-01 00:00:00]:
             input:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2027-07-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2027-09-01 00:00:00]:
       tasks:
         - icon [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]:
@@ -648,6 +1188,12 @@ cycles:
             output:
               - icon_output [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
@@ -655,6 +1201,12 @@ cycles:
             output:
               - icon_output [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
@@ -662,6 +1214,12 @@ cycles:
             output:
               - icon_output [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
@@ -669,6 +1227,12 @@ cycles:
             output:
               - icon_output [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
@@ -676,6 +1240,12 @@ cycles:
             output:
               - icon_output [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
@@ -683,6 +1253,12 @@ cycles:
             output:
               - icon_output [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2027-09-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
@@ -690,6 +1266,12 @@ cycles:
               - icon_output [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2027-09-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
@@ -697,12 +1279,24 @@ cycles:
               - icon_output [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2027-09-01 00:00:00]:
             input:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2027-09-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - bimonthly_tasks [date: 2027-11-01 00:00:00]:
       tasks:
         - icon [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]:
@@ -712,6 +1306,12 @@ cycles:
             output:
               - icon_output [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
@@ -719,6 +1319,12 @@ cycles:
             output:
               - icon_output [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
@@ -726,6 +1332,12 @@ cycles:
             output:
               - icon_output [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
@@ -733,6 +1345,12 @@ cycles:
             output:
               - icon_output [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
@@ -740,6 +1358,12 @@ cycles:
             output:
               - icon_output [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - icon [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
@@ -747,6 +1371,12 @@ cycles:
             output:
               - icon_output [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]
+            name: 'icon'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/icon.py'
+            command option: ''
+            input arg options: {'icon_restart': '--restart'}
         - statistics_foo [date: 2027-11-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]
@@ -754,6 +1384,12 @@ cycles:
               - icon_output [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.0]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'bar': 3.0}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo [date: 2027-11-01 00:00:00, bar: 3.5]:
             input:
               - icon_output [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]
@@ -761,12 +1397,24 @@ cycles:
               - icon_output [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.5]
+            name: 'statistics_foo'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'bar': 3.5}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
         - statistics_foo_bar [date: 2027-11-01 00:00:00]:
             input:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.5]
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.0]
             output:
               - analysis_foo_bar [date: 2027-11-01 00:00:00]
+            name: 'statistics_foo_bar'
+            coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/statistics.py'
+            command option: ''
+            input arg options: {}
   - yearly [date: 2026-01-01 00:00:00]:
       tasks:
         - merge [date: 2026-01-01 00:00:00]:
@@ -779,6 +1427,12 @@ cycles:
               - analysis_foo_bar [date: 2026-11-01 00:00:00]
             output:
               - yearly_analysis [date: 2026-01-01 00:00:00]
+            name: 'merge'
+            coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/merge.py'
+            command option: ''
+            input arg options: {}
   - yearly [date: 2027-01-01 00:00:00]:
       tasks:
         - merge [date: 2027-01-01 00:00:00]:
@@ -791,3 +1445,9 @@ cycles:
               - analysis_foo_bar [date: 2027-11-01 00:00:00]
             output:
               - yearly_analysis [date: 2027-01-01 00:00:00]
+            name: 'merge'
+            coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0)}
+            plugin: 'shell'
+            command: '$PWD/tests/files/scripts/merge.py'
+            command option: ''
+            input arg options: {}
