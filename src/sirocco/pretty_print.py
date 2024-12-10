@@ -88,7 +88,7 @@ class PrettyPrinter:
         ...     PrettyPrinter().format_basic(
         ...         Task(
         ...             name=foo,
-        ...             coordinates={"date": datetime(1000, 1, 1).date()},
+        ...             parameters={"date": datetime(1000, 1, 1).date()},
         ...             workflow=None,
         ...         )
         ...     )
@@ -96,15 +96,15 @@ class PrettyPrinter:
         foo [1000-01-01]
         """
         name = obj.name
-        if obj.coordinates:
-            coords = ", ".join([f"{name}: {value}" for name, value in obj.coordinates.items()])
-            coords = f"[{coords}]"
+        if obj.parameters:
+            params = ", ".join([f"{name}: {value}" for name, value in obj.parameters.items()])
+            params = f"[{params}]"
         else:
-            coords = None
+            params = None
         if self.colors:
             name = colored(name, obj.color, attrs=["bold"])
-            coords = colored(coords, obj.color) if coords else None
-        return f"{name} {coords}" if coords else name
+            params = colored(params, obj.color) if params else None
+        return f"{name} {params}" if params else name
 
     @format.register
     def format_workflow(self, obj: core.Workflow) -> str:
