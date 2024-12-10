@@ -25,7 +25,7 @@ class TaskPlugin(type):
 
     Used to register all plugin task classes"""
 
-    classes: ClassVar[dict[str, type[Task]]] = {}
+    classes: ClassVar[dict[str, type[Task]]] = {}  # is valid because is singleton
 
     def __new__(cls, name: str, bases: tuple, attr: dict):
         """Invoked on class definition when used as metaclass.

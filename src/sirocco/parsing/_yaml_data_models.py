@@ -330,7 +330,7 @@ def get_plugin_from_named_base_model(data: dict) -> str:
         return Task.plugin
     plugin = name_and_specs.get("plugin", None)
     if plugin is None:
-        msg = "Could not find plugin name in {data}"
+        msg = f"Could not find plugin name in {data}"
         raise ValueError(msg)
     return plugin
 
