@@ -22,39 +22,27 @@ class GraphItem:
     coordinates: dict
 
 
-class TaskPlugin(type):
-    """Metaclass for plugin tasks inheriting from Task
-
-    Used to register all plugin task classes"""
-
-    classes: ClassVar[dict[str, type[Task]]] = {}  # is valid because is singleton
-
-    def __new__(cls, name: str, bases: tuple, attr: dict):
-        """Invoked on class definition when used as metaclass.
-
-        name: The name of the class
-        bases: The base classes from the class
-        attr: The attributes of the class
-        """
-        plugin = attr["plugin"]
-        if plugin in cls.classes:
-            msg = f"Task for plugin {plugin} already set"
-            raise ValueError(msg)
-        return_cls = super().__new__(cls, name, bases, attr)
-        cls.classes[plugin] = return_cls
-        return return_cls
-
-
 @dataclass
-class Task(ConfigBaseTaskCore, GraphItem, metaclass=TaskPlugin):
+class Task(ConfigBaseTaskCore, GraphItem):
     """Internal representation of a task node"""
 
-    plugin: ClassVar[Literal[ConfigBaseTask.plugin]] = ConfigBaseTask.plugin
+    plugin_classes: ClassVar[dict[str, type]] = field(default={}, repr=False)
+    plugin: ClassVar[str] = '_BASE_TASK_'
     color: ClassVar[str] = field(default="light_red", repr=False)
 
     inputs: list[Data] = field(default_factory=list)
     outputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
+
+    def __init_subclass__(cls, /, plugin_name:str, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if Task.plugin_classes is None:
+            Task.plugin_classes = {}
+        if plugin_name in Task.plugin_classes:
+            msg = f"Task for plugin {plugin_name} already set"
+            raise ValueError(msg)
+        cls.plugin = plugin_name
+        Task.plugin_classes[plugin_name] = cls
 
     @classmethod
     def from_config(
@@ -72,7 +60,7 @@ class Task(ConfigBaseTaskCore, GraphItem, metaclass=TaskPlugin):
         cls_config = dict(config)
         del cls_config["parameters"]
         # del cls_config["plugin"]
-        if (plugin_cls := TaskPlugin.classes.get(type(config).plugin, None)) is None:
+        if (plugin_cls := Task.plugin_classes.get(type(config).plugin, None)) is None:
             msg = f"Plugin {config.plugin!r} is not supported."
             raise ValueError(msg)
 
