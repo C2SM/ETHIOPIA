@@ -4,12 +4,12 @@ from dataclasses import dataclass, field
 from itertools import chain, product
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self
 
-from sirocco.parsing._yaml_data_models import ConfigBaseTask, ConfigBaseTaskCore
+from sirocco.parsing._yaml_data_models import ConfigBaseTask, ConfigBaseTaskCore, ConfigBaseDataCore, ConfigAvailableData
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sirocco.parsing._yaml_data_models import ConfigCycleTask, ConfigTask, DataBaseModel, TargetNodesBaseModel
+    from sirocco.parsing._yaml_data_models import ConfigCycleTask, ConfigTask, ConfigBaseData, TargetNodesBaseModel
 
 
 @dataclass
@@ -19,7 +19,7 @@ class GraphItem:
     color: ClassVar[str]
 
     name: str
-    coordinates: dict = field(default_factory=dict)
+    coordinates: dict
 
 
 class TaskPlugin(type):
@@ -55,11 +55,6 @@ class Task(ConfigBaseTaskCore, GraphItem, metaclass=TaskPlugin):
     inputs: list[Data] = field(default_factory=list)
     outputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
-    host: str | None = None
-    account: str | None = None
-    uenv: dict | None = None
-    nodes: int | None = None
-    walltime: str | None = None
 
     @classmethod
     def from_config(
@@ -106,32 +101,31 @@ class Task(ConfigBaseTaskCore, GraphItem, metaclass=TaskPlugin):
         )
 
 
-@dataclass(kw_only=True)
-class Data(GraphItem):
+@dataclass
+class Data(ConfigBaseDataCore, GraphItem):
     """Internal representation of a data node"""
 
-    color: ClassVar[str] = "light_blue"
+    color: ClassVar[str] = field(default="light_blue", repr=False)
 
-    type: str
-    src: str
-    available: bool
+    available: bool | None = None   # must get a default value because of dataclass inheritence
 
     @classmethod
-    def from_config(cls, config: DataBaseModel, coordinates: dict) -> Self:
+    def from_config(cls, config: ConfigBaseData, coordinates: dict) -> Self:
         return cls(
             name=config.name,
             type=config.type,
             src=config.src,
-            available=config.available,
+            available=isinstance(config, ConfigAvailableData),
             coordinates=coordinates,
         )
 
 
-@dataclass(kw_only=True)
+@dataclass
 class Cycle(GraphItem):
     """Internal reprenstation of a cycle"""
 
-    color: str = "light_green"
+    color: ClassVar[str] = field(default="light_green", repr=False)
+
     tasks: list[Task]
 
 

@@ -298,14 +298,18 @@ class ConfigIconTask(ConfigBaseTask, ConfigIconTaskCore):
     plugin: ClassVar[Literal["icon"]] = "icon"
 
 
-class DataBaseModel(_NamedBaseModel):
+@dataclass
+class ConfigBaseDataCore:
+    type: str | None = None
+    src: str | None = None
+    format: str | None = None
+
+
+class ConfigBaseData(_NamedBaseModel, ConfigBaseDataCore):
     """
     To create an instance of a data defined in a workflow file.
     """
 
-    type: str
-    src: str
-    format: str | None = None
     parameters: list[str] = []
 
     @field_validator("type")
@@ -317,16 +321,12 @@ class DataBaseModel(_NamedBaseModel):
             raise ValueError(msg)
         return value
 
-    @property
-    def available(self) -> bool:
-        return isinstance(self, ConfigAvailableData)
 
-
-class ConfigAvailableData(DataBaseModel):
+class ConfigAvailableData(ConfigBaseData):
     pass
 
 
-class ConfigGeneratedData(DataBaseModel):
+class ConfigGeneratedData(ConfigBaseData):
     pass
 
 
