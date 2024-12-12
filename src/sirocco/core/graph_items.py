@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from itertools import chain, product
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self
 
-from sirocco.parsing import ConfigBaseTask
+from sirocco.parsing._yaml_data_models import ConfigBaseTask
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

@@ -4,12 +4,11 @@ from dataclasses import dataclass
 from typing import ClassVar, Literal
 
 from sirocco.core.graph_items import Task
-from sirocco.parsing import ConfigShellTask
+from sirocco.parsing._yaml_data_models import ConfigShellTask
 
 
 @dataclass
 class ShellTask(Task):
-    # plugin: ClassVar[str] = "shell"
     plugin: ClassVar[Literal[ConfigShellTask.plugin]] = ConfigShellTask.plugin
 
     command: str | None = None

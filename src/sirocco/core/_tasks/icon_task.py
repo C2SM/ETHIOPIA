@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import ClassVar, Literal
 
 from sirocco.core.graph_items import Task
-from sirocco.parsing import ConfigIconTask
+from sirocco.parsing._yaml_data_models import ConfigIconTask
 
 
 @dataclass
