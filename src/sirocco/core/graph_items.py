@@ -31,7 +31,6 @@ class Task(ConfigBaseTaskCore, GraphItem):
     """Internal representation of a task node"""
 
     plugin_classes: ClassVar[dict[str, type]] = field(default={}, repr=False)
-    plugin: ClassVar[str] = "_BASE_TASK_"
     color: ClassVar[str] = field(default="light_red", repr=False)
 
     inputs: list[Data] = field(default_factory=list)
