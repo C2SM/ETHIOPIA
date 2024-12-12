@@ -10,9 +10,6 @@ from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
 from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag, field_validator, model_validator
 
-# from sirocco.core._tasks.icon_task import IconTask
-# from sirocco.core._tasks.shell_task import ShellTask
-# from sirocco.core.graph_items import Task
 from sirocco.parsing._utils import TimeUtils
 
 
