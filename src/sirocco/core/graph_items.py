@@ -40,8 +40,6 @@ class Task(ConfigBaseTaskCore, GraphItem):
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        if Task.plugin_classes is None:
-            Task.plugin_classes = {}
         if cls.plugin in Task.plugin_classes:
             msg = f"Task for plugin {cls.plugin} already set"
             raise ValueError(msg)
