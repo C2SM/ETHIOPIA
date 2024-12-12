@@ -258,7 +258,10 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
 
     # this class could be used for constructing a root task we therefore need a
     # default value for the plugin as it is not required
-    plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
+    # WORKAROUND for the mixin of _NamedBaseModel subclasses and dataclasses:
+    # use base_plugin instead of plugin in order to not overrite
+    # the plugin value provided by in ConfigXxxTaskCore
+    base_plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
     parameters: list[str] = Field(default_factory=list)
 
     def __init__(self, /, **data):
@@ -276,6 +279,7 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
 
 @dataclass
 class ConfigShellTaskCore:
+    plugin: ClassVar[Literal["shell"]] = "shell"
     command: str = ""
     command_option: str = ""
     input_arg_options: dict[str, str] = Field(default_factory=dict)  # noqa: RUF009 Field needed
@@ -284,16 +288,17 @@ class ConfigShellTaskCore:
 
 
 class ConfigShellTask(ConfigBaseTask, ConfigShellTaskCore):
-    plugin: ClassVar[Literal["shell"]] = "shell"
+    pass
 
 
 @dataclass
 class ConfigIconTaskCore:
+    plugin: ClassVar[Literal["icon"]] = "icon"
     namelists: dict[str, str] | None = None
 
 
 class ConfigIconTask(ConfigBaseTask, ConfigIconTaskCore):
-    plugin: ClassVar[Literal["icon"]] = "icon"
+    pass
 
 
 @dataclass
@@ -338,7 +343,7 @@ class ConfigData(BaseModel):
 def get_plugin_from_named_base_model(data: dict) -> str:
     name_and_specs = _NamedBaseModel.merge_name_and_specs(data)
     if name_and_specs.get("name", None) == "ROOT":
-        return ConfigBaseTask.plugin
+        return ConfigBaseTask.base_plugin
     plugin = name_and_specs.get("plugin", None)
     if plugin is None:
         msg = f"Could not find plugin name in {data}"
@@ -347,7 +352,7 @@ def get_plugin_from_named_base_model(data: dict) -> str:
 
 
 ConfigTask = Annotated[
-    Annotated[ConfigBaseTask, Tag(ConfigBaseTask.plugin)]
+    Annotated[ConfigBaseTask, Tag(ConfigBaseTask.base_plugin)]
     | Annotated[ConfigIconTask, Tag(ConfigIconTask.plugin)]
     | Annotated[ConfigShellTask, Tag(ConfigShellTask.plugin)],
     Discriminator(get_plugin_from_named_base_model),

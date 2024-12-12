@@ -38,15 +38,14 @@ class Task(ConfigBaseTaskCore, GraphItem):
     outputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
 
-    def __init_subclass__(cls, /, plugin_name: str, **kwargs):
+    def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         if Task.plugin_classes is None:
             Task.plugin_classes = {}
-        if plugin_name in Task.plugin_classes:
-            msg = f"Task for plugin {plugin_name} already set"
+        if cls.plugin in Task.plugin_classes:
+            msg = f"Task for plugin {cls.plugin} already set"
             raise ValueError(msg)
-        cls.plugin = plugin_name
-        Task.plugin_classes[plugin_name] = cls
+        Task.plugin_classes[cls.plugin] = cls
 
     @classmethod
     def from_config(
@@ -63,7 +62,6 @@ class Task(ConfigBaseTaskCore, GraphItem):
         # use the fact that pydantic models can be turned into dicts easily
         cls_config = dict(config)
         del cls_config["parameters"]
-        # del cls_config["plugin"]
         if (plugin_cls := Task.plugin_classes.get(type(config).plugin, None)) is None:
             msg = f"Plugin {config.plugin!r} is not supported."
             raise ValueError(msg)
