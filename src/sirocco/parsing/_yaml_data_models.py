@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 import time
 from datetime import datetime
 from pathlib import Path
@@ -244,21 +245,24 @@ class ConfigCycle(_NamedBaseModel):
         return self
 
 
-class ConfigBaseTask(_NamedBaseModel):
+@dataclass
+class ConfigBaseTaskCore:
+    host: str | None = None
+    account: str | None = None
+    uenv: dict | None = None
+    nodes: int | None = None
+    walltime: str | None = None
+
+
+class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
     """
     config for genric task, no plugin specifics
     """
 
     # this class could be used for constructing a root task we therefore need a
     # default value for the plugin as it is not required
-    # plugin: Literal[Task.plugin] | None = None
     plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
     parameters: list[str] = Field(default_factory=list)
-    host: str | None = None
-    account: str | None = None
-    uenv: dict | None = None
-    nodes: int | None = None
-    walltime: str | None = None
 
     def __init__(self, /, **data):
         # We have to treat root special as it does not typically define a command
@@ -273,19 +277,25 @@ class ConfigBaseTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-class ConfigShellTask(ConfigBaseTask):
-    # plugin: Literal[ShellTask.plugin]
-    plugin: ClassVar[Literal["shell"]] = "shell"
-    command: str
+@dataclass
+class ConfigShellTaskCore:
+    command: str = ""
     command_option: str = ""
     input_arg_options: dict[str, str] = Field(default_factory=dict)
     src: str | None = None
 
 
-class ConfigIconTask(ConfigBaseTask):
-    # plugin: Literal[IconTask.plugin]
+class ConfigShellTask(ConfigBaseTask, ConfigShellTaskCore):
+    plugin: ClassVar[Literal["shell"]] = "shell"
+
+
+@dataclass
+class ConfigIconTaskCore:
+    namelists: dict[str, str] | None = None
+
+
+class ConfigIconTask(ConfigBaseTask, ConfigIconTaskCore):
     plugin: ClassVar[Literal["icon"]] = "icon"
-    namelists: dict[str, Any]
 
 
 class DataBaseModel(_NamedBaseModel):

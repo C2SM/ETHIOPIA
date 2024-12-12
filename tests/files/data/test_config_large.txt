@@ -8,10 +8,10 @@ cycles:
               - extpar_file
             name: 'extpar'
             coordinates: {}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/extpar'
             command option: '--verbose'
             input arg options: {'obs_data': '--input'}
@@ -26,10 +26,10 @@ cycles:
               - icon_input [date: 2025-01-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -43,10 +43,10 @@ cycles:
               - icon_restart [date: 2025-01-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-01-01 00:00:00]:
             input:
@@ -55,10 +55,10 @@ cycles:
               - postout_1 [date: 2025-01-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -71,9 +71,9 @@ cycles:
               - stored_data_1 [date: 2025-01-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -88,10 +88,10 @@ cycles:
               - icon_input [date: 2025-03-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2025, 3, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -106,10 +106,10 @@ cycles:
               - icon_restart [date: 2025-03-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2025, 3, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-03-01 00:00:00]:
             input:
@@ -118,10 +118,10 @@ cycles:
               - postout_1 [date: 2025-03-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2025, 3, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -134,9 +134,9 @@ cycles:
               - stored_data_1 [date: 2025-03-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2025, 3, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -153,10 +153,10 @@ cycles:
               - icon [date: 2025-01-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2025, 5, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -171,10 +171,10 @@ cycles:
               - icon_restart [date: 2025-05-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2025, 5, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-05-01 00:00:00]:
             input:
@@ -183,10 +183,10 @@ cycles:
               - postout_1 [date: 2025-05-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2025, 5, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -199,9 +199,9 @@ cycles:
               - stored_data_1 [date: 2025-05-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2025, 5, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -218,10 +218,10 @@ cycles:
               - icon [date: 2025-03-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2025, 7, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -236,10 +236,10 @@ cycles:
               - icon_restart [date: 2025-07-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2025, 7, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-07-01 00:00:00]:
             input:
@@ -248,10 +248,10 @@ cycles:
               - postout_1 [date: 2025-07-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2025, 7, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -264,9 +264,9 @@ cycles:
               - stored_data_1 [date: 2025-07-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2025, 7, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -283,10 +283,10 @@ cycles:
               - icon [date: 2025-05-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2025, 9, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -301,10 +301,10 @@ cycles:
               - icon_restart [date: 2025-09-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2025, 9, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-09-01 00:00:00]:
             input:
@@ -313,10 +313,10 @@ cycles:
               - postout_1 [date: 2025-09-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2025, 9, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -329,9 +329,9 @@ cycles:
               - stored_data_1 [date: 2025-09-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2025, 9, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -348,10 +348,10 @@ cycles:
               - icon [date: 2025-07-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2025, 11, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -366,10 +366,10 @@ cycles:
               - icon_restart [date: 2025-11-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2025, 11, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-11-01 00:00:00]:
             input:
@@ -378,10 +378,10 @@ cycles:
               - postout_1 [date: 2025-11-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2025, 11, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -394,9 +394,9 @@ cycles:
               - stored_data_1 [date: 2025-11-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2025, 11, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -413,10 +413,10 @@ cycles:
               - icon [date: 2025-09-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -431,10 +431,10 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-01-01 00:00:00]:
             input:
@@ -443,10 +443,10 @@ cycles:
               - postout_1 [date: 2026-01-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -459,9 +459,9 @@ cycles:
               - stored_data_1 [date: 2026-01-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -478,10 +478,10 @@ cycles:
               - icon [date: 2025-11-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -496,10 +496,10 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-03-01 00:00:00]:
             input:
@@ -508,10 +508,10 @@ cycles:
               - postout_1 [date: 2026-03-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -524,9 +524,9 @@ cycles:
               - stored_data_1 [date: 2026-03-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -543,10 +543,10 @@ cycles:
               - icon [date: 2026-01-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -561,10 +561,10 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-05-01 00:00:00]:
             input:
@@ -573,10 +573,10 @@ cycles:
               - postout_1 [date: 2026-05-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -589,9 +589,9 @@ cycles:
               - stored_data_1 [date: 2026-05-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -608,10 +608,10 @@ cycles:
               - icon [date: 2026-03-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -626,10 +626,10 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-07-01 00:00:00]:
             input:
@@ -638,10 +638,10 @@ cycles:
               - postout_1 [date: 2026-07-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -654,9 +654,9 @@ cycles:
               - stored_data_1 [date: 2026-07-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -673,10 +673,10 @@ cycles:
               - icon [date: 2026-05-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -691,10 +691,10 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-09-01 00:00:00]:
             input:
@@ -703,10 +703,10 @@ cycles:
               - postout_1 [date: 2026-09-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -719,9 +719,9 @@ cycles:
               - stored_data_1 [date: 2026-09-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -738,10 +738,10 @@ cycles:
               - icon [date: 2026-07-01 00:00:00]
             name: 'preproc'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             command option: ''
             input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
@@ -756,10 +756,10 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
-            plugin: 'icon'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-11-01 00:00:00]:
             input:
@@ -768,10 +768,10 @@ cycles:
               - postout_1 [date: 2026-11-01 00:00:00]
             name: 'postproc_1'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             command option: ''
             input arg options: {'stream_1': '--input'}
@@ -784,9 +784,9 @@ cycles:
               - stored_data_1 [date: 2026-11-01 00:00:00]
             name: 'store_and_clean_1'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
@@ -804,10 +804,10 @@ cycles:
               - postout_2 [date: 2025-01-01 00:00:00]
             name: 'postproc_2'
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
             command option: ''
             input arg options: {'stream_2': '--input'}
@@ -825,9 +825,9 @@ cycles:
               - stored_data_2 [date: 2025-01-01 00:00:00]
             name: 'store_and_clean_2'
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_2': '--input'}
@@ -845,10 +845,10 @@ cycles:
               - postout_2 [date: 2026-01-01 00:00:00]
             name: 'postproc_2'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            plugin: 'shell'
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
             command option: ''
             input arg options: {'stream_2': '--input'}
@@ -866,9 +866,9 @@ cycles:
               - stored_data_2 [date: 2026-01-01 00:00:00]
             name: 'store_and_clean_2'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            plugin: 'shell'
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             command option: ''
             input arg options: {'postout_2': '--input'}

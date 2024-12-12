@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from itertools import chain, product
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self
 
-from sirocco.parsing._yaml_data_models import ConfigBaseTask
+from sirocco.parsing._yaml_data_models import ConfigBaseTask, ConfigBaseTaskCore
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -46,7 +46,7 @@ class TaskPlugin(type):
 
 
 @dataclass
-class Task(GraphItem, metaclass=TaskPlugin):
+class Task(ConfigBaseTaskCore, GraphItem, metaclass=TaskPlugin):
     """Internal representation of a task node"""
 
     plugin: ClassVar[Literal[ConfigBaseTask.plugin]] = ConfigBaseTask.plugin
