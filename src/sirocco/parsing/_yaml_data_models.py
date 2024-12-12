@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 import time
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Annotated, Any, ClassVar, Literal
@@ -281,7 +281,8 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
 class ConfigShellTaskCore:
     command: str = ""
     command_option: str = ""
-    input_arg_options: dict[str, str] = Field(default_factory=dict)
+    input_arg_options: dict[str, str] = Field(default_factory=dict)  # noqa: RUF009 Field needed
+    #                                                                        for child class doing pydantic parsing
     src: str | None = None
 
 

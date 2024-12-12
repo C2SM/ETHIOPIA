@@ -2,14 +2,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from itertools import chain, product
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self
+from typing import TYPE_CHECKING, Any, ClassVar, Self
 
-from sirocco.parsing._yaml_data_models import ConfigBaseTask, ConfigBaseTaskCore, ConfigBaseDataCore, ConfigAvailableData
+from sirocco.parsing._yaml_data_models import (
+    ConfigAvailableData,
+    ConfigBaseDataCore,
+    ConfigBaseTaskCore,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sirocco.parsing._yaml_data_models import ConfigCycleTask, ConfigTask, ConfigBaseData, TargetNodesBaseModel
+    from sirocco.parsing._yaml_data_models import ConfigBaseData, ConfigCycleTask, ConfigTask, TargetNodesBaseModel
 
 
 @dataclass
@@ -27,14 +31,14 @@ class Task(ConfigBaseTaskCore, GraphItem):
     """Internal representation of a task node"""
 
     plugin_classes: ClassVar[dict[str, type]] = field(default={}, repr=False)
-    plugin: ClassVar[str] = '_BASE_TASK_'
+    plugin: ClassVar[str] = "_BASE_TASK_"
     color: ClassVar[str] = field(default="light_red", repr=False)
 
     inputs: list[Data] = field(default_factory=list)
     outputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
 
-    def __init_subclass__(cls, /, plugin_name:str, **kwargs):
+    def __init_subclass__(cls, /, plugin_name: str, **kwargs):
         super().__init_subclass__(**kwargs)
         if Task.plugin_classes is None:
             Task.plugin_classes = {}
@@ -95,7 +99,7 @@ class Data(ConfigBaseDataCore, GraphItem):
 
     color: ClassVar[str] = field(default="light_blue", repr=False)
 
-    available: bool | None = None   # must get a default value because of dataclass inheritence
+    available: bool | None = None  # must get a default value because of dataclass inheritence
 
     @classmethod
     def from_config(cls, config: ConfigBaseData, coordinates: dict) -> Self:
