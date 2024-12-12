@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from itertools import chain, product
-from typing import TYPE_CHECKING, Any, ClassVar, Self
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self
+
+from sirocco.parsing import ConfigBaseTask
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -47,7 +49,7 @@ class TaskPlugin(type):
 class Task(GraphItem, metaclass=TaskPlugin):
     """Internal representation of a task node"""
 
-    plugin: ClassVar[str] = "_BASE_TASK"
+    plugin: ClassVar[Literal[ConfigBaseTask.plugin]] = ConfigBaseTask.plugin
     color: ClassVar[str] = field(default="light_red", repr=False)
 
     inputs: list[Data] = field(default_factory=list)
@@ -74,8 +76,7 @@ class Task(GraphItem, metaclass=TaskPlugin):
         # use the fact that pydantic models can be turned into dicts easily
         cls_config = dict(config)
         del cls_config["parameters"]
-        del cls_config["plugin"]
-        if (plugin_cls := TaskPlugin.classes.get(config.plugin, None)) is None:
+        if (plugin_cls := TaskPlugin.classes.get(type(config).plugin, None)) is None:
             msg = f"Plugin {config.plugin!r} is not supported."
             raise ValueError(msg)
 
