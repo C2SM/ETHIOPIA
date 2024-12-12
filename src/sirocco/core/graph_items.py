@@ -63,7 +63,7 @@ class Task(ConfigBaseTaskCore, GraphItem):
         cls_config = dict(config)
         del cls_config["parameters"]
         if (plugin_cls := Task.plugin_classes.get(type(config).plugin, None)) is None:
-            msg = f"Plugin {config.plugin!r} is not supported."
+            msg = f"Plugin {type(config).plugin!r} is not supported."
             raise ValueError(msg)
 
         new = plugin_cls(
