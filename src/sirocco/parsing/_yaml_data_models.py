@@ -3,15 +3,15 @@ from __future__ import annotations
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, ClassVar, Literal
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
 from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag, field_validator, model_validator
 
-from sirocco.core._tasks.icon_task import IconTask
-from sirocco.core._tasks.shell_task import ShellTask
-from sirocco.core.graph_items import Task
+# from sirocco.core._tasks.icon_task import IconTask
+# from sirocco.core._tasks.shell_task import ShellTask
+# from sirocco.core.graph_items import Task
 from sirocco.parsing._utils import TimeUtils
 
 
@@ -251,7 +251,8 @@ class ConfigBaseTask(_NamedBaseModel):
 
     # this class could be used for constructing a root task we therefore need a
     # default value for the plugin as it is not required
-    plugin: Literal[Task.plugin] | None = None
+    # plugin: Literal[Task.plugin] | None = None
+    plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
     parameters: list[str] = Field(default_factory=list)
     host: str | None = None
     account: str | None = None
@@ -273,7 +274,8 @@ class ConfigBaseTask(_NamedBaseModel):
 
 
 class ConfigShellTask(ConfigBaseTask):
-    plugin: Literal[ShellTask.plugin]
+    # plugin: Literal[ShellTask.plugin]
+    plugin: ClassVar[Literal["shell"]] = "shell"
     command: str
     command_option: str = ""
     input_arg_options: dict[str, str] = Field(default_factory=dict)
@@ -281,7 +283,8 @@ class ConfigShellTask(ConfigBaseTask):
 
 
 class ConfigIconTask(ConfigBaseTask):
-    plugin: Literal[IconTask.plugin]
+    # plugin: Literal[IconTask.plugin]
+    plugin: ClassVar[Literal["icon"]] = "icon"
     namelists: dict[str, Any]
 
 
@@ -327,7 +330,7 @@ class ConfigData(BaseModel):
 def get_plugin_from_named_base_model(data: dict) -> str:
     name_and_specs = _NamedBaseModel.merge_name_and_specs(data)
     if name_and_specs.get("name", None) == "ROOT":
-        return Task.plugin
+        return ConfigBaseTask.plugin
     plugin = name_and_specs.get("plugin", None)
     if plugin is None:
         msg = f"Could not find plugin name in {data}"
@@ -336,9 +339,9 @@ def get_plugin_from_named_base_model(data: dict) -> str:
 
 
 ConfigTask = Annotated[
-    Annotated[ConfigBaseTask, Tag(Task.plugin)]
-    | Annotated[ConfigIconTask, Tag(IconTask.plugin)]
-    | Annotated[ConfigShellTask, Tag(ShellTask.plugin)],
+    Annotated[ConfigBaseTask, Tag(ConfigBaseTask.plugin)]
+    | Annotated[ConfigIconTask, Tag(ConfigIconTask.plugin)]
+    | Annotated[ConfigShellTask, Tag(ConfigShellTask.plugin)],
     Discriminator(get_plugin_from_named_base_model),
 ]
 

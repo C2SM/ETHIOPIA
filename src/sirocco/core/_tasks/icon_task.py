@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import ClassVar
+from typing import ClassVar, Literal
 
 from sirocco.core.graph_items import Task
+from sirocco.parsing import ConfigIconTask
 
 
 @dataclass
 class IconTask(Task):
-    plugin: ClassVar[str] = "icon"
+    plugin: ClassVar[Literal[ConfigIconTask.plugin]] = ConfigIconTask.plugin
 
     namelists: dict = field(default_factory=dict)
