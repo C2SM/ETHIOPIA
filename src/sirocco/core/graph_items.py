@@ -188,10 +188,10 @@ class Array:
 
 
 class Store:
-    """Container for Array or unique items"""
+    """Container for GraphItem Arrays"""
 
     def __init__(self):
-        self._dict: dict[str, Array | GraphItem] = {}
+        self._dict: dict[str, Array] = {}
 
     def add(self, item) -> None:
         if not isinstance(item, GraphItem):
@@ -227,8 +227,4 @@ class Store:
         yield from self._dict[spec.name].iter_from_cycle_spec(spec, reference)
 
     def __iter__(self) -> Iterator[GraphItem]:
-        for item in self._dict.values():
-            if isinstance(item, Array):
-                yield from item
-            else:
-                yield item
+        yield from chain(*(self._dict.values()))
