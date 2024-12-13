@@ -2,14 +2,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from itertools import chain, product
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self
+from typing import TYPE_CHECKING, Any, ClassVar, Self
 
-from sirocco.parsing import ConfigBaseTask
+from sirocco.parsing._yaml_data_models import (
+    ConfigAvailableData,
+    ConfigBaseDataSpecs,
+    ConfigBaseTaskSpecs,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from sirocco.parsing._yaml_data_models import ConfigCycleTask, ConfigTask, DataBaseModel, TargetNodesBaseModel
+    from sirocco.parsing._yaml_data_models import ConfigBaseData, ConfigCycleTask, ConfigTask, TargetNodesBaseModel
 
 
 @dataclass
@@ -19,47 +23,26 @@ class GraphItem:
     color: ClassVar[str]
 
     name: str
-    coordinates: dict = field(default_factory=dict)
-
-
-class TaskPlugin(type):
-    """Metaclass for plugin tasks inheriting from Task
-
-    Used to register all plugin task classes"""
-
-    classes: ClassVar[dict[str, type[Task]]] = {}
-
-    def __new__(cls, name: str, bases: tuple, attr: dict):
-        """Invoked on class definition when used as metaclass.
-
-        name: The name of the class
-        bases: The base classes from the class
-        attr: The attributes of the class
-        """
-        plugin = attr["plugin"]
-        if plugin in cls.classes:
-            msg = f"Task for plugin {plugin} already set"
-            raise ValueError(msg)
-        return_cls = super().__new__(cls, name, bases, attr)
-        cls.classes[plugin] = return_cls
-        return return_cls
+    coordinates: dict
 
 
 @dataclass
-class Task(GraphItem, metaclass=TaskPlugin):
+class Task(ConfigBaseTaskSpecs, GraphItem):
     """Internal representation of a task node"""
 
-    plugin: ClassVar[Literal[ConfigBaseTask.plugin]] = ConfigBaseTask.plugin
+    plugin_classes: ClassVar[dict[str, type]] = field(default={}, repr=False)
     color: ClassVar[str] = field(default="light_red", repr=False)
 
     inputs: list[Data] = field(default_factory=list)
     outputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
-    host: str | None = None
-    account: str | None = None
-    uenv: dict | None = None
-    nodes: int | None = None
-    walltime: str | None = None
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if cls.plugin in Task.plugin_classes:
+            msg = f"Task for plugin {cls.plugin} already set"
+            raise ValueError(msg)
+        Task.plugin_classes[cls.plugin] = cls
 
     @classmethod
     def from_config(
@@ -76,8 +59,8 @@ class Task(GraphItem, metaclass=TaskPlugin):
         # use the fact that pydantic models can be turned into dicts easily
         cls_config = dict(config)
         del cls_config["parameters"]
-        if (plugin_cls := TaskPlugin.classes.get(type(config).plugin, None)) is None:
-            msg = f"Plugin {config.plugin!r} is not supported."
+        if (plugin_cls := Task.plugin_classes.get(type(config).plugin, None)) is None:
+            msg = f"Plugin {type(config).plugin!r} is not supported."
             raise ValueError(msg)
 
         new = plugin_cls(
@@ -105,32 +88,31 @@ class Task(GraphItem, metaclass=TaskPlugin):
         )
 
 
-@dataclass(kw_only=True)
-class Data(GraphItem):
+@dataclass
+class Data(ConfigBaseDataSpecs, GraphItem):
     """Internal representation of a data node"""
 
-    color: ClassVar[str] = "light_blue"
+    color: ClassVar[str] = field(default="light_blue", repr=False)
 
-    type: str
-    src: str
-    available: bool
+    available: bool | None = None  # must get a default value because of dataclass inheritence
 
     @classmethod
-    def from_config(cls, config: DataBaseModel, coordinates: dict) -> Self:
+    def from_config(cls, config: ConfigBaseData, coordinates: dict) -> Self:
         return cls(
             name=config.name,
             type=config.type,
             src=config.src,
-            available=config.available,
+            available=isinstance(config, ConfigAvailableData),
             coordinates=coordinates,
         )
 
 
-@dataclass(kw_only=True)
+@dataclass
 class Cycle(GraphItem):
     """Internal reprenstation of a cycle"""
 
-    color: str = "light_green"
+    color: ClassVar[str] = field(default="light_green", repr=False)
+
     tasks: list[Task]
 
 
@@ -206,10 +188,10 @@ class Array:
 
 
 class Store:
-    """Container for Array or unique items"""
+    """Container for GraphItem Arrays"""
 
     def __init__(self):
-        self._dict: dict[str, Array | GraphItem] = {}
+        self._dict: dict[str, Array] = {}
 
     def add(self, item) -> None:
         if not isinstance(item, GraphItem):
@@ -245,8 +227,4 @@ class Store:
         yield from self._dict[spec.name].iter_from_cycle_spec(spec, reference)
 
     def __iter__(self) -> Iterator[GraphItem]:
-        for item in self._dict.values():
-            if isinstance(item, Array):
-                yield from item
-            else:
-                yield item
+        yield from chain(*(self._dict.values()))
