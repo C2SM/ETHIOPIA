@@ -258,8 +258,8 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskSpecs):
 
     # this class could be used for constructing a root task we therefore need a
     # default value for the plugin as it is not required
-    # WORKAROUND for the mixin of _NamedBaseModel subclasses and dataclasses:
-    # use base_plugin instead of plugin in order to not overrite
+    # WORKAROUND: for the mixin of _NamedBaseModel subclasses and dataclasses:
+    # use base_plugin instead of plugin in order to not overwrite
     # the plugin value provided by in ConfigXxxTaskSpecs
     base_plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
     parameters: list[str] = Field(default_factory=list)
