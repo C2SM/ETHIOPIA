@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from sirocco.core.graph_items import Task
-from sirocco.parsing._yaml_data_models import ConfigIconTaskCore
+from sirocco.parsing._yaml_data_models import ConfigIconTaskSpecs
 
 
 @dataclass
-class IconTask(ConfigIconTaskCore, Task):
+class IconTask(ConfigIconTaskSpecs, Task):
     pass

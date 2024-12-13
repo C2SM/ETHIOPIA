@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, Self
 
 from sirocco.parsing._yaml_data_models import (
     ConfigAvailableData,
-    ConfigBaseDataCore,
-    ConfigBaseTaskCore,
+    ConfigBaseDataSpecs,
+    ConfigBaseTaskSpecs,
 )
 
 if TYPE_CHECKING:
@@ -27,7 +27,7 @@ class GraphItem:
 
 
 @dataclass
-class Task(ConfigBaseTaskCore, GraphItem):
+class Task(ConfigBaseTaskSpecs, GraphItem):
     """Internal representation of a task node"""
 
     plugin_classes: ClassVar[dict[str, type]] = field(default={}, repr=False)
@@ -89,7 +89,7 @@ class Task(ConfigBaseTaskCore, GraphItem):
 
 
 @dataclass
-class Data(ConfigBaseDataCore, GraphItem):
+class Data(ConfigBaseDataSpecs, GraphItem):
     """Internal representation of a data node"""
 
     color: ClassVar[str] = field(default="light_blue", repr=False)

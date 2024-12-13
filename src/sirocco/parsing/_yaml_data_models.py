@@ -243,7 +243,7 @@ class ConfigCycle(_NamedBaseModel):
 
 
 @dataclass
-class ConfigBaseTaskCore:
+class ConfigBaseTaskSpecs:
     host: str | None = None
     account: str | None = None
     uenv: dict | None = None
@@ -251,7 +251,7 @@ class ConfigBaseTaskCore:
     walltime: str | None = None
 
 
-class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
+class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskSpecs):
     """
     config for genric task, no plugin specifics
     """
@@ -260,7 +260,7 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
     # default value for the plugin as it is not required
     # WORKAROUND for the mixin of _NamedBaseModel subclasses and dataclasses:
     # use base_plugin instead of plugin in order to not overrite
-    # the plugin value provided by in ConfigXxxTaskCore
+    # the plugin value provided by in ConfigXxxTaskSpecs
     base_plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
     parameters: list[str] = Field(default_factory=list)
 
@@ -278,7 +278,7 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskCore):
 
 
 @dataclass
-class ConfigShellTaskCore:
+class ConfigShellTaskSpecs:
     plugin: ClassVar[Literal["shell"]] = "shell"
     command: str = ""
     command_option: str = ""
@@ -287,28 +287,28 @@ class ConfigShellTaskCore:
     src: str | None = None
 
 
-class ConfigShellTask(ConfigBaseTask, ConfigShellTaskCore):
+class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
     pass
 
 
 @dataclass
-class ConfigIconTaskCore:
+class ConfigIconTaskSpecs:
     plugin: ClassVar[Literal["icon"]] = "icon"
     namelists: dict[str, str] | None = None
 
 
-class ConfigIconTask(ConfigBaseTask, ConfigIconTaskCore):
+class ConfigIconTask(ConfigBaseTask, ConfigIconTaskSpecs):
     pass
 
 
 @dataclass
-class ConfigBaseDataCore:
+class ConfigBaseDataSpecs:
     type: str | None = None
     src: str | None = None
     format: str | None = None
 
 
-class ConfigBaseData(_NamedBaseModel, ConfigBaseDataCore):
+class ConfigBaseData(_NamedBaseModel, ConfigBaseDataSpecs):
     """
     To create an instance of a data defined in a workflow file.
     """
