@@ -256,25 +256,17 @@ class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskSpecs):
     config for genric task, no plugin specifics
     """
 
-    # this class could be used for constructing a root task we therefore need a
-    # default value for the plugin as it is not required
-    # WORKAROUND: for the mixin of _NamedBaseModel subclasses and dataclasses:
-    # use base_plugin instead of plugin in order to not overwrite
-    # the plugin value provided by in ConfigXxxTaskSpecs
-    base_plugin: ClassVar[Literal["_BASE_TASK_"]] = "_BASE_TASK_"
     parameters: list[str] = Field(default_factory=list)
-
-    def __init__(self, /, **data):
-        # We have to treat root special as it does not typically define a command
-        if "ROOT" in data and "command" not in data["ROOT"]:
-            data["ROOT"]["command"] = "ROOT_PLACEHOLDER"
-        super().__init__(**data)
 
     @field_validator("walltime")
     @classmethod
     def convert_to_struct_time(cls, value: str | None) -> time.struct_time | None:
         """Converts a string of form "%H:%M:%S" to a time.time_struct"""
         return None if value is None else time.strptime(value, "%H:%M:%S")
+
+
+class ConfigRootTask(ConfigBaseTask):
+    plugin: ClassVar[Literal["_root"]] = "_root"
 
 
 @dataclass
@@ -343,7 +335,7 @@ class ConfigData(BaseModel):
 def get_plugin_from_named_base_model(data: dict) -> str:
     name_and_specs = _NamedBaseModel.merge_name_and_specs(data)
     if name_and_specs.get("name", None) == "ROOT":
-        return ConfigBaseTask.base_plugin
+        return ConfigRootTask.plugin
     plugin = name_and_specs.get("plugin", None)
     if plugin is None:
         msg = f"Could not find plugin name in {data}"
@@ -352,7 +344,7 @@ def get_plugin_from_named_base_model(data: dict) -> str:
 
 
 ConfigTask = Annotated[
-    Annotated[ConfigBaseTask, Tag(ConfigBaseTask.base_plugin)]
+    Annotated[ConfigRootTask, Tag(ConfigRootTask.plugin)]
     | Annotated[ConfigIconTask, Tag(ConfigIconTask.plugin)]
     | Annotated[ConfigShellTask, Tag(ConfigShellTask.plugin)],
     Discriminator(get_plugin_from_named_base_model),
