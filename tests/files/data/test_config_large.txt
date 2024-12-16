@@ -30,7 +30,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-01-01 00:00:00]:
             input:
               - grid_file
@@ -89,7 +89,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-03-01 00:00:00]:
             input:
               - grid_file
@@ -151,7 +151,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-05-01 00:00:00]:
             input:
               - grid_file
@@ -213,7 +213,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-07-01 00:00:00]:
             input:
               - grid_file
@@ -275,7 +275,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-09-01 00:00:00]:
             input:
               - grid_file
@@ -337,7 +337,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-11-01 00:00:00]:
             input:
               - grid_file
@@ -399,7 +399,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-01-01 00:00:00]:
             input:
               - grid_file
@@ -461,7 +461,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-03-01 00:00:00]:
             input:
               - grid_file
@@ -523,7 +523,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-05-01 00:00:00]:
             input:
               - grid_file
@@ -585,7 +585,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-07-01 00:00:00]:
             input:
               - grid_file
@@ -647,7 +647,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-09-01 00:00:00]:
             input:
               - grid_file
@@ -709,7 +709,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            cli arguments: positional=None keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file=None
+            cli arguments: positional=['grid_file'] keyword={'-g': 'grid_file', '-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-11-01 00:00:00]:
             input:
               - grid_file
@@ -772,7 +772,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
-            cli arguments: positional=None keyword={'--input': 'stream_2', 'arg_option': '--input'} flags=None source_file=None
+            cli arguments: positional=None keyword={'--input': 'stream_2'} flags=None source_file=None
             src: 'path/to/src/dir'
         - store_and_clean_2 [date: 2025-01-01 00:00:00]:
             input:
@@ -811,7 +811,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
-            cli arguments: positional=None keyword={'--input': 'stream_2', 'arg_option': '--input'} flags=None source_file=None
+            cli arguments: positional=None keyword={'--input': 'stream_2'} flags=None source_file=None
             src: 'path/to/src/dir'
         - store_and_clean_2 [date: 2026-01-01 00:00:00]:
             input:
