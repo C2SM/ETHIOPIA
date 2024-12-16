@@ -85,11 +85,12 @@ class _WhenBaseModel(BaseModel):
 class _CliArgsBaseModel(BaseModel):
     """Base class for cli_arguments specifications"""
 
+    # TODO: Even allow for `str`, or always require list?
     positional: str | list[str] | None = None
     # Field needed for child class doing pydantic parsing
     keyword: dict[str, str] | None = Field(default_factory=dict)
     flags: str | list[str] | None = None
-    source_file: str | Path | list[str] | None = None
+    source_file: str | list[str] | None = None
 
     # def validate_source_file: ...
     #   path existing
