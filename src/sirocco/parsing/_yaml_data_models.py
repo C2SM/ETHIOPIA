@@ -97,12 +97,14 @@ class _CliArgsBaseModel(BaseModel):
 
     # TODO: Should we validate here, or allow users to pass it without the hyphen(s), and prepend them automatically?
     @field_validator("keyword", mode="before")
+    @classmethod
     def validate_keyword_args(cls, value):
         """Validate that keyword arguments start with '-' or '--'."""
         if value is not None:
-            invalid_keys = [key for key in value.keys() if not key.startswith(("-", "--"))]
+            invalid_keys = [key for key in value if not key.startswith(("-", "--"))]
             if invalid_keys:
-                raise ValueError(f"Invalid keyword arguments: {', '.join(invalid_keys)}")
+                invalid_kwarg_exc = f"Invalid keyword arguments: {', '.join(invalid_keys)}"
+                raise ValueError(invalid_kwarg_exc)
         return value
 
 
