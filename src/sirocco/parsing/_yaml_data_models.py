@@ -92,9 +92,6 @@ class _CliArgsBaseModel(BaseModel):
     flags: str | list[str] | None = None
     source_file: str | list[str] | None = None
 
-    # def validate_keyword_args: ...
-    #   starts with `-` or `--`
-
     # TODO: Should we validate here, or allow users to pass it without the hyphen(s), and prepend them automatically?
     @field_validator("keyword", mode="before")
     @classmethod
