@@ -84,7 +84,7 @@ class _WhenBaseModel(BaseModel):
         return datetime.fromisoformat(value)
 
 
-class _CliArgBaseModel(BaseModel):
+class _CliArgsBaseModel(BaseModel):
     """Base class for cli_arguments specifications"""
 
     positional: str | list[str] | None = None
@@ -293,7 +293,7 @@ class ConfigShellTask(ConfigBaseTask):
 
     command: str
     src: str | Path | None = None
-    cli_arguments: _CliArgBaseModel | None = None
+    cli_arguments: _CliArgsBaseModel | None = None
 
 
 class ConfigIconTask(ConfigBaseTask):
