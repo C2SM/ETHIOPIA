@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 
 class Workflow:
-    """Internal reprensentation of a workflow"""
+    """Internal representation of a workflow"""
 
     def __init__(self, workflow_config: ConfigWorkflow) -> None:
         self.name = workflow_config.name
