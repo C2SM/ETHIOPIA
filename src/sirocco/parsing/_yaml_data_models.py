@@ -84,6 +84,22 @@ class _WhenBaseModel(BaseModel):
         return datetime.fromisoformat(value)
 
 
+class _CliArgBaseModel(BaseModel):
+    """Base class for cli_arguments specifications"""
+
+    positional: str | list[str] | None = None
+    keyword: dict[str, str] | None = None
+    flags: str | list[str] | None = None
+    source_file: str | list[str] | None = None
+
+
+    # def validate_source_file: ...
+    #   path existing
+
+    # def validate_keyword_args: ...
+    #   starts with `-` or `--`
+
+
 class TargetNodesBaseModel(_NamedBaseModel):
     """class for targeting other task or data nodes in the graph
 
@@ -274,10 +290,10 @@ class ConfigBaseTask(_NamedBaseModel):
 
 class ConfigShellTask(ConfigBaseTask):
     plugin: Literal[ShellTask.plugin]
+
     command: str
-    command_option: str = ""
-    input_arg_options: dict[str, str] = Field(default_factory=dict)
-    src: str | None = None
+    src: str | Path | None = None
+    cli_arguments: _CliArgBaseModel | None = None
 
 
 class ConfigIconTask(ConfigBaseTask):
