@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
 from dataclasses import dataclass
 
 from sirocco.core.graph_items import Task
