@@ -92,11 +92,18 @@ class _CliArgsBaseModel(BaseModel):
     flags: str | list[str] | None = None
     source_file: str | list[str] | None = None
 
-    # def validate_source_file: ...
-    #   path existing
-
     # def validate_keyword_args: ...
     #   starts with `-` or `--`
+
+    # TODO: Should we validate here, or allow users to pass it without the hyphen(s), and prepend them automatically?
+    @field_validator("keyword", mode="before")
+    def validate_keyword_args(cls, value):
+        """Validate that keyword arguments start with '-' or '--'."""
+        if value is not None:
+            invalid_keys = [key for key in value.keys() if not key.startswith(("-", "--"))]
+            if invalid_keys:
+                raise ValueError(f"Invalid keyword arguments: {', '.join(invalid_keys)}")
+        return value
 
 
 class TargetNodesBaseModel(_NamedBaseModel):
