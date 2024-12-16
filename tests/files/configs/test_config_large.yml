@@ -67,7 +67,6 @@ tasks:
           --input: obs_data
         flags:
           - --verbose
-          # TODO: Support for single string?!
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
@@ -77,10 +76,13 @@ tasks:
       plugin: shell
       command: $PWD/examples/files/scripts/cleanup.sh
       cli_arguments:
+        positional:
+          - grid_file
         keyword:
           -g: grid_file
           -p: extpar_file
           -e: ERA5
+        source_file: dummy_source_file
       nodes: 4
       walltime: 00:02:00
       uenv:
@@ -156,6 +158,9 @@ data:
     - ERA5:
         type: file
         src: $PWD/examples/files/data/era5
+    - dummy_source_file:
+        type: file
+        src: $PWD/examples/files/data/dummy_source_file.sh
   generated:
     - extpar_file:
         type: file

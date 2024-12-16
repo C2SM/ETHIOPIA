@@ -77,11 +77,17 @@ class VizGraph:
     def tooltip(node) -> str:
         return "\n".join(chain([node.name], (f"  {k}: {v}" for k, v in node.coordinates.items())))
 
-    def draw(self, **kwargs):
+    def draw(self, file_path: Path | None = None, **kwargs):
         # draw graphviz dot graph to svg file
         self.agraph.layout(prog="dot")
-        file_path = Path(f"./{self.name}.svg")
+        if file_path is None:
+            file_path = Path(f"./{self.name}.svg")
+        # else:
+        #     this_dir = file_path.parent
+
         self.agraph.draw(path=file_path, format="svg", **kwargs)
+
+        this_dir = Path(__file__).parent
 
         # Add interactive capabilities to the svg graph thanks to
         # https://github.com/BartBrood/dynamic-SVG-from-Graphviz
@@ -92,7 +98,6 @@ class VizGraph:
         # Add 'onload' tag
         svg_root.set("onload", "addInteractivity(evt)")
         # Add css style for interactivity
-        this_dir = Path(__file__).parent
         style_file_path = this_dir / "svg-interactive-style.css"
         node = etree.Element("style")
         node.text = style_file_path.read_text()
