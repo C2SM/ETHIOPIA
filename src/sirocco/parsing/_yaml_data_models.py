@@ -1,18 +1,19 @@
 from __future__ import annotations
 
 import time
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, ClassVar, Literal
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
-from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Discriminator, Discriminator, Field, Tag, Tag, field_validator, model_validator
 
 from sirocco.core._tasks.icon_task import IconTask
 from sirocco.core._tasks.shell_task import ShellTask
 from sirocco.core.graph_items import Task
-from sirocco.parsing._utils import TimeUtils
+from sirocco.parsingsirocco.parsing._utils import TimeUtils
 
 
 class _NamedBaseModel(BaseModel):
@@ -260,26 +261,21 @@ class ConfigCycle(_NamedBaseModel):
         return self
 
 
-class ConfigBaseTask(_NamedBaseModel):
-    """
-    config for genric task, no plugin specifics
-    """
-
-    # this class could be used for constructing a root task we therefore need a
-    # default value for the plugin as it is not required
-    plugin: Literal[Task.plugin] | None = None
-    parameters: list[str] = Field(default_factory=list)
+@dataclass
+class ConfigBaseTaskSpecs:
     host: str | None = None
     account: str | None = None
     uenv: dict | None = None
     nodes: int | None = None
     walltime: str | None = None
 
-    def __init__(self, /, **data):
-        # We have to treat root special as it does not typically define a command
-        if "ROOT" in data and "command" not in data["ROOT"]:
-            data["ROOT"]["command"] = "ROOT_PLACEHOLDER"
-        super().__init__(**data)
+
+class ConfigBaseTask(_NamedBaseModel, ConfigBaseTaskSpecs):
+    """
+    config for genric task, no plugin specifics
+    """
+
+    parameters: list[str] = Field(default_factory=list)
 
     @field_validator("walltime")
     @classmethod
@@ -288,27 +284,46 @@ class ConfigBaseTask(_NamedBaseModel):
         return None if value is None else time.strptime(value, "%H:%M:%S")
 
 
-class ConfigShellTask(ConfigBaseTask):
-    plugin: Literal[ShellTask.plugin]
-
-    command: str
-    src: str | Path | None = None
-    cli_arguments: _CliArgsBaseModel | None = None
+class ConfigRootTask(ConfigBaseTask):
+    plugin: ClassVar[Literal["_root"]] = "_root"
 
 
-class ConfigIconTask(ConfigBaseTask):
-    plugin: Literal[IconTask.plugin]
-    namelists: dict[str, Any]
+@dataclass
+class ConfigShellTaskSpecs:
+    plugin: ClassVar[Literal["shell"]] = "shell"
+    command: str = ""
+    command_option: str = ""
+    input_arg_options: dict[str, str] = Field(default_factory=dict)  # noqa: RUF009 Field needed
+    #                                                                        for child class doing pydantic parsing
+    src: str | None = None
 
 
-class DataBaseModel(_NamedBaseModel):
+class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
+    pass
+
+
+@dataclass
+class ConfigIconTaskSpecs:
+    plugin: ClassVar[Literal["icon"]] = "icon"
+    namelists: dict[str, str] | None = None
+
+
+class ConfigIconTask(ConfigBaseTask, ConfigIconTaskSpecs):
+    pass
+
+
+@dataclass
+class ConfigBaseDataSpecs:
+    type: str | None = None
+    src: str | None = None
+    format: str | None = None
+
+
+class ConfigBaseData(_NamedBaseModel, ConfigBaseDataSpecs):
     """
     To create an instance of a data defined in a workflow file.
     """
 
-    type: str
-    src: str
-    format: str | None = None
     parameters: list[str] = []
 
     @field_validator("type")
@@ -320,16 +335,12 @@ class DataBaseModel(_NamedBaseModel):
             raise ValueError(msg)
         return value
 
-    @property
-    def available(self) -> bool:
-        return isinstance(self, ConfigAvailableData)
 
-
-class ConfigAvailableData(DataBaseModel):
+class ConfigAvailableData(ConfigBaseData):
     pass
 
 
-class ConfigGeneratedData(DataBaseModel):
+class ConfigGeneratedData(ConfigBaseData):
     pass
 
 
@@ -343,7 +354,7 @@ class ConfigData(BaseModel):
 def get_plugin_from_named_base_model(data: dict) -> str:
     name_and_specs = _NamedBaseModel.merge_name_and_specs(data)
     if name_and_specs.get("name", None) == "ROOT":
-        return Task.plugin
+        return ConfigRootTask.plugin
     plugin = name_and_specs.get("plugin", None)
     if plugin is None:
         msg = f"Could not find plugin name in {data}"
@@ -352,9 +363,9 @@ def get_plugin_from_named_base_model(data: dict) -> str:
 
 
 ConfigTask = Annotated[
-    Annotated[ConfigBaseTask, Tag(Task.plugin)]
-    | Annotated[ConfigIconTask, Tag(IconTask.plugin)]
-    | Annotated[ConfigShellTask, Tag(ShellTask.plugin)],
+    Annotated[ConfigRootTask, Tag(ConfigRootTask.plugin)]
+    | Annotated[ConfigIconTask, Tag(ConfigIconTask.plugin)]
+    | Annotated[ConfigShellTask, Tag(ConfigShellTask.plugin)],
     Discriminator(get_plugin_from_named_base_model),
 ]
 
