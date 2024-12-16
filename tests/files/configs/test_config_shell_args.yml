@@ -30,6 +30,7 @@ tasks:
           --input: obs_data
         flags:
           - --restart
+        source_file: <path-to-file-that-should-be-sourced-before>
   - cleanup:
       plugin: shell
       command: $PWD/tests/files/scripts/cleanup.py
