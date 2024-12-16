@@ -89,10 +89,10 @@ class _CliArgsBaseModel(BaseModel):
     """Base class for cli_arguments specifications"""
 
     positional: str | list[str] | None = None
-    keyword: dict[str, str] | None = None
+    # noqa: RUF009 Field needed for child class doing pydantic parsing
+    keyword: dict[str, str] | None = Field(default_factory=dict)
     flags: str | list[str] | None = None
     source_file: str | list[str] | None = None
-
 
     # def validate_source_file: ...
     #   path existing
@@ -292,9 +292,7 @@ class ConfigRootTask(ConfigBaseTask):
 class ConfigShellTaskSpecs:
     plugin: ClassVar[Literal["shell"]] = "shell"
     command: str = ""
-    command_option: str = ""
-    input_arg_options: dict[str, str] = Field(default_factory=dict)  # noqa: RUF009 Field needed
-    #                                                                        for child class doing pydantic parsing
+    cli_arguments: _CliArgsBaseModel | None = None
     src: str | None = None
 
 
