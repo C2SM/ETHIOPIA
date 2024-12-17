@@ -92,16 +92,30 @@ class _CliArgsBaseModel(BaseModel):
     flags: str | list[str] | None = None
     source_file: str | list[str] | None = None
 
-    # TODO: Should we validate here, or allow users to pass it without the hyphen(s), and prepend them automatically?
+    # TODO: Should we allow users to pass it without the hyphen(s), and prepend them automatically?
+    # TODO: While convenient, it could be a bad idea, if users put in wrong things. Better to be explicit.
     @field_validator("keyword", mode="before")
     @classmethod
     def validate_keyword_args(cls, value):
-        """Validate that keyword arguments start with '-' or '--'."""
+        """Ensure keyword arguments start with '-' or '--'."""
         if value is not None:
             invalid_keys = [key for key in value if not key.startswith(("-", "--"))]
             if invalid_keys:
                 invalid_kwarg_exc = f"Invalid keyword arguments: {', '.join(invalid_keys)}"
                 raise ValueError(invalid_kwarg_exc)
+        return value
+
+    @field_validator("flags", mode="before")
+    @classmethod
+    def validate_flag_args(cls, value):
+        """Ensure positional arguments start with '-' or '--'."""
+        if value is not None:
+            if isinstance(value, str):
+                value = [value]
+            invalid_flags = [arg for arg in value if not arg.startswith(("-", "--"))]
+            if invalid_flags:
+                invalid_flags_exc = f"Invalid positional arguments: {', '.join(invalid_flags)}"
+                raise ValueError(invalid_flags_exc)
         return value
 
 
