@@ -20,7 +20,7 @@ config_test_files = [
 
 
 @pytest.fixture(params=config_test_files)
-def config_case(request):
+def config_paths(request):
     config_path = Path(request.param)
     return {
         "yml": config_path,
@@ -29,8 +29,8 @@ def config_case(request):
     }
 
 
-def test_parse_config_file(config_case, pprinter):
-    config_path, reference_path = config_case["yml"], config_case["txt"]
+def test_parse_config_file(config_paths, pprinter):
+    config_path, reference_path = config_paths["yml"], config_paths["txt"]
     reference_str = reference_path.read_text()
     test_str = pprinter.format(Workflow.from_yaml(config_path))
     if test_str != reference_str:
@@ -41,11 +41,9 @@ def test_parse_config_file(config_case, pprinter):
 
 
 @pytest.mark.skip(reason="don't run it each time, uncomment to regenerate serilaized data")
-def test_serialize_workflow(config_case, pprinter):
-    config_path, reference_path = config_case["yml"], config_case["txt"]
-    reference_path.write_text(pprinter.format(Workflow.from_yaml(config_path)))
+def test_serialize_workflow(config_paths, pprinter):
+    config_paths["txt"].write_text(pprinter.format(Workflow.from_yaml(config_paths["yml"])))
 
 
-def test_vizgraph(config_case):
-    config_path, svg_path = config_case["yml"], config_case["svg"]
-    VizGraph.from_yaml(config_path).draw(file_path=svg_path)
+def test_vizgraph(config_paths):
+    VizGraph.from_yaml(config_paths["yml"]).draw(file_path=config_paths["svg"])
