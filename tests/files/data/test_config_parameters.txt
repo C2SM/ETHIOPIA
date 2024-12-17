@@ -3,7 +3,7 @@ cycles:
       tasks:
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
@@ -15,7 +15,7 @@ cycles:
             cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -27,7 +27,7 @@ cycles:
             cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
@@ -39,7 +39,7 @@ cycles:
             cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]:
             input:
-              - initial conditions
+              - initial_conditions
               - forcing
             output:
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
@@ -77,7 +77,6 @@ cycles:
             input:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
-              - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
             output:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
@@ -88,7 +87,6 @@ cycles:
             input:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
               - icon_output [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
-              - icon_output [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
             output:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
@@ -1276,11 +1274,6 @@ cycles:
         - merge [date: 2026-01-01 00:00:00]:
             input:
               - analysis_foo_bar [date: 2026-01-01 00:00:00]
-              - analysis_foo_bar [date: 2026-03-01 00:00:00]
-              - analysis_foo_bar [date: 2026-05-01 00:00:00]
-              - analysis_foo_bar [date: 2026-07-01 00:00:00]
-              - analysis_foo_bar [date: 2026-09-01 00:00:00]
-              - analysis_foo_bar [date: 2026-11-01 00:00:00]
             output:
               - yearly_analysis [date: 2026-01-01 00:00:00]
             name: 'merge'
