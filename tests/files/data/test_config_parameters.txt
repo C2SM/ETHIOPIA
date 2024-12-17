@@ -10,9 +10,8 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - initial conditions
@@ -22,9 +21,8 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - initial conditions
@@ -34,9 +32,8 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - initial conditions
@@ -46,9 +43,8 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - initial conditions
@@ -58,9 +54,8 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - initial conditions
@@ -70,9 +65,8 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-01-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
@@ -116,9 +110,8 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -128,9 +121,8 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
@@ -140,9 +132,8 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
@@ -152,9 +143,8 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
@@ -164,9 +154,8 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
@@ -176,9 +165,8 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-03-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
@@ -222,9 +210,8 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
@@ -234,9 +221,8 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
@@ -246,9 +232,8 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
@@ -258,9 +243,8 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
@@ -270,9 +254,8 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
@@ -282,9 +265,8 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-05-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
@@ -328,9 +310,8 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
@@ -340,9 +321,8 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
@@ -352,9 +332,8 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
@@ -364,9 +343,8 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
@@ -376,9 +354,8 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
@@ -388,9 +365,8 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-07-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
@@ -434,9 +410,8 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
@@ -446,9 +421,8 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
@@ -458,9 +432,8 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
@@ -470,9 +443,8 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
@@ -482,9 +454,8 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
@@ -494,9 +465,8 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-09-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
@@ -540,9 +510,8 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
@@ -552,9 +521,8 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
@@ -564,9 +532,8 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
@@ -576,9 +543,8 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
@@ -588,9 +554,8 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
@@ -600,9 +565,8 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-11-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
@@ -646,9 +610,8 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
@@ -658,9 +621,8 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
@@ -670,9 +632,8 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
@@ -682,9 +643,8 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
@@ -694,9 +654,8 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
@@ -706,9 +665,8 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-01-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
@@ -752,9 +710,8 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
@@ -764,9 +721,8 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
@@ -776,9 +732,8 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
@@ -788,9 +743,8 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
@@ -800,9 +754,8 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
@@ -812,9 +765,8 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-03-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
@@ -858,9 +810,8 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
@@ -870,9 +821,8 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
@@ -882,9 +832,8 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
@@ -894,9 +843,8 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
@@ -906,9 +854,8 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
@@ -918,9 +865,8 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-05-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
@@ -964,9 +910,8 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
@@ -976,9 +921,8 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
@@ -988,9 +932,8 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
@@ -1000,9 +943,8 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
@@ -1012,9 +954,8 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
@@ -1024,9 +965,8 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-07-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
@@ -1070,9 +1010,8 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
@@ -1082,9 +1021,8 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
@@ -1094,9 +1032,8 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
@@ -1106,9 +1043,8 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
@@ -1118,9 +1054,8 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
@@ -1130,9 +1065,8 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-09-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
@@ -1176,9 +1110,8 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
@@ -1188,9 +1121,8 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
@@ -1200,9 +1132,8 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
@@ -1212,9 +1143,8 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
@@ -1224,9 +1154,8 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]:
             input:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
@@ -1236,9 +1165,8 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            plugin: 'shell'
-            command: '$PWD/tests/files/scripts/icon.py'
-            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
+            plugin: 'icon'
+            namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-11-01 00:00:00, bar: 3.0]:
             input:
               - icon_output [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]

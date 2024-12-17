@@ -22,11 +22,14 @@ cycles:
                   date: 2026-05-01T00:00
 tasks:
   - icon:
-      plugin: shell
-      command: $PWD/tests/files/scripts/icon.py
-      cli_arguments:
-        keyword:
-          --restart: icon_restart
+      plugin: icon
+      namelists:
+        - ./ICON/icon_master.namelist:
+            master_model_nml:
+              model_namelist_filename: "NAMELIST_exclaim_ape_R02B04"
+        - ./ICON/NAMELIST_exclaim_ape_R02B04:
+            parallel_nml:
+              nproma: 96
   - cleanup:
       plugin: shell
       command: $PWD/tests/files/scripts/cleanup.py
