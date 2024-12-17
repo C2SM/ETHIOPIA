@@ -9,8 +9,7 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/icon.py'
-            command option: ''
-            input arg options: {'icon_restart': '--restart'}
+            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
   - bimonthly_tasks [date: 2026-03-01 00:00:00]:
       tasks:
         - icon [date: 2026-03-01 00:00:00]:
@@ -23,8 +22,7 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/icon.py'
-            command option: ''
-            input arg options: {'icon_restart': '--restart'}
+            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
   - bimonthly_tasks [date: 2026-05-01 00:00:00]:
       tasks:
         - icon [date: 2026-05-01 00:00:00]:
@@ -37,8 +35,7 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/icon.py'
-            command option: ''
-            input arg options: {'icon_restart': '--restart'}
+            cli arguments: positional=None keyword={'--restart': 'icon_restart'} flags=None source_file=None
   - lastly:
       tasks:
         - cleanup:
@@ -48,5 +45,3 @@ cycles:
             coordinates: {}
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/cleanup.py'
-            command option: ''
-            input arg options: {}

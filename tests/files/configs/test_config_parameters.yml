@@ -46,8 +46,9 @@ tasks:
   - icon:
       plugin: shell
       command: $PWD/tests/files/scripts/icon.py
-      input_arg_options:
-        icon_restart: '--restart'
+      cli_arguments:
+        keyword:
+          --restart: icon_restart
       parameters: [foo, bar]
   - statistics_foo:
       plugin: shell

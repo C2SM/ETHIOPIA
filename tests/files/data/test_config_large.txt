@@ -13,8 +13,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/extpar'
-            command option: '--verbose'
-            input arg options: {'obs_data': '--input'}
+            cli arguments: positional=None keyword={'--input': 'obs_data'} flags=['--verbose'] source_file=None
   - icon_bimonthly [date: 2025-01-01 00:00:00]:
       tasks:
         - preproc [date: 2025-01-01 00:00:00]:
@@ -31,8 +30,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-01-01 00:00:00]:
             input:
               - grid_file
@@ -60,8 +58,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2025-01-01 00:00:00]:
             input:
               - postout_1 [date: 2025-01-01 00:00:00]
@@ -75,8 +72,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2025-03-01 00:00:00]:
       tasks:
         - preproc [date: 2025-03-01 00:00:00]:
@@ -93,8 +89,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-03-01 00:00:00]:
             input:
               - grid_file
@@ -123,8 +118,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2025-03-01 00:00:00]:
             input:
               - postout_1 [date: 2025-03-01 00:00:00]
@@ -138,8 +132,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2025-05-01 00:00:00]:
       tasks:
         - preproc [date: 2025-05-01 00:00:00]:
@@ -158,8 +151,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-05-01 00:00:00]:
             input:
               - grid_file
@@ -188,8 +180,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2025-05-01 00:00:00]:
             input:
               - postout_1 [date: 2025-05-01 00:00:00]
@@ -203,8 +194,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2025-07-01 00:00:00]:
       tasks:
         - preproc [date: 2025-07-01 00:00:00]:
@@ -223,8 +213,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-07-01 00:00:00]:
             input:
               - grid_file
@@ -253,8 +242,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2025-07-01 00:00:00]:
             input:
               - postout_1 [date: 2025-07-01 00:00:00]
@@ -268,8 +256,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2025-09-01 00:00:00]:
       tasks:
         - preproc [date: 2025-09-01 00:00:00]:
@@ -288,8 +275,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-09-01 00:00:00]:
             input:
               - grid_file
@@ -318,8 +304,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2025-09-01 00:00:00]:
             input:
               - postout_1 [date: 2025-09-01 00:00:00]
@@ -333,8 +318,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2025-11-01 00:00:00]:
       tasks:
         - preproc [date: 2025-11-01 00:00:00]:
@@ -353,8 +337,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2025-11-01 00:00:00]:
             input:
               - grid_file
@@ -383,8 +366,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2025-11-01 00:00:00]:
             input:
               - postout_1 [date: 2025-11-01 00:00:00]
@@ -398,8 +380,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2026-01-01 00:00:00]:
       tasks:
         - preproc [date: 2026-01-01 00:00:00]:
@@ -418,8 +399,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-01-01 00:00:00]:
             input:
               - grid_file
@@ -448,8 +428,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2026-01-01 00:00:00]:
             input:
               - postout_1 [date: 2026-01-01 00:00:00]
@@ -463,8 +442,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2026-03-01 00:00:00]:
       tasks:
         - preproc [date: 2026-03-01 00:00:00]:
@@ -483,8 +461,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-03-01 00:00:00]:
             input:
               - grid_file
@@ -513,8 +490,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2026-03-01 00:00:00]:
             input:
               - postout_1 [date: 2026-03-01 00:00:00]
@@ -528,8 +504,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2026-05-01 00:00:00]:
       tasks:
         - preproc [date: 2026-05-01 00:00:00]:
@@ -548,8 +523,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-05-01 00:00:00]:
             input:
               - grid_file
@@ -578,8 +552,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2026-05-01 00:00:00]:
             input:
               - postout_1 [date: 2026-05-01 00:00:00]
@@ -593,8 +566,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2026-07-01 00:00:00]:
       tasks:
         - preproc [date: 2026-07-01 00:00:00]:
@@ -613,8 +585,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-07-01 00:00:00]:
             input:
               - grid_file
@@ -643,8 +614,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2026-07-01 00:00:00]:
             input:
               - postout_1 [date: 2026-07-01 00:00:00]
@@ -658,8 +628,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2026-09-01 00:00:00]:
       tasks:
         - preproc [date: 2026-09-01 00:00:00]:
@@ -678,8 +647,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-09-01 00:00:00]:
             input:
               - grid_file
@@ -708,8 +676,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2026-09-01 00:00:00]:
             input:
               - postout_1 [date: 2026-09-01 00:00:00]
@@ -723,8 +690,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - icon_bimonthly [date: 2026-11-01 00:00:00]:
       tasks:
         - preproc [date: 2026-11-01 00:00:00]:
@@ -743,8 +709,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
-            command option: ''
-            input arg options: {'grid_file': '-g', 'extpar_file': '-p', 'ERA5': '-e'}
+            cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
         - icon [date: 2026-11-01 00:00:00]:
             input:
               - grid_file
@@ -773,8 +738,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
-            command option: ''
-            input arg options: {'stream_1': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
         - store_and_clean_1 [date: 2026-11-01 00:00:00]:
             input:
               - postout_1 [date: 2026-11-01 00:00:00]
@@ -788,8 +752,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_1': '--input', 'stream_1': '--stream', 'icon_input': '--icon_input'}
+            cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
   - yearly [date: 2025-01-01 00:00:00]:
       tasks:
         - postproc_2 [date: 2025-01-01 00:00:00]:
@@ -809,8 +772,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
-            command option: ''
-            input arg options: {'stream_2': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_2'} flags=None source_file=None
             src: 'path/to/src/dir'
         - store_and_clean_2 [date: 2025-01-01 00:00:00]:
             input:
@@ -829,8 +791,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_2': '--input'}
+            cli arguments: positional=None keyword={'--input': 'postout_2'} flags=None source_file=None
   - yearly [date: 2026-01-01 00:00:00]:
       tasks:
         - postproc_2 [date: 2026-01-01 00:00:00]:
@@ -850,8 +811,7 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
-            command option: ''
-            input arg options: {'stream_2': '--input'}
+            cli arguments: positional=None keyword={'--input': 'stream_2'} flags=None source_file=None
             src: 'path/to/src/dir'
         - store_and_clean_2 [date: 2026-01-01 00:00:00]:
             input:
@@ -870,5 +830,4 @@ cycles:
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
-            command option: ''
-            input arg options: {'postout_2': '--input'}
+            cli arguments: positional=None keyword={'--input': 'postout_2'} flags=None source_file=None
