@@ -79,7 +79,6 @@ tasks:
         positional:
           - grid_file
         keyword:
-          -g: grid_file
           -p: extpar_file
           -e: ERA5
         source_file: dummy_source_file
