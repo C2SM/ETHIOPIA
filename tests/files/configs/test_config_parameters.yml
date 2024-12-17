@@ -26,7 +26,7 @@ cycles:
             inputs:
               - icon_output:
                   parameters:
-                    # PR COMMENT: Is this the intention that multiple files can be taken by statistics.py here? it gets the icon_output for all the foo values 
+                    # PR COMMENT: Is this the intention that multiple files can be taken by statistics.py here? it gets the icon_output for all the foo values
                     bar: single
             outputs: [analysis_foo]
         - statistics_foo_bar:
@@ -47,10 +47,11 @@ tasks:
   - icon:
       plugin: shell
       command: $PWD/tests/files/scripts/icon.py
-      input_arg_options:
-        icon_restart: "--restart"
-        initial_conditions:  "--init"
-        forcing: '--forcing'
+      cli_arguments:
+        keyword:
+          --restart: icon_restart
+          --init: initial_conditions
+          --forcing: forcing
       parameters: [foo, bar]
   - statistics_foo:
       plugin: shell

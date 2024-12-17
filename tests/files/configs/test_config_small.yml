@@ -28,9 +28,10 @@ tasks:
   - icon:
       plugin: shell
       command: $PWD/tests/files/scripts/icon.py
-      input_arg_options:
-        icon_restart: '--restart'
-        initial_conditions: '--init'
+      cli_arguments:
+        keyword:
+          --restart: icon_restart
+          --init: initial_conditions
   - cleanup:
       plugin: shell
       command: $PWD/tests/files/scripts/cleanup.py
