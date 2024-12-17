@@ -10,6 +10,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]:
@@ -21,6 +22,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]:
@@ -32,6 +34,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]:
@@ -43,6 +46,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]:
@@ -54,6 +58,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]:
@@ -65,6 +70,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-01-01 00:00:00, bar: 3.0]:
@@ -76,6 +82,7 @@ cycles:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2026-01-01 00:00:00, bar: 3.5]:
@@ -87,6 +94,7 @@ cycles:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2026-01-01 00:00:00]:
@@ -97,6 +105,7 @@ cycles:
               - analysis_foo_bar [date: 2026-01-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2026-03-01 00:00:00]:
@@ -110,6 +119,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]:
@@ -121,6 +131,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]:
@@ -132,6 +143,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]:
@@ -143,6 +155,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]:
@@ -154,6 +167,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]:
@@ -165,6 +179,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-03-01 00:00:00, bar: 3.0]:
@@ -176,6 +191,7 @@ cycles:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2026-03-01 00:00:00, bar: 3.5]:
@@ -187,6 +203,7 @@ cycles:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2026-03-01 00:00:00]:
@@ -197,6 +214,7 @@ cycles:
               - analysis_foo_bar [date: 2026-03-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2026-05-01 00:00:00]:
@@ -210,6 +228,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]:
@@ -221,6 +240,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]:
@@ -232,6 +252,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]:
@@ -243,6 +264,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]:
@@ -254,6 +276,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]:
@@ -265,6 +288,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-05-01 00:00:00, bar: 3.0]:
@@ -276,6 +300,7 @@ cycles:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2026-05-01 00:00:00, bar: 3.5]:
@@ -287,6 +312,7 @@ cycles:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2026-05-01 00:00:00]:
@@ -297,6 +323,7 @@ cycles:
               - analysis_foo_bar [date: 2026-05-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2026-07-01 00:00:00]:
@@ -310,6 +337,7 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]:
@@ -321,6 +349,7 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]:
@@ -332,6 +361,7 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]:
@@ -343,6 +373,7 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]:
@@ -354,6 +385,7 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]:
@@ -365,6 +397,7 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-07-01 00:00:00, bar: 3.0]:
@@ -376,6 +409,7 @@ cycles:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2026-07-01 00:00:00, bar: 3.5]:
@@ -387,6 +421,7 @@ cycles:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2026-07-01 00:00:00]:
@@ -397,6 +432,7 @@ cycles:
               - analysis_foo_bar [date: 2026-07-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2026-09-01 00:00:00]:
@@ -410,6 +446,7 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]:
@@ -421,6 +458,7 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]:
@@ -432,6 +470,7 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]:
@@ -443,6 +482,7 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]:
@@ -454,6 +494,7 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]:
@@ -465,6 +506,7 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-09-01 00:00:00, bar: 3.0]:
@@ -476,6 +518,7 @@ cycles:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2026-09-01 00:00:00, bar: 3.5]:
@@ -487,6 +530,7 @@ cycles:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2026-09-01 00:00:00]:
@@ -497,6 +541,7 @@ cycles:
               - analysis_foo_bar [date: 2026-09-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2026-11-01 00:00:00]:
@@ -510,6 +555,7 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]:
@@ -521,6 +567,7 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]:
@@ -532,6 +579,7 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]:
@@ -543,6 +591,7 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]:
@@ -554,6 +603,7 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]:
@@ -565,6 +615,7 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2026-11-01 00:00:00, bar: 3.0]:
@@ -576,6 +627,7 @@ cycles:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2026-11-01 00:00:00, bar: 3.5]:
@@ -587,6 +639,7 @@ cycles:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2026-11-01 00:00:00]:
@@ -597,6 +650,7 @@ cycles:
               - analysis_foo_bar [date: 2026-11-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2027-01-01 00:00:00]:
@@ -610,6 +664,7 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]:
@@ -621,6 +676,7 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]:
@@ -632,6 +688,7 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]:
@@ -643,6 +700,7 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]:
@@ -654,6 +712,7 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]:
@@ -665,6 +724,7 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-01-01 00:00:00, bar: 3.0]:
@@ -676,6 +736,7 @@ cycles:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2027-01-01 00:00:00, bar: 3.5]:
@@ -687,6 +748,7 @@ cycles:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2027-01-01 00:00:00]:
@@ -697,6 +759,7 @@ cycles:
               - analysis_foo_bar [date: 2027-01-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2027-03-01 00:00:00]:
@@ -710,6 +773,7 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]:
@@ -721,6 +785,7 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]:
@@ -732,6 +797,7 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]:
@@ -743,6 +809,7 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]:
@@ -754,6 +821,7 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]:
@@ -765,6 +833,7 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-03-01 00:00:00, bar: 3.0]:
@@ -776,6 +845,7 @@ cycles:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2027-03-01 00:00:00, bar: 3.5]:
@@ -787,6 +857,7 @@ cycles:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2027-03-01 00:00:00]:
@@ -797,6 +868,7 @@ cycles:
               - analysis_foo_bar [date: 2027-03-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2027-05-01 00:00:00]:
@@ -810,6 +882,7 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]:
@@ -821,6 +894,7 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]:
@@ -832,6 +906,7 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]:
@@ -843,6 +918,7 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]:
@@ -854,6 +930,7 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]:
@@ -865,6 +942,7 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-05-01 00:00:00, bar: 3.0]:
@@ -876,6 +954,7 @@ cycles:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2027-05-01 00:00:00, bar: 3.5]:
@@ -887,6 +966,7 @@ cycles:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2027-05-01 00:00:00]:
@@ -897,6 +977,7 @@ cycles:
               - analysis_foo_bar [date: 2027-05-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2027-07-01 00:00:00]:
@@ -910,6 +991,7 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]:
@@ -921,6 +1003,7 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]:
@@ -932,6 +1015,7 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]:
@@ -943,6 +1027,7 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]:
@@ -954,6 +1039,7 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]:
@@ -965,6 +1051,7 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-07-01 00:00:00, bar: 3.0]:
@@ -976,6 +1063,7 @@ cycles:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2027-07-01 00:00:00, bar: 3.5]:
@@ -987,6 +1075,7 @@ cycles:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2027-07-01 00:00:00]:
@@ -997,6 +1086,7 @@ cycles:
               - analysis_foo_bar [date: 2027-07-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2027-09-01 00:00:00]:
@@ -1010,6 +1100,7 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]:
@@ -1021,6 +1112,7 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]:
@@ -1032,6 +1124,7 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]:
@@ -1043,6 +1136,7 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]:
@@ -1054,6 +1148,7 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]:
@@ -1065,6 +1160,7 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-09-01 00:00:00, bar: 3.0]:
@@ -1076,6 +1172,7 @@ cycles:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2027-09-01 00:00:00, bar: 3.5]:
@@ -1087,6 +1184,7 @@ cycles:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2027-09-01 00:00:00]:
@@ -1097,6 +1195,7 @@ cycles:
               - analysis_foo_bar [date: 2027-09-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - bimonthly_tasks [date: 2027-11-01 00:00:00]:
@@ -1110,6 +1209,7 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]:
@@ -1121,6 +1221,7 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]:
@@ -1132,6 +1233,7 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]:
@@ -1143,6 +1245,7 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]:
@@ -1154,6 +1257,7 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - icon [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]:
@@ -1165,6 +1269,7 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
         - statistics_foo [date: 2027-11-01 00:00:00, bar: 3.0]:
@@ -1176,6 +1281,7 @@ cycles:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'bar': 3.0}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo [date: 2027-11-01 00:00:00, bar: 3.5]:
@@ -1187,6 +1293,7 @@ cycles:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'bar': 3.5}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
         - statistics_foo_bar [date: 2027-11-01 00:00:00]:
@@ -1197,6 +1304,7 @@ cycles:
               - analysis_foo_bar [date: 2027-11-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/statistics.py'
   - yearly [date: 2026-01-01 00:00:00]:
@@ -1213,6 +1321,7 @@ cycles:
               - yearly_analysis [date: 2026-01-01 00:00:00]
             name: 'merge'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/merge.py'
   - yearly [date: 2027-01-01 00:00:00]:
@@ -1229,5 +1338,6 @@ cycles:
               - yearly_analysis [date: 2027-01-01 00:00:00]
             name: 'merge'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/merge.py'

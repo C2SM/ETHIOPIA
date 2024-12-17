@@ -57,7 +57,11 @@ class Workflow:
 
                     for coordinates in iter_coordinates(param_refs=task_config.parameters, date=date):
                         task = Task.from_config(
-                            config=task_config, coordinates=coordinates, datastore=self.data, graph_spec=task_graph_spec
+                            config=task_config,
+                            config_root=workflow_config.root,
+                            coordinates=coordinates,
+                            datastore=self.data,
+                            graph_spec=task_graph_spec,
                         )
                         self.tasks.add(task)
                         cycle_tasks.append(task)

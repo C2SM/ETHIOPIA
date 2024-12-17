@@ -7,6 +7,7 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
   - bimonthly_tasks [date: 2026-03-01 00:00:00]:
@@ -19,6 +20,7 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
   - bimonthly_tasks [date: 2026-05-01 00:00:00]:
@@ -31,6 +33,7 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'icon'
             namelists: [ConfigNamelist(path='./ICON/icon_master.namelist', specs={'master_model_nml': {'model_namelist_filename': 'NAMELIST_exclaim_ape_R02B04'}}), ConfigNamelist(path='./ICON/NAMELIST_exclaim_ape_R02B04', specs={'parallel_nml': {'nproma': 96}})]
   - lastly:
@@ -40,5 +43,6 @@ cycles:
               - icon [date: 2026-05-01 00:00:00]
             name: 'cleanup'
             coordinates: {}
+            config root: /home/matth/Projects/C2SM/Sirocco/icon-task/tests/files/configs
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/cleanup.py'

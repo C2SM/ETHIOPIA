@@ -321,6 +321,7 @@ class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
 @dataclass
 class ConfigNamelist:
     """Class for namelist specifications"""
+
     path: str | None = None
     specs: dict | None = None
 
@@ -416,6 +417,7 @@ ConfigTask = Annotated[
 
 class ConfigWorkflow(BaseModel):
     name: str | None = None
+    root: str | None = None
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: ConfigData
@@ -474,5 +476,7 @@ def load_workflow_config(workflow_config: str) -> ConfigWorkflow:
     # If name was not specified, then we use filename without file extension
     if parsed_workflow.name is None:
         parsed_workflow.name = config_path.stem
+
+    parsed_workflow.root = config_path.resolve().parent
 
     return parsed_workflow
