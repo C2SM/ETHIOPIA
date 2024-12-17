@@ -77,10 +77,12 @@ class VizGraph:
     def tooltip(node) -> str:
         return "\n".join(chain([node.name], (f"  {k}: {v}" for k, v in node.coordinates.items())))
 
-    def draw(self, **kwargs):
+    def draw(self, file_path: Path | None = None, **kwargs):
         # draw graphviz dot graph to svg file
         self.agraph.layout(prog="dot")
-        file_path = Path(f"./{self.name}.svg")
+        if file_path is None:
+            file_path = Path(f"./{self.name}.svg")
+
         self.agraph.draw(path=file_path, format="svg", **kwargs)
 
         # Add interactive capabilities to the svg graph thanks to
