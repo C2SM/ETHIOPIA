@@ -12,6 +12,7 @@ from sirocco.parsing._yaml_data_models import (
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
+    from datetime import datetime
     from pathlib import Path
 
     from sirocco.parsing._yaml_data_models import ConfigBaseData, ConfigCycleTask, ConfigTask, TargetNodesBaseModel
@@ -38,6 +39,8 @@ class Task(ConfigBaseTaskSpecs, GraphItem):
     outputs: list[Data] = field(default_factory=list)
     wait_on: list[Task] = field(default_factory=list)
     config_root: Path | None = None
+    start_date: datetime | None = None
+    end_date: datetime | None = None
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -51,6 +54,8 @@ class Task(ConfigBaseTaskSpecs, GraphItem):
         cls,
         config: ConfigTask,
         config_root: Path,
+        start_date: datetime | None,
+        end_date: datetime | None,
         coordinates: dict[str, Any],
         datastore: Store,
         graph_spec: ConfigCycleTask,
@@ -69,6 +74,8 @@ class Task(ConfigBaseTaskSpecs, GraphItem):
         new = plugin_cls(
             config_root=config_root,
             coordinates=coordinates,
+            start_date=start_date,
+            end_date=end_date,
             inputs=inputs,
             outputs=outputs,
             **cls_config,

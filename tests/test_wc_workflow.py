@@ -12,12 +12,9 @@ def pprinter():
     return PrettyPrinter()
 
 
-config_test_files = [
-    "tests/files/configs/test_config_small.yml",
-    "tests/files/configs/test_config_large.yml",
-    "tests/files/configs/test_config_parameters.yml",
-]
-
+config_test_files = ["tests/cases/small/config/test_config_small.yml",
+                     "tests/cases/large/config/test_config_large.yml",
+                     "tests/cases/parameters/config/test_config_parameters.yml"]
 
 @pytest.fixture(params=config_test_files)
 def config_paths(request):
@@ -25,7 +22,7 @@ def config_paths(request):
     return {
         "yml": config_path,
         "txt": (config_path.parent.parent / "data" / config_path.name).with_suffix(".txt"),
-        "svg": (config_path.parent.parent / "svgs" / config_path.name).with_suffix(".svg"),
+        "svg": (config_path.parent.parent / "svg" / config_path.name).with_suffix(".svg"),
     }
 
 

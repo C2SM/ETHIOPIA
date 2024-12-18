@@ -33,7 +33,8 @@ dependencies = [
   "aiida-core>=2.5",
   "termcolor",
   "pygraphviz",
-  "lxml"
+  "lxml",
+  "f90nml"
 ]
 license = {file = "LICENSE"}
 

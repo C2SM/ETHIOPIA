@@ -59,6 +59,8 @@ class Workflow:
                         task = Task.from_config(
                             config=task_config,
                             config_root=workflow_config.root,
+                            start_date=cycle_config.start_date,
+                            end_date=cycle_config.end_date,
                             coordinates=coordinates,
                             datastore=self.data,
                             graph_spec=task_graph_spec,
