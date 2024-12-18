@@ -60,7 +60,7 @@ cycles:
       postproc_2:
         inputs:
           - stream_2:
-             lag: 
+             lag:
                - 'P0M'
              arg_option: "--input"
         outputs:
@@ -70,7 +70,7 @@ cycles:
           - postout_2:
              arg_option: "--input"
           - stream_2:
-             lag: 
+             lag:
                - 'P0M'
         outputs:
           - stored_data_2
@@ -84,7 +84,8 @@ tasks:
   extpar:
     plugin: extpar
     command: $PWD/files/scripts/extpar
-    command_option: "--verbose" # todo implement support
+    cli_arguments:
+      flags: --verbose
     config: path/to/namelists/dir
     uenv:
       squashfs: path/to/squashfs

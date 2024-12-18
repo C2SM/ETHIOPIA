@@ -9,7 +9,7 @@ from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
-    from wcflow import core
+    from sirocco import core
 
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
@@ -170,7 +170,7 @@ class AiidaWorkGraph:
         if task.command is None:
             msg = f"The command is None of task {task}."
             raise ValueError(msg)
-        workgraph_task = self._workgraph.tasks.new(
+        workgraph_task = self._workgraph.add_task(
             "ShellJob",
             name=label,
             command=task.command,
@@ -210,12 +210,16 @@ class AiidaWorkGraph:
         task_label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
         input_label = AiidaWorkGraph.get_aiida_label_from_unrolled_data(input_)
         workgraph_task = self._aiida_task_nodes[task_label]
-        workgraph_task.inputs.new("Any", f"nodes.{input_label}")
-        workgraph_task.kwargs.append(f"nodes.{input_label}")
+        # breakpoint()
+        # print(f"nodes.{input_label}")
+        workgraph_task.inputs._new(identifier='workgraph.any', name=f"nodes.{input_label}")
+        # raise SystemExit
+        # workgraph_task.kwargs.append(f"nodes.{input_label}")
 
+        breakpoint()
         # resolve data
         if (data_node := self._aiida_data_nodes.get(input_label)) is not None:
-            if (nodes := workgraph_task.inputs.get("nodes")) is None:
+            if (nodes := workgraph_task.inputs._get("nodes")) is None:
                 msg = f"Workgraph task {workgraph_task.name!r} did not initialize input nodes in the workgraph before linking. This is a bug in the code, please contact the developers by making an issue."
                 raise ValueError(msg)
             nodes.value.update({f"{input_label}": data_node})
