@@ -1,6 +1,6 @@
 ---
 start_date: &root_start_date '2025-01-01T00:00'
-end_date: &root_end_date '2027-01-01T00:00'
+end_date: &root_end_date '2026-01-01T00:00'
 cycles:
   - init:
       tasks:
@@ -57,11 +57,11 @@ cycles:
 tasks:
   - ROOT:
       # All tasks inherit the root task properties
-      host: santis
-      account: g110
+      host: localhost
+      # account: g110
   - extpar:
       plugin: shell  # no extpar plugin available yet
-      command: $PWD/examples/files/scripts/extpar
+      command: ./examples/files/scripts/extpar
       cli_arguments:
         keyword:
           --input: obs_data
@@ -74,14 +74,13 @@ tasks:
       walltime: 00:02:00
   - preproc:
       plugin: shell
-      command: $PWD/examples/files/scripts/cleanup.sh
+      command: ./examples/files/scripts/cleanup.sh
       cli_arguments:
         positional:
           - grid_file
         keyword:
           -p: extpar_file
           -e: ERA5
-        source_file: dummy_source_file
       nodes: 4
       walltime: 00:02:00
       uenv:
@@ -89,22 +88,22 @@ tasks:
         mount_point: runtime/mount/point
   - shell_task:
       plugin: shell
-      command: $PWD/examples/files/scripts/shell_cli
+      command: ./examples/files/scripts/shell_cli
       cli_arguments:
         keyword:
           -g: grid_file
           --input: shell_input
       nodes: 40
       walltime: 23:59:59
-      namelists:
-        master: path/to/mater_nml
-        model: path/to/model_nml
+      # namelists:
+      #   master: path/to/mater_nml
+      #   model: path/to/model_nml
       uenv:
         squashfs: path/to/squashfs
         mount_point: runtime/mount/point
   - postproc_1:
       plugin: shell
-      command: $PWD/examples/files/scripts/main_script_ocn.sh
+      command: ./examples/files/scripts/main_script_ocn.sh
       cli_arguments:
         keyword:
           --input: stream_1
@@ -115,7 +114,7 @@ tasks:
         mount_point: runtime/mount/point
   - postproc_2:
       plugin: shell
-      command: $PWD/examples/files/scripts/main_script_atm.sh
+      command: ./examples/files/scripts/main_script_atm.sh
       cli_arguments:
         keyword:
           --input: stream_2
@@ -130,7 +129,7 @@ tasks:
         mount_point: runtime/mount/point
   - store_and_clean_1:
       plugin: shell
-      command: $PWD/examples/files/scripts/post_clean.sh
+      command: ./examples/files/scripts/post_clean.sh
       cli_arguments:
         keyword:
           --input: postout_1
@@ -140,7 +139,7 @@ tasks:
       walltime: 00:01:00
   - store_and_clean_2:
       plugin: shell
-      command: $PWD/examples/files/scripts/post_clean.sh
+      command: ./examples/files/scripts/post_clean.sh
       cli_arguments:
         keyword:
           --input: postout_2
@@ -150,16 +149,16 @@ data:
   available:
     - grid_file:
         type: file
-        src: $PWD/examples/files/data/grid
+        src: ./examples/files/data/grid
     - obs_data:
         type: file
-        src: $PWD/examples/files/data/obs_data
+        src: ./examples/files/data/obs_data
     - ERA5:
         type: file
-        src: $PWD/examples/files/data/era5
+        src: ./examples/files/data/era5
     - dummy_source_file:
         type: file
-        src: $PWD/examples/files/data/dummy_source_file.sh
+        src: ./examples/files/data/dummy_source_file.sh
   generated:
     - extpar_file:
         type: file

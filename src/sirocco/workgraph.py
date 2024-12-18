@@ -177,11 +177,93 @@ class AiidaWorkGraph:
                 msg = f"The command is None of task {task}."
                 raise ValueError(msg)
 
+            command = task.command
+            argument_str: str = ''
+
+            cli_arguments = task.cli_arguments
+
+            # ? Positional
+            # ? -> Seem to already be resolved in the WG creation, see `_link_input_to_task`
+            positional_args = cli_arguments.positional
+            positional_args = [positional_args] if isinstance(positional_args, str) else positional_args
+
+            def resolve_positional(positional_args): # -> dict(str, str|dict):
+                
+                argument_str = ''
+                node_dict = dict()
+
+                for positional_arg in positional_args:
+                    aiida_data_node = self._aiida_data_nodes.get(positional_arg, None)
+                    aiida_data_socket = self._aiida_socket_nodes.get(positional_arg, None)
+                    # THis will be either an existing aiida_data_node, or aiida_data_socket, otherwise None
+                    # as aiida_data_socket will be assigned to the new variable, irrespective if None or not
+                    aiida_entity = aiida_data_node or aiida_data_socket
+                    if aiida_entity is None:
+                        argument_str += f' {positional_arg}'
+                    else:
+                        pass
+                        # argument_str += f' {{{positional_arg}}}'
+                        # node_dict[positional_arg] = aiida_entity
+
+                # TODO: Final cleanup of non-existing ones
+                # TODO: Check for absolute path, and if absolute path provided, directly use as input argument, as we
+                # cannot create Singlefiledata from a file that doesn't live on the localhost -> Maybe create RemoteData instead
+                print((argument_str, node_dict))
+                return {'arguments': argument_str, 'nodes': node_dict}
+            
+            positional_resolved = resolve_positional(positional_args)
+            argument_str = f"{argument_str} {positional_resolved['arguments']}"
+            # nodes = positional_resolved['nodes']
+
+            # ? Keywords
+            # keyword_args = cli_arguments.keyword
+
+            # ? Flags
+            flags = cli_arguments.flags  # append to string
+            flags = [flags] if isinstance(flags, str) else flags
+
+            argument_str = ' '.join([argument_str] + flags)
+            # command = ' '.join([command] + flags)
+
+            # ? Source file
+            source_files = cli_arguments.source_file  # into prepend-text
+            source_files = [source_files] if isinstance(source_files, str) else source_files
+            prepend_text = '\n'.join([f"source {source_file}" for source_file in source_files])
+
+            # breakpoint()
+            from aiida_shell.launch import prepare_computer, prepare_code
+            # breakpoint()
+            # TODO: Need access to the root task here, to get access to the host/computer
+            # TODO: Take care of proper code creation. Either a `PortableCode` or splitting the name, only using the
+            # TODO: actual script name, but resolving the path to the full path
+            # localhost = prepare_computer()
+            # command = task.command
+            # code = prepare_code(command=command, computer=localhost)
+
+            # TODO: Add the additional outputs here
             workgraph_task = self._workgraph.tasks.new(
                 "ShellJob",
                 name=label,
-                command=task.command,
+                # TODO: Currently use command to allow for flags. Ideally, should be also `Code` possible, and arguments
+                # passed through
+                command=command,
+                # TODO: Flags are not being passed to the submission script?
+                arguments=argument_str,
+                # nodes=nodes,
+                metadata={
+                        'options': {
+                            'prepend_text': prepend_text
+                        }
+                    }
             )
+
+            # arguments='{file_a} {file_b}',
+            # nodes={
+            #     'file_a': SinglefileData.from_string('string a'),
+            #     'file_b': SinglefileData.from_string('string b'),
+            # }
+            # arguments_str = ''
+            
             workgraph_task.set({"arguments": []})
             workgraph_task.set({"nodes": {}})
             self._aiida_task_nodes[label] = workgraph_task
@@ -224,29 +306,32 @@ class AiidaWorkGraph:
         task_label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
         input_label = AiidaWorkGraph.get_aiida_label_from_unrolled_data(input_)
         workgraph_task = self._aiida_task_nodes[task_label]
-        workgraph_task.inputs.new("Any", f"nodes.{input_label}")
-        workgraph_task.kwargs.append(f"nodes.{input_label}")
+        try:
+            workgraph_task.inputs.new("Any", f"nodes.{input_label}")
+            workgraph_task.kwargs.append(f"nodes.{input_label}")
 
-        # resolve data
-        if (data_node := self._aiida_data_nodes.get(input_label)) is not None:
-            if (nodes := workgraph_task.inputs.get("nodes")) is None:
-                msg = f"Workgraph task {workgraph_task.name!r} did not initialize input nodes in the workgraph before linking. This is a bug in the code, please contact the developers by making an issue."
+            # resolve data
+            if (data_node := self._aiida_data_nodes.get(input_label)) is not None:
+                if (nodes := workgraph_task.inputs.get("nodes")) is None:
+                    msg = f"Workgraph task {workgraph_task.name!r} did not initialize input nodes in the workgraph before linking. This is a bug in the code, please contact the developers by making an issue."
+                    raise ValueError(msg)
+                nodes.value.update({f"{input_label}": data_node})
+            elif (output_socket := self._aiida_socket_nodes.get(input_label)) is not None:
+                self._workgraph.links.new(output_socket, workgraph_task.inputs[f"nodes.{input_label}"])
+            else:
+                msg = f"Input data node {input_label!r} was neither found in socket nodes nor in data nodes. The task {task_label!r} must have dependencies on inputs before they are created."
                 raise ValueError(msg)
-            nodes.value.update({f"{input_label}": data_node})
-        elif (output_socket := self._aiida_socket_nodes.get(input_label)) is not None:
-            self._workgraph.links.new(output_socket, workgraph_task.inputs[f"nodes.{input_label}"])
-        else:
-            msg = f"Input data node {input_label!r} was neither found in socket nodes nor in data nodes. The task {task_label!r} must have dependencies on inputs before they are created."
-            raise ValueError(msg)
 
-        # resolve arg_option
-        if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
-            msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
-            raise ValueError(msg)
-        # TODO think about that the yaml file should have aiida valid labels
-        # if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
-        #     workgraph_task_arguments.value.append(f"{arg_option}")
-        workgraph_task_arguments.value.append(f"{{{input_label}}}")
+            # resolve arg_option
+            if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
+                msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
+                raise ValueError(msg)
+            # TODO think about that the yaml file should have aiida valid labels
+            # if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
+            #     workgraph_task_arguments.value.append(f"{arg_option}")
+            workgraph_task_arguments.value.append(f"{{{input_label}}}")
+        except Exception:
+            breakpoint()
 
     def _link_output_to_task(self, task: graph_items.Task, output: graph_items.Data):
         """
