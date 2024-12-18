@@ -11,9 +11,9 @@ from aiida import orm, load_profile
 load_profile()
 
 config_test_files = [
-    "/home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/configs/test_config_small.yml",
-    "/home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/configs/test_config_large.yml",
-    "/home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/configs/test_config_parameters.yml",
+    # "/home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/configs/test_config_small.yml",
+    "/home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/configs/test_config_large_no_icon.yml",
+    # "/home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/configs/test_config_parameters.yml",
 ]
 # config_path = Path(config_test_files[0])
 
@@ -29,7 +29,7 @@ for config_path in config_test_files:
 
     vizgraph = VizGraph.from_yaml(config_path)
     # print(vizgraph)
-    # vizgraph.draw()
+    vizgraph.draw()
 
     aiida_wg = AiidaWorkGraph(core_workflow=core_workflow)
 
