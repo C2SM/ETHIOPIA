@@ -316,16 +316,14 @@ class ConfigShellTaskSpecs:
 
 
 class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
+    pass
     # PR(COMMENT) tmp hack to make script work, need to find better solution than PWD for tests
-    command: str = ""
-    command_option: str = ""
-
-    @field_validator("command", "src")
-    @classmethod
-    def expand_var(cls, value: str) -> str:
-        """Expand environemnt variables"""
-        # TODO this might be not intended if we want to use environment variables on remote HPC
-        return expandvars(value)
+    # @field_validator("command", "src")
+    # @classmethod
+    # def expand_var(cls, value: str) -> str:
+    #     """Expand environemnt variables"""
+    #     # TODO this might be not intended if we want to use environment variables on remote HPC
+    #     return expandvars(value)
 
 
 @dataclass

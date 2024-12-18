@@ -9,7 +9,7 @@ from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
-    from wcflow import core
+    from sirocco.core import graph_items
 
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
@@ -165,8 +165,9 @@ class AiidaWorkGraph:
         #    for task in cycle.tasks:
         #        self._link_wait_on_to_task(task)
 
-    def _add_aiida_task_node(self, task: core.UnrolledTask):
+    def _add_aiida_task_node(self, task: graph_items.Task):
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
+        # breakpoint()
         if task.command is None:
             msg = f"The command is None of task {task}."
             raise ValueError(msg)
@@ -202,7 +203,7 @@ class AiidaWorkGraph:
             for output in task.outputs:
                 self._link_output_to_task(task, output)
 
-    def _link_input_to_task(self, task: core.Task, input_: core.UnrolledData):
+    def _link_input_to_task(self, task: graph_items.Task, input_: graph_items.Data):
         """
         task: the task corresponding to the input
         input: ...
@@ -230,11 +231,11 @@ class AiidaWorkGraph:
             msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
             raise ValueError(msg)
         # TODO think about that the yaml file should have aiida valid labels
-        if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
-            workgraph_task_arguments.value.append(f"{arg_option}")
+        # if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
+        #     workgraph_task_arguments.value.append(f"{arg_option}")
         workgraph_task_arguments.value.append(f"{{{input_label}}}")
 
-    def _link_output_to_task(self, task: core.Task, output: core.UnrolledData):
+    def _link_output_to_task(self, task: graph_items.Task, output: graph_items.Data):
         """
         task: the task corresponding to the output
         output: ...
