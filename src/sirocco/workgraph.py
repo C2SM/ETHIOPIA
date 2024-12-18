@@ -7,9 +7,13 @@ import aiida.orm
 import aiida_workgraph.engine.utils  # type: ignore[import-untyped]
 from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
+from sirocco import core
+from sirocco.core import graph_items
+from sirocco.core._tasks.icon_task import IconTask
+from sirocco.core._tasks.shell_task import ShellTask
+
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
-    from sirocco.core import graph_items
 
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
@@ -123,14 +127,14 @@ class AiidaWorkGraph:
         return label
 
     @staticmethod
-    def get_aiida_label_from_unrolled_data(obj: core.BaseNode) -> str:
+    def get_aiida_label_from_unrolled_data(obj: graph_items.GraphItem) -> str:
         """ """
         return AiidaWorkGraph.parse_to_aiida_label(
             f"{obj.name}" + "__".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
         )
 
     @staticmethod
-    def get_aiida_label_from_unrolled_task(obj: core.BaseNode) -> str:
+    def get_aiida_label_from_unrolled_task(obj: graph_items.GraphItem) -> str:
         """ """
         # TODO task is not anymore using cycle name because information is not there
         #      so do we check somewhere that a task is not used in multiple cycles?
@@ -140,7 +144,7 @@ class AiidaWorkGraph:
             "__".join([f"{obj.name}"] + [f"_{key}_{value}" for key, value in obj.coordinates.items()])
         )
 
-    def _add_aiida_input_data_node(self, input_: core.UnrolledData):
+    def _add_aiida_input_data_node(self, input_: graph_items.Data):
         """
         Create an :class:`aiida.orm.Data` instance from this wc data instance.
 
@@ -168,19 +172,28 @@ class AiidaWorkGraph:
     def _add_aiida_task_node(self, task: graph_items.Task):
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
         # breakpoint()
-        if task.command is None:
-            msg = f"The command is None of task {task}."
-            raise ValueError(msg)
-        workgraph_task = self._workgraph.tasks.new(
-            "ShellJob",
-            name=label,
-            command=task.command,
-        )
-        workgraph_task.set({"arguments": []})
-        workgraph_task.set({"nodes": {}})
-        self._aiida_task_nodes[label] = workgraph_task
+        if isinstance(task, ShellTask):
+            if task.command is None:
+                msg = f"The command is None of task {task}."
+                raise ValueError(msg)
 
-    def _link_wait_on_to_task(self, task: core.UnrolledTask):
+            workgraph_task = self._workgraph.tasks.new(
+                "ShellJob",
+                name=label,
+                command=task.command,
+            )
+            workgraph_task.set({"arguments": []})
+            workgraph_task.set({"nodes": {}})
+            self._aiida_task_nodes[label] = workgraph_task
+
+        # elif isinstance(task, IconTask):
+        #     exc = f"Task: {task.name} not implemented yet."
+        #     raise NotImplementedError(exc)
+        else:
+            exc = f"Task: {task.name} not implemented yet."
+            raise NotImplementedError(exc)
+
+    def _link_wait_on_to_task(self, task: graph_items.Task):
         # TODO
         msg = ""
         raise NotImplementedError(msg)
