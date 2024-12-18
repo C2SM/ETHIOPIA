@@ -48,6 +48,7 @@ def _prepare_for_shell_task(task: dict, kwargs: dict) -> dict:
     task_outputs = {task["outputs"][i]["name"] for i in range(len(task["outputs"]))}
     task_outputs = task_outputs.union(set(kwargs.pop("outputs", [])))
     missing_outputs = task_outputs.difference(default_outputs)
+    breakpoint()
     return {
         "code": code,
         "nodes": nodes,
@@ -199,7 +200,8 @@ class AiidaWorkGraph:
                     # as aiida_data_socket will be assigned to the new variable, irrespective if None or not
                     aiida_entity = aiida_data_node or aiida_data_socket
                     if aiida_entity is None:
-                        argument_str += f' {positional_arg}'
+                        argument_str += f' {{{positional_arg}}}'
+                        # argument_str += f' {positional_arg}'
                     else:
                         pass
                         # argument_str += f' {{{positional_arg}}}'
@@ -241,6 +243,7 @@ class AiidaWorkGraph:
             # code = prepare_code(command=command, computer=localhost)
 
             # TODO: Add the additional outputs here
+            breakpoint()
             workgraph_task = self._workgraph.tasks.new(
                 "ShellJob",
                 name=label,
@@ -248,7 +251,7 @@ class AiidaWorkGraph:
                 # passed through
                 command=command,
                 # TODO: Flags are not being passed to the submission script?
-                arguments=argument_str,
+                arguments=argument_str.split(' ')[2:],
                 # nodes=nodes,
                 metadata={
                         'options': {
