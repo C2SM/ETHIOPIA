@@ -44,11 +44,14 @@ cycles:
 
 tasks:
   - icon:
-      plugin: shell
-      command: $PWD/tests/files/scripts/icon.py
-      cli_arguments:
-        keyword:
-          --restart: icon_restart
+      plugin: icon
+      namelists:
+        - ./ICON/icon_master.namelist:
+            master_model_nml:
+              model_namelist_filename: "NAMELIST_exclaim_ape_R02B04"
+        - ./ICON/NAMELIST_exclaim_ape_R02B04:
+            parallel_nml:
+              nproma: 96
       parameters: [foo, bar]
   - statistics_foo:
       plugin: shell
@@ -75,7 +78,7 @@ data:
         src: output
         parameters: [foo, bar]
     - icon_restart:
-        type: file
+        type: icon_restart
         src: restart
         parameters: [foo, bar]
     - analysis_foo:

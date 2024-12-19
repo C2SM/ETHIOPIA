@@ -159,7 +159,7 @@ class TargetNodesBaseModel(_NamedBaseModel):
 
     @field_validator("parameters", mode="before")
     @classmethod
-    def check_dict_single_item(cls, params: dict) -> dict:
+    def check_parameters_spec(cls, params: dict) -> dict:
         if not params:
             return {}
         for k, v in params.items():
@@ -319,13 +319,45 @@ class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
 
 
 @dataclass
+class ConfigNamelist:
+    """Class for namelist specifications"""
+
+    path: Path | None = None
+    specs: dict | None = None
+
+
+@dataclass
 class ConfigIconTaskSpecs:
     plugin: ClassVar[Literal["icon"]] = "icon"
-    namelists: dict[str, str] | None = None
+    namelists: dict[str, ConfigNamelist] | None = None
 
 
 class ConfigIconTask(ConfigBaseTask, ConfigIconTaskSpecs):
-    pass
+    # validation done here and not in ConfigNamelist so that we can still
+    # import ConfigIconTaskSpecs in core._tasks.IconTask. Hence the iteration
+    # over the namelists that could be avoided with a more raw pydantic design
+    @field_validator("namelists", mode="before")
+    @classmethod
+    def check_nml(cls, nml_list: list[Any]) -> ConfigNamelist:
+        # TODO: cfg_namelists not allowed to be None
+        # TODO: must contain an icon_master.namelist
+        if not isinstance(nml_list, list):
+            msg = f"expected a list got type {type(nml_list).__name__}"
+            raise TypeError(msg)
+        namelists = {}
+        for nml in nml_list:
+            msg = f"was expecting a dict of length 1 or a string, got {nml}"
+            if not isinstance(nml, (str, dict)):
+                raise TypeError(msg)
+            if isinstance(nml, dict) and len(nml) > 1:
+                raise TypeError(msg)
+            if isinstance(nml, str):
+                namelists.append(ConfigNamelist(path=nml, specs=None))
+            else:
+                path, specs = next(iter(nml.items()))
+                path = Path(path)
+                namelists[path.name] = ConfigNamelist(path=path, specs=specs)
+        return namelists
 
 
 @dataclass
@@ -346,8 +378,9 @@ class ConfigBaseData(_NamedBaseModel, ConfigBaseDataSpecs):
     @classmethod
     def is_file_or_dir(cls, value: str) -> str:
         """."""
-        if value not in ["file", "dir"]:
-            msg = "Must be one of 'file' or 'dir'."
+        valid_types = ("file", "dir", "icon_restart")
+        if value not in valid_types:
+            msg = f"Must be one of {valid_types}"
             raise ValueError(msg)
         return value
 
@@ -388,6 +421,7 @@ ConfigTask = Annotated[
 
 class ConfigWorkflow(BaseModel):
     name: str | None = None
+    root: str | None = None
     cycles: list[ConfigCycle]
     tasks: list[ConfigTask]
     data: ConfigData
@@ -446,5 +480,7 @@ def load_workflow_config(workflow_config: str) -> ConfigWorkflow:
     # If name was not specified, then we use filename without file extension
     if parsed_workflow.name is None:
         parsed_workflow.name = config_path.stem
+
+    parsed_workflow.root = config_path.resolve().parent
 
     return parsed_workflow
