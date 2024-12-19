@@ -1,0 +1,8 @@
+append_text: ''
+computer: localhost
+default_calc_job_plugin: core.shell
+description: ''
+filepath_executable: /home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/scripts/shell_task.sh
+label: tests/files/scripts/shell_task.sh
+prepend_text: ''
+use_double_quotes: 'False'
