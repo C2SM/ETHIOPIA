@@ -7,7 +7,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/small/config
             start date: 2026-01-01 00:00:00
             end date: 2026-06-01 00:00:00
             plugin: 'shell'
@@ -23,7 +22,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/small/config
             start date: 2026-01-01 00:00:00
             end date: 2026-06-01 00:00:00
             plugin: 'shell'
@@ -39,7 +37,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/small/config
             start date: 2026-01-01 00:00:00
             end date: 2026-06-01 00:00:00
             plugin: 'shell'
@@ -52,6 +49,5 @@ cycles:
               - icon [date: 2026-05-01 00:00:00]
             name: 'cleanup'
             coordinates: {}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/small/config
             plugin: 'shell'
             command: '$PWD/tests/files/scripts/cleanup.py'

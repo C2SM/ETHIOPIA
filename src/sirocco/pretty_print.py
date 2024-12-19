@@ -148,6 +148,7 @@ class PrettyPrinter:
         repr_attrs.remove("inputs")
         repr_attrs.remove("outputs")
         repr_attrs.remove("wait_on")
+        repr_attrs.remove("config_rootdir")
 
         for attr_name in repr_attrs:
             attr = getattr(obj, attr_name)

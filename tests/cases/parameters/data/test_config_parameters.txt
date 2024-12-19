@@ -10,7 +10,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -25,7 +24,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -40,7 +38,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -55,7 +52,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -70,7 +66,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -85,7 +80,6 @@ cycles:
               - icon_restart [date: 2026-01-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -100,7 +94,6 @@ cycles:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -114,7 +107,6 @@ cycles:
               - analysis_foo [date: 2026-01-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -127,7 +119,6 @@ cycles:
               - analysis_foo_bar [date: 2026-01-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -143,7 +134,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -158,7 +148,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -173,7 +162,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -188,7 +176,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -203,7 +190,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -218,7 +204,6 @@ cycles:
               - icon_restart [date: 2026-03-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -233,7 +218,6 @@ cycles:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -247,7 +231,6 @@ cycles:
               - analysis_foo [date: 2026-03-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -260,7 +243,6 @@ cycles:
               - analysis_foo_bar [date: 2026-03-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -276,7 +258,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -291,7 +272,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -306,7 +286,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -321,7 +300,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -336,7 +314,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -351,7 +328,6 @@ cycles:
               - icon_restart [date: 2026-05-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -366,7 +342,6 @@ cycles:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -380,7 +355,6 @@ cycles:
               - analysis_foo [date: 2026-05-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -393,7 +367,6 @@ cycles:
               - analysis_foo_bar [date: 2026-05-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -409,7 +382,6 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -424,7 +396,6 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -439,7 +410,6 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -454,7 +424,6 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -469,7 +438,6 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -484,7 +452,6 @@ cycles:
               - icon_restart [date: 2026-07-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -499,7 +466,6 @@ cycles:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -513,7 +479,6 @@ cycles:
               - analysis_foo [date: 2026-07-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -526,7 +491,6 @@ cycles:
               - analysis_foo_bar [date: 2026-07-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -542,7 +506,6 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -557,7 +520,6 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -572,7 +534,6 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -587,7 +548,6 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -602,7 +562,6 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -617,7 +576,6 @@ cycles:
               - icon_restart [date: 2026-09-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -632,7 +590,6 @@ cycles:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -646,7 +603,6 @@ cycles:
               - analysis_foo [date: 2026-09-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -659,7 +615,6 @@ cycles:
               - analysis_foo_bar [date: 2026-09-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -675,7 +630,6 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -690,7 +644,6 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -705,7 +658,6 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -720,7 +672,6 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -735,7 +686,6 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -750,7 +700,6 @@ cycles:
               - icon_restart [date: 2026-11-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -765,7 +714,6 @@ cycles:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -779,7 +727,6 @@ cycles:
               - analysis_foo [date: 2026-11-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -792,7 +739,6 @@ cycles:
               - analysis_foo_bar [date: 2026-11-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -808,7 +754,6 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -823,7 +768,6 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -838,7 +782,6 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -853,7 +796,6 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -868,7 +810,6 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -883,7 +824,6 @@ cycles:
               - icon_restart [date: 2027-01-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -898,7 +838,6 @@ cycles:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -912,7 +851,6 @@ cycles:
               - analysis_foo [date: 2027-01-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -925,7 +863,6 @@ cycles:
               - analysis_foo_bar [date: 2027-01-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -941,7 +878,6 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -956,7 +892,6 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -971,7 +906,6 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -986,7 +920,6 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1001,7 +934,6 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1016,7 +948,6 @@ cycles:
               - icon_restart [date: 2027-03-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1031,7 +962,6 @@ cycles:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1045,7 +975,6 @@ cycles:
               - analysis_foo [date: 2027-03-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1058,7 +987,6 @@ cycles:
               - analysis_foo_bar [date: 2027-03-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 3, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1074,7 +1002,6 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1089,7 +1016,6 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1104,7 +1030,6 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1119,7 +1044,6 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1134,7 +1058,6 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1149,7 +1072,6 @@ cycles:
               - icon_restart [date: 2027-05-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1164,7 +1086,6 @@ cycles:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1178,7 +1099,6 @@ cycles:
               - analysis_foo [date: 2027-05-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1191,7 +1111,6 @@ cycles:
               - analysis_foo_bar [date: 2027-05-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 5, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1207,7 +1126,6 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1222,7 +1140,6 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1237,7 +1154,6 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1252,7 +1168,6 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1267,7 +1182,6 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1282,7 +1196,6 @@ cycles:
               - icon_restart [date: 2027-07-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1297,7 +1210,6 @@ cycles:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1311,7 +1223,6 @@ cycles:
               - analysis_foo [date: 2027-07-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1324,7 +1235,6 @@ cycles:
               - analysis_foo_bar [date: 2027-07-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 7, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1340,7 +1250,6 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1355,7 +1264,6 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1370,7 +1278,6 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1385,7 +1292,6 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1400,7 +1306,6 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1415,7 +1320,6 @@ cycles:
               - icon_restart [date: 2027-09-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1430,7 +1334,6 @@ cycles:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1444,7 +1347,6 @@ cycles:
               - analysis_foo [date: 2027-09-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1457,7 +1359,6 @@ cycles:
               - analysis_foo_bar [date: 2027-09-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 9, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1473,7 +1374,6 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1488,7 +1388,6 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 0, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 0, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1503,7 +1402,6 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1518,7 +1416,6 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 1, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 1, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1533,7 +1430,6 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.0]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1548,7 +1444,6 @@ cycles:
               - icon_restart [date: 2027-11-01 00:00:00, foo: 2, bar: 3.5]
             name: 'icon'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'foo': 2, 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1563,7 +1458,6 @@ cycles:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.0]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'bar': 3.0}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1577,7 +1471,6 @@ cycles:
               - analysis_foo [date: 2027-11-01 00:00:00, bar: 3.5]
             name: 'statistics_foo'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0), 'bar': 3.5}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1590,7 +1483,6 @@ cycles:
               - analysis_foo_bar [date: 2027-11-01 00:00:00]
             name: 'statistics_foo_bar'
             coordinates: {'date': datetime.datetime(2027, 11, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1609,7 +1501,6 @@ cycles:
               - yearly_analysis [date: 2026-01-01 00:00:00]
             name: 'merge'
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'
@@ -1628,7 +1519,6 @@ cycles:
               - yearly_analysis [date: 2027-01-01 00:00:00]
             name: 'merge'
             coordinates: {'date': datetime.datetime(2027, 1, 1, 0, 0)}
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/parameters/config
             start date: 2026-01-01 00:00:00
             end date: 2028-01-01 00:00:00
             plugin: 'shell'

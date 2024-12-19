@@ -11,7 +11,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/extpar'
             cli arguments: positional=None keyword={'--input': 'obs_data'} flags=['--verbose'] source_file=None
@@ -29,7 +28,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -48,7 +46,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -63,7 +60,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -80,7 +76,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -100,7 +95,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -120,7 +114,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -135,7 +128,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -152,7 +144,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 3, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -174,7 +165,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -194,7 +184,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -209,7 +198,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -226,7 +214,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 5, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -248,7 +235,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -268,7 +254,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -283,7 +268,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -300,7 +284,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 7, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -322,7 +305,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -342,7 +324,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -357,7 +338,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -374,7 +354,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 9, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -396,7 +375,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -416,7 +394,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -431,7 +408,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -448,7 +424,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 11, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -470,7 +445,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -490,7 +464,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -505,7 +478,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -522,7 +494,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -544,7 +515,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -564,7 +534,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -579,7 +548,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -596,7 +564,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -618,7 +585,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -638,7 +604,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -653,7 +618,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -670,7 +634,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -692,7 +655,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -712,7 +674,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -727,7 +688,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -744,7 +704,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -766,7 +725,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -786,7 +744,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -801,7 +758,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -818,7 +774,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -840,7 +795,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -860,7 +814,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'icon'
@@ -875,7 +828,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -892,7 +844,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -915,7 +866,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -937,7 +887,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -960,7 +909,6 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
@@ -982,7 +930,6 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
-            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             start date: 2025-01-01 00:00:00
             end date: 2027-01-01 00:00:00
             plugin: 'shell'
