@@ -3,9 +3,9 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 from datetime import datetime
+from os.path import expandvars
 from pathlib import Path
 from typing import Annotated, Any, ClassVar, Literal
-from os.path import expandvars
 
 from isoduration import parse_duration
 from isoduration.types import Duration  # pydantic needs type # noqa: TCH002
@@ -280,7 +280,6 @@ class ConfigShellTaskSpecs:
 
 
 class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
-
     command: str = ""
 
     # PR(COMMENT) tmp hack to make script work, need to find better solution than PWD for tests
@@ -288,7 +287,7 @@ class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
     @classmethod
     def expand_var(cls, value: str) -> str:
         """Expand environemnt variables"""
-        # TODO this might be not intended if we want to use environment variables on remote HPC
+        # TODO: this might be not intended if we want to use environment variables on remote HPC
         return expandvars(value)
 
 
@@ -296,6 +295,7 @@ class ConfigShellTask(ConfigBaseTask, ConfigShellTaskSpecs):
 class ConfigIconTaskSpecs:
     plugin: ClassVar[Literal["icon"]] = "icon"
     namelists: dict[str, str] | None = None
+
 
 class ConfigIconTask(ConfigBaseTask, ConfigIconTaskSpecs):
     pass
@@ -331,7 +331,7 @@ class ConfigBaseData(_NamedBaseModel, ConfigBaseDataSpecs):
     @classmethod
     def expand_var(cls, value: str | None) -> str | None:
         """Expand environemnt variables"""
-        # TODO this might be not intended if we want to use environment variables on remote HPC
+        # TODO: this might be not intended if we want to use environment variables on remote HPC
         return None if value is None else expandvars(value)
 
 

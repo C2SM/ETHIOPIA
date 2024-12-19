@@ -7,13 +7,14 @@ import aiida.orm
 import aiida_workgraph.engine.utils  # type: ignore[import-untyped]
 from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
-from sirocco import core
-from sirocco.core import graph_items
 from sirocco.core._tasks.icon_task import IconTask
 from sirocco.core._tasks.shell_task import ShellTask
 
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
+
+    from sirocco import core
+    from sirocco.core import graph_items
 
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
@@ -69,7 +70,7 @@ class AiidaWorkGraph:
 
         self._validate_workflow()
 
-        self._workgraph = WorkGraph() # core_workflow.name TODO use filename
+        self._workgraph = WorkGraph()  # core_workflow.name TODO: use filename
 
         # stores the input data available on initialization
         self._aiida_data_nodes: dict[str, aiida_workgraph.orm.Data] = {}
@@ -136,7 +137,7 @@ class AiidaWorkGraph:
     @staticmethod
     def get_aiida_label_from_unrolled_task(obj: graph_items.GraphItem) -> str:
         """ """
-        # TODO task is not anymore using cycle name because information is not there
+        # TODO: task is not anymore using cycle name because information is not there
         #      so do we check somewhere that a task is not used in multiple cycles?
         #      Otherwise the label is not unique
         # --> task name + date + parameters
@@ -164,7 +165,7 @@ class AiidaWorkGraph:
             for task in cycle.tasks:
                 self._add_aiida_task_node(task)
         # after creation we can link the wait_on tasks
-        # TODO check where this is now
+        # TODO: check where this is now
         # for cycle in self._core_workflow.cycles:
         #    for task in cycle.tasks:
         #        self._link_wait_on_to_task(task)
@@ -182,7 +183,7 @@ class AiidaWorkGraph:
             # ? Source file
             env_source_files = task.env_source_files
             env_source_files = [env_source_files] if isinstance(env_source_files, str) else env_source_files
-            prepend_text = '\n'.join([f"source {env_source_file}" for env_source_file in env_source_files])
+            prepend_text = "\n".join([f"source {env_source_file}" for env_source_file in env_source_files])
 
             # Note: We don't pass the `nodes` dictionary here, as then we would need to have the sockets available when
             # we create the task. Instead, they are being updated via the WG internals when linking inputs/outputs to
@@ -193,11 +194,7 @@ class AiidaWorkGraph:
                 name=label,
                 command=command,
                 arguments=argument_list,
-                metadata={
-                        'options': {
-                            'prepend_text': prepend_text
-                        }
-                    }
+                metadata={"options": {"prepend_text": prepend_text}},
             )
 
             self._aiida_task_nodes[label] = workgraph_task
@@ -210,7 +207,7 @@ class AiidaWorkGraph:
             raise NotImplementedError(exc)
 
     def _link_wait_on_to_task(self, task: graph_items.Task):
-        # TODO
+        # TODO: to be done
         msg = ""
         raise NotImplementedError(msg)
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
@@ -259,7 +256,7 @@ class AiidaWorkGraph:
         if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
             msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
             raise ValueError(msg)
-        # TODO think about that the yaml file should have aiida valid labels
+        # TODO: think about that the yaml file should have aiida valid labels
 
         # Avoid appending the same argument twice
         argument_placeholder = f"{{{input_label}}}"

@@ -110,7 +110,7 @@ class Data(ConfigBaseDataSpecs, GraphItem):
 
     @property
     def path(self) -> Path:
-        # TODO yaml level?
+        # TODO: yaml level?
         return Path(expandvars(self.src))
 
 
