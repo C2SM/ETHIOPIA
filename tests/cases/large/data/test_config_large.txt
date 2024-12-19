@@ -11,6 +11,7 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/extpar'
             cli arguments: positional=None keyword={'--input': 'obs_data'} flags=['--verbose'] source_file=None
@@ -28,6 +29,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -44,6 +48,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-01-01 00:00:00]:
@@ -56,6 +63,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -70,6 +80,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -87,6 +100,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -104,6 +120,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-03-01 00:00:00]:
@@ -116,6 +135,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -130,6 +152,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 3, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -149,6 +174,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -166,6 +194,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-05-01 00:00:00]:
@@ -178,6 +209,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -192,6 +226,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 5, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -211,6 +248,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -228,6 +268,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-07-01 00:00:00]:
@@ -240,6 +283,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -254,6 +300,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 7, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -273,6 +322,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -290,6 +342,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-09-01 00:00:00]:
@@ -302,6 +357,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -316,6 +374,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 9, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -335,6 +396,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -352,6 +416,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2025-11-01 00:00:00]:
@@ -364,6 +431,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -378,6 +448,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 11, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -397,6 +470,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -414,6 +490,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-01-01 00:00:00]:
@@ -426,6 +505,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -440,6 +522,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -459,6 +544,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -476,6 +564,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-03-01 00:00:00]:
@@ -488,6 +579,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -502,6 +596,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 3, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -521,6 +618,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -538,6 +638,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-05-01 00:00:00]:
@@ -550,6 +653,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -564,6 +670,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 5, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -583,6 +692,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -600,6 +712,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-07-01 00:00:00]:
@@ -612,6 +727,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -626,6 +744,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 7, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -645,6 +766,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -662,6 +786,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-09-01 00:00:00]:
@@ -674,6 +801,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -688,6 +818,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 9, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -707,6 +840,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 4
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=2, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/cleanup.sh'
             cli arguments: positional=['grid_file'] keyword={'-p': 'extpar_file', '-e': 'ERA5'} flags=None source_file='dummy_source_file'
@@ -724,6 +860,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 40
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=23, tm_min=59, tm_sec=59, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'icon'
             namelists: {'master': 'path/to/mater_nml', 'model': 'path/to/model_nml'}
         - postproc_1 [date: 2026-11-01 00:00:00]:
@@ -736,6 +875,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_ocn.sh'
             cli arguments: positional=None keyword={'--input': 'stream_1'} flags=None source_file=None
@@ -750,6 +892,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 11, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_1', '--stream': 'stream_1', '--icon_input': 'icon_input'} flags=None source_file=None
@@ -770,6 +915,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
             cli arguments: positional=None keyword={'--input': 'stream_2'} flags=None source_file=None
@@ -789,6 +937,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2025, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_2'} flags=None source_file=None
@@ -809,6 +960,9 @@ cycles:
             uenv: {'squashfs': 'path/to/squashfs', 'mount_point': 'runtime/mount/point'}
             nodes: 2
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=5, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/main_script_atm.sh'
             cli arguments: positional=None keyword={'--input': 'stream_2'} flags=None source_file=None
@@ -828,6 +982,9 @@ cycles:
             coordinates: {'date': datetime.datetime(2026, 1, 1, 0, 0)}
             nodes: 1
             walltime: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=1, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+            config rootdir: /home/matth/Projects/C2SM/Sirocco/config-rootdir/tests/cases/large/config
+            start date: 2025-01-01 00:00:00
+            end date: 2027-01-01 00:00:00
             plugin: 'shell'
             command: '$PWD/examples/files/scripts/post_clean.sh'
             cli arguments: positional=None keyword={'--input': 'postout_2'} flags=None source_file=None
