@@ -42,10 +42,10 @@ data:
   available:
      - initial_conditions:
          type: file
-         src: tests/files/data/initial_conditions
+         src: tests/files/data/initial_conditions2
      - data1:
          type: file
-         src: tests/files/data/data1
+         src: tests/files/data/data-xyz
   generated:
      - restart:
          type: file
