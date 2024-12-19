@@ -1,0 +1,52 @@
+---
+start_date: &root_start_date '2026-01-01T00:00'
+end_date: &root_end_date '2026-02-01T00:00'
+cycles:
+  - bimonthly_tasks:
+      start_date: *root_start_date
+      end_date: *root_end_date
+      period: P2M
+      tasks:
+        - shell_task:
+            inputs:
+              - initial_conditions:
+                  when:
+                    at: *root_start_date
+              - data1:
+                  when:
+                    at: *root_start_date
+            outputs: [restart]
+tasks:
+  - shell_task:
+      plugin: shell
+      # Currently full task, so running the script actually works
+      command: /home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/scripts/shell_task.sh
+      cli_argument: >
+        --restart_kwarg restart_value
+        --verbosity 2
+        --init {initial_conditions}
+        --test-flag
+        {data1}
+        data2
+      # Unfortunately not possible to add comments to multiline string, which was my original idea to make it more
+      # readable: https://stackoverflow.com/questions/20890445/yaml-comments-in-multi-line-strings
+      # --restart_kwarg restart_value  # ? Keyword with normal str/int/float value
+      # --verbosity 2                  # ? Keyword with normal int value
+      # --init {initial_conditions}    # ? Keyword with reference to AiiDA node (available data) or AiiDA-WG socket
+      # --test-flag                    # ? Normal flag
+      # {data1}                        # ? Positional argument with reference
+      # data2                          # ? Positional argument without AiiDA entity reference (even required)?
+      env_source_files:
+        - tests/files/data/dummy_source_file.sh
+data:
+  available:
+     - initial_conditions:
+         type: file
+         src: tests/files/data/initial_conditions
+     - data1:
+         type: file
+         src: tests/files/data/data1
+  generated:
+     - restart:
+         type: file
+         src: restart
