@@ -63,7 +63,7 @@ class Workflow:
                             end_date=cycle_config.end_date,
                             coordinates=coordinates,
                             datastore=self.data,
-                            graph_spec=task_graph_spec
+                            graph_spec=task_graph_spec,
                         )
                         self.tasks.add(task)
                         cycle_tasks.append(task)
