@@ -15,29 +15,29 @@ from pathlib import Path
 
 LOG_FILE = Path("icon.log")
 
+
 def log(text: str):
     print(text)
     with LOG_FILE.open("a") as f:
         f.write(text)
 
-def main():
-    parser = argparse.ArgumentParser(description='A script mocking parts of icon in a form of a shell script.')
-    parser.add_argument('--init', nargs='?', type=str, help='The icon init file.')
-    parser.add_argument('namelist', nargs='?', default=None)
-    parser.add_argument('--restart', nargs='?', type=str, help='The icon restart file.')
-    parser.add_argument('--forcing', nargs='?', type=str, help='The icon forcing file.')
 
+def main():
+    parser = argparse.ArgumentParser(description="A script mocking parts of icon in a form of a shell script.")
+    parser.add_argument("--init", nargs="?", type=str, help="The icon init file.")
+    parser.add_argument("namelist", nargs="?", default=None)
+    parser.add_argument("--restart", nargs="?", type=str, help="The icon restart file.")
+    parser.add_argument("--forcing", nargs="?", type=str, help="The icon forcing file.")
 
     args = parser.parse_args()
 
-
-    output = Path('icon_output')
+    output = Path("icon_output")
     output.write_text("")
 
-    if args.restart and args.init:
-        msg = "Cannot use '--init' and '--restart' option at the same time."
-        raise ValueError(msg)
-    elif args.restart:
+    if args.restart:
+        if args.init:
+            msg = "Cannot use '--init' and '--restart' option at the same time."
+            raise ValueError(msg)
         if not Path(args.restart).exists():
             msg = f"The icon restart file {args.restart!r} was not found."
             raise FileNotFoundError(msg)
@@ -62,10 +62,9 @@ def main():
     # Main script execution continues here
     log("Script finished running calculations")
 
-    restart = Path('restart')
+    restart = Path("restart")
     restart.write_text("")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
-
-
