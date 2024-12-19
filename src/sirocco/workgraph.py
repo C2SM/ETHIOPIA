@@ -176,6 +176,7 @@ class AiidaWorkGraph:
                 msg = f"The command is None of task {task}."
                 raise ValueError(msg)
 
+            # TODO: Add proper resolving of code/command to installed/portable code, etc., to think about
             command = task.command
 
             # ? Source file
@@ -187,7 +188,6 @@ class AiidaWorkGraph:
             # we create the task. Instead, they are being updated via the WG internals when linking inputs/outputs to
             # tasks
             argument_list = task.cli_argument.split()
-            # breakpoint()
             workgraph_task = self._workgraph.tasks.new(
                 "ShellJob",
                 name=label,
@@ -260,8 +260,6 @@ class AiidaWorkGraph:
             msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
             raise ValueError(msg)
         # TODO think about that the yaml file should have aiida valid labels
-        # if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
-        #     workgraph_task_arguments.value.append(f"{arg_option}")
 
         # Avoid appending the same argument twice
         argument_placeholder = f"{{{input_label}}}"
