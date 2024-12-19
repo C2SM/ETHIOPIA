@@ -86,38 +86,37 @@ class _WhenBaseModel(BaseModel):
 class _CliArgsBaseModel(BaseModel):
     """Base class for cli_arguments specifications"""
 
-    # TODO: Even allow for `str`, or always require list?
-    positional: str | list[str] | None = None
-    # Field needed for child class doing pydantic parsing
-    keyword: dict[str, str | int] | None = Field(default_factory=dict)
-    flags: str | list[str] | None = None
-    source_file: str | list[str] | None = None
+    string: str = None
+    # # Field needed for child class doing pydantic parsing
+    # keyword: dict[str, str | int] | None = Field(default_factory=dict)
+    # flags: str | list[str] | None = None
+    source_files: str | list[str] | None = None
 
-    # TODO: Should we allow users to pass it without the hyphen(s), and prepend them automatically?
-    # TODO: While convenient, it could be a bad idea, if users put in wrong things. Better to be explicit.
-    @field_validator("keyword", mode="before")
-    @classmethod
-    def validate_keyword_args(cls, value):
-        """Ensure keyword arguments start with '-' or '--'."""
-        if value is not None:
-            invalid_keys = [key for key in value if not key.startswith(("-", "--"))]
-            if invalid_keys:
-                invalid_kwarg_exc = f"Invalid keyword arguments: {', '.join(invalid_keys)}"
-                raise ValueError(invalid_kwarg_exc)
-        return value
+    # # TODO: Should we allow users to pass it without the hyphen(s), and prepend them automatically?
+    # # TODO: While convenient, it could be a bad idea, if users put in wrong things. Better to be explicit.
+    # @field_validator("keyword", mode="before")
+    # @classmethod
+    # def validate_keyword_args(cls, value):
+    #     """Ensure keyword arguments start with '-' or '--'."""
+    #     if value is not None:
+    #         invalid_keys = [key for key in value if not key.startswith(("-", "--"))]
+    #         if invalid_keys:
+    #             invalid_kwarg_exc = f"Invalid keyword arguments: {', '.join(invalid_keys)}"
+    #             raise ValueError(invalid_kwarg_exc)
+    #     return value
 
-    @field_validator("flags", mode="before")
-    @classmethod
-    def validate_flag_args(cls, value):
-        """Ensure positional arguments start with '-' or '--'."""
-        if value is not None:
-            if isinstance(value, str):
-                value = [value]
-            invalid_flags = [arg for arg in value if not arg.startswith(("-", "--"))]
-            if invalid_flags:
-                invalid_flags_exc = f"Invalid positional arguments: {', '.join(invalid_flags)}"
-                raise ValueError(invalid_flags_exc)
-        return value
+    # @field_validator("flags", mode="before")
+    # @classmethod
+    # def validate_flag_args(cls, value):
+    #     """Ensure positional arguments start with '-' or '--'."""
+    #     if value is not None:
+    #         if isinstance(value, str):
+    #             value = [value]
+    #         invalid_flags = [arg for arg in value if not arg.startswith(("-", "--"))]
+    #         if invalid_flags:
+    #             invalid_flags_exc = f"Invalid positional arguments: {', '.join(invalid_flags)}"
+    #             raise ValueError(invalid_flags_exc)
+    #     return value
 
 
 class TargetNodesBaseModel(_NamedBaseModel):
@@ -311,7 +310,8 @@ class ConfigRootTask(ConfigBaseTask):
 class ConfigShellTaskSpecs:
     plugin: ClassVar[Literal["shell"]] = "shell"
     command: str = ""
-    cli_arguments: _CliArgsBaseModel | None = None
+    cli_argument: str = ""
+    env_source_files: str | list[str] = None
     src: str | None = None
 
 

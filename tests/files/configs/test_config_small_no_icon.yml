@@ -21,22 +21,23 @@ tasks:
       plugin: shell
       # Currently full task, so running the script actually works
       command: /home/geiger_j/aiida_projects/swiss-twins/git-repos/Sirocco/tests/files/scripts/shell_task.sh
-      cli_arguments:
-        # f"--restart_kwarg restart_value --init {initial_conditions} -a data1 -p 1"
-        # TODO: How to differentiate between string and data node/socket
-        keyword:  # To be thought about
-          --restart_kwarg: restart_value  # This doesn't map to a file, so is just an option
-          # --restart_kwarg: {restart_value}  # This doesn't map to a file, so is just an option
-          # --verbosity: 2
-          --init: {initial_conditions}  # This maps to a file, and should therefore be resolved to a SinglefileData
-        positional:
-          # - data1  # This maps to an actual existing file, specified in data section
-          - data2  # This is just an arbitrary positional argument
-        flags:
-          - --test-flag
-          # - --verbosity=2 # Didn't actually consider this
-        source_file:
-          - tests/files/data/dummy_source_file.sh
+      cli_argument: >
+        --restart_kwarg restart_value
+        --verbosity 2
+        --init {initial_conditions}
+        --test-flag
+        {data1}
+        data2
+      # Unfortunately not possible to add comments to multiline string, which was my original idea to make it more
+      # readable: https://stackoverflow.com/questions/20890445/yaml-comments-in-multi-line-strings
+      # --restart_kwarg restart_value  # ? Keyword with normal str/int/float value
+      # --verbosity 2                  # ? Keyword with normal int value
+      # --init {initial_conditions}    # ? Keyword with reference to AiiDA node (available data) or AiiDA-WG socket
+      # --test-flag                    # ? Normal flag
+      # {data1}                        # ? Positional argument with reference
+      # data2                          # ? Positional argument without AiiDA entity reference (even required)?
+      env_source_files:
+        - tests/files/data/dummy_source_file.sh
 data:
   available:
      - initial_conditions:

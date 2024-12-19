@@ -48,8 +48,6 @@ def _prepare_for_shell_task(task: dict, kwargs: dict) -> dict:
     task_outputs = {task["outputs"][i]["name"] for i in range(len(task["outputs"]))}
     task_outputs = task_outputs.union(set(kwargs.pop("outputs", [])))
     missing_outputs = task_outputs.difference(default_outputs)
-    # ? kwargs['arguments'] = ['{initial_conditions}', '{data1}']
-    breakpoint()
     return {
         "code": code,
         "nodes": nodes,
@@ -179,104 +177,19 @@ class AiidaWorkGraph:
                 raise ValueError(msg)
 
             command = task.command
-            argument_str: str = ''
-
-            cli_arguments = task.cli_arguments
-
-            # ? Positional
-            # ? -> Seem to already be resolved in the WG creation, see `_link_input_to_task`
-            positional_args = cli_arguments.positional
-            positional_args = [positional_args] if isinstance(positional_args, str) else positional_args
-
-            def resolve_positional_and_keyword(input_args): # -> dict(str, str|dict):
-
-                argument_str = ''
-                node_dict = {}
-
-                for input_arg in input_args:
-                    print(f'INPUT_ARG: {input_arg}')
-                    if isinstance(input_arg, dict):
-                        node_identifier = list(input_arg.values())[0]
-                        # append_str = f' {list(input_arg.keys())[0]} {{{node_identifier}}}'
-                        # print(f"APPEND_STR: {append_str}")
-                    elif isinstance(input_arg, str):
-                        node_identifier = input_arg
-                        # append_str = f' {{{node_identifier}}}'
-                    else:
-                        raise TypeError("Something went wrong.")
-
-                    aiida_data_node = self._aiida_data_nodes.get(node_identifier, None)
-                    aiida_data_socket = self._aiida_socket_nodes.get(node_identifier, None)
-                    # THis will be either an existing aiida_data_node, or aiida_data_socket, otherwise None
-                    # as aiida_data_socket will be assigned to the new variable, irrespective if None or not
-                    aiida_entity = aiida_data_node or aiida_data_socket
-                    if aiida_entity is None:
-                        if isinstance(input_arg, dict):
-                            append_str = f' {list(input_arg.keys())[0]} {node_identifier}'
-                        elif isinstance(input_arg, str):
-                            append_str = f' {node_identifier}'
-                        argument_str += append_str
-                        # ! Don't resolve the nodes here, as this is done somewhere else, and otherwise excepts
-                        # argument_str += f' {{{positional_arg}}}'
-                        # node_dict[positional_arg] = aiida_entity
-
-                # TODO: Final cleanup of non-existing ones
-                # TODO: Check for absolute path, and if absolute path provided, directly use as input argument, as we
-                # cannot create Singlefiledata from a file that doesn't live on the localhost -> Maybe create RemoteData instead
-                return {'arguments': argument_str, 'nodes': node_dict}
-
-            positional_resolved = resolve_positional_and_keyword(positional_args)
-            print(f"POSITIONAL_RESOLVED: {positional_resolved}")
-            argument_str = f"{argument_str} {positional_resolved['arguments']}"
-            # nodes = positional_resolved['nodes']
-
-            # ? Keywords
-            keyword_args = cli_arguments.keyword
-            print(f"KEYWORD_ARGS: {keyword_args}")
-            # ? Resolve to list of dictionaries with one key-value pair each (just for current implementation)
-            keyword_resolved = resolve_positional_and_keyword([{key: value} for key, value in keyword_args.items()])
-            print(f"KEYWORD_RESOLVED: {keyword_resolved}")
-            # argument_str = f"{argument_str} {keyword_resolved['arguments']}"
-            # nodes = positional_resolved['nodes']
-
-            # ? Flags
-            flags = cli_arguments.flags  # append to string
-            flags = [flags] if isinstance(flags, str) else flags
-
-            argument_str = ' '.join([argument_str] + flags)
-            # command = ' '.join([command] + flags)
 
             # ? Source file
-            source_files = cli_arguments.source_file  # into prepend-text
-            source_files = [source_files] if isinstance(source_files, str) else source_files
-            prepend_text = '\n'.join([f"source {source_file}" for source_file in source_files])
+            env_source_files = task.env_source_files
+            env_source_files = [env_source_files] if isinstance(env_source_files, str) else env_source_files
+            prepend_text = '\n'.join([f"source {env_source_file}" for env_source_file in env_source_files])
 
-            # breakpoint()
-            # from aiida_shell.launch import prepare_computer, prepare_code
-            # breakpoint()
-            # TODO: Need access to the root task here, to get access to the host/computer
-            # TODO: Take care of proper code creation. Either a `PortableCode` or splitting the name, only using the
-            # TODO: actual script name, but resolving the path to the full path
-            # localhost = prepare_computer()
-            # command = task.command
-            # code = prepare_code(command=command, computer=localhost)
-
-            # TODO: Add the additional outputs here
-            breakpoint()
-            # ? argument_str = '  {data2} --test'
-            # ? `data1` and `initial_conditions` are added _somewhere_ else, either in `TaskCollection.new()`,
-            # ? `build_shelljob_task`, `build_task_from_AiiDA`, or `AiiDAWorkGraph._link_input_to_task()`, which is
-            # ? where the input/output nodes/sockets are being attached
             workgraph_task = self._workgraph.tasks.new(
                 "ShellJob",
                 name=label,
-                # TODO: Currently use command to allow for flags. Ideally, should be also `Code` possible, and arguments
-                # passed through
                 command=command,
-                # TODO: Flags are not being passed to the submission script?
-                arguments=argument_str,
-                # arguments=argument_str.split(' ')[2:],
-                # nodes=nodes,
+                arguments=task.cli_argument,
+                # ! Do we still need to add nodes here, as in `aiida-shell`, or WG does that automatically from the
+                # argument if it finds them?
                 metadata={
                         'options': {
                             'prepend_text': prepend_text
@@ -284,20 +197,13 @@ class AiidaWorkGraph:
                     }
             )
 
-            # arguments='{file_a} {file_b}',
-            # nodes={
-            #     'file_a': SinglefileData.from_string('string a'),
-            #     'file_b': SinglefileData.from_string('string b'),
-            # }
-            # arguments_str = ''
-
             # workgraph_task.set({"arguments": []})
-            workgraph_task.set({"nodes": {}})
+            # workgraph_task.set({"nodes": {}})
             self._aiida_task_nodes[label] = workgraph_task
 
-        # elif isinstance(task, IconTask):
-        #     exc = f"Task: {task.name} not implemented yet."
-        #     raise NotImplementedError(exc)
+        elif isinstance(task, IconTask):
+            exc = "IconTask not implemented yet."
+            raise NotImplementedError(exc)
         else:
             exc = f"Task: {task.name} not implemented yet."
             raise NotImplementedError(exc)
@@ -358,7 +264,8 @@ class AiidaWorkGraph:
             #     workgraph_task_arguments.value.append(f"{arg_option}")
             workgraph_task_arguments.value.append(f"{{{input_label}}}")
         except Exception:
-            breakpoint()
+            pass
+            # breakpoint()
 
     def _link_output_to_task(self, task: graph_items.Task, output: graph_items.Data):
         """
