@@ -27,8 +27,8 @@ for config_path in config_test_files:
     # pprint(core_workflow)
     # pprint(wf_from_yaml)
 
-    # test_str = PrettyPrinter().format(core_workflow)
-    # # print(test_str)
+    test_str = PrettyPrinter().format(core_workflow)
+    print(test_str)
 
     # vizgraph = VizGraph.from_yaml(config_path)
     # # print(vizgraph)
