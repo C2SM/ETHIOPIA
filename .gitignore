@@ -1,7 +1,7 @@
 # Project specific / generated files
 tests/files/data/*.new.txt
 tests/cases/*/svg/*
-!tests/cases/*/.gitkeep
+!tests/cases/*/svg/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
