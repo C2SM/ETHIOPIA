@@ -7,9 +7,14 @@ import aiida.orm
 import aiida_workgraph.engine.utils  # type: ignore[import-untyped]
 from aiida_workgraph import WorkGraph  # type: ignore[import-untyped]
 
+from sirocco.core._tasks.icon_task import IconTask
+from sirocco.core._tasks.shell_task import ShellTask
+
 if TYPE_CHECKING:
     from aiida_workgraph.socket import TaskSocket  # type: ignore[import-untyped]
-    from wcflow import core
+
+    from sirocco import core
+    from sirocco.core import graph_items
 
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
@@ -65,7 +70,7 @@ class AiidaWorkGraph:
 
         self._validate_workflow()
 
-        self._workgraph = WorkGraph() # core_workflow.name TODO use filename
+        self._workgraph = WorkGraph()  # core_workflow.name TODO: use filename
 
         # stores the input data available on initialization
         self._aiida_data_nodes: dict[str, aiida_workgraph.orm.Data] = {}
@@ -123,16 +128,16 @@ class AiidaWorkGraph:
         return label
 
     @staticmethod
-    def get_aiida_label_from_unrolled_data(obj: core.BaseNode) -> str:
+    def get_aiida_label_from_unrolled_data(obj: graph_items.GraphItem) -> str:
         """ """
         return AiidaWorkGraph.parse_to_aiida_label(
             f"{obj.name}" + "__".join(f"_{key}_{value}" for key, value in obj.coordinates.items())
         )
 
     @staticmethod
-    def get_aiida_label_from_unrolled_task(obj: core.BaseNode) -> str:
+    def get_aiida_label_from_unrolled_task(obj: graph_items.GraphItem) -> str:
         """ """
-        # TODO task is not anymore using cycle name because information is not there
+        # TODO: task is not anymore using cycle name because information is not there
         #      so do we check somewhere that a task is not used in multiple cycles?
         #      Otherwise the label is not unique
         # --> task name + date + parameters
@@ -140,7 +145,7 @@ class AiidaWorkGraph:
             "__".join([f"{obj.name}"] + [f"_{key}_{value}" for key, value in obj.coordinates.items()])
         )
 
-    def _add_aiida_input_data_node(self, input_: core.UnrolledData):
+    def _add_aiida_input_data_node(self, input_: graph_items.Data):
         """
         Create an :class:`aiida.orm.Data` instance from this wc data instance.
 
@@ -160,27 +165,49 @@ class AiidaWorkGraph:
             for task in cycle.tasks:
                 self._add_aiida_task_node(task)
         # after creation we can link the wait_on tasks
-        # TODO check where this is now
-        #for cycle in self._core_workflow.cycles:
+        # TODO: check where this is now
+        # for cycle in self._core_workflow.cycles:
         #    for task in cycle.tasks:
         #        self._link_wait_on_to_task(task)
 
-    def _add_aiida_task_node(self, task: core.UnrolledTask):
+    def _add_aiida_task_node(self, task: graph_items.Task):
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
-        if task.command is None:
-            msg = f"The command is None of task {task}."
-            raise ValueError(msg)
-        workgraph_task = self._workgraph.tasks.new(
-            "ShellJob",
-            name=label,
-            command=task.command,
-        )
-        workgraph_task.set({"arguments": []})
-        workgraph_task.set({"nodes": {}})
-        self._aiida_task_nodes[label] = workgraph_task
+        if isinstance(task, ShellTask):
+            if task.command is None:
+                msg = f"The command is None of task {task}."
+                raise ValueError(msg)
 
-    def _link_wait_on_to_task(self, task: core.UnrolledTask):
-        # TODO
+            # TODO: Add proper resolving of code/command to installed/portable code, etc., to think about
+            command = task.command
+
+            # ? Source file
+            env_source_files = task.env_source_files
+            env_source_files = [env_source_files] if isinstance(env_source_files, str) else env_source_files
+            prepend_text = "\n".join([f"source {env_source_file}" for env_source_file in env_source_files])
+
+            # Note: We don't pass the `nodes` dictionary here, as then we would need to have the sockets available when
+            # we create the task. Instead, they are being updated via the WG internals when linking inputs/outputs to
+            # tasks
+            argument_list = task.cli_argument.split()
+            workgraph_task = self._workgraph.tasks.new(
+                "ShellJob",
+                name=label,
+                command=command,
+                arguments=argument_list,
+                metadata={"options": {"prepend_text": prepend_text}},
+            )
+
+            self._aiida_task_nodes[label] = workgraph_task
+
+        elif isinstance(task, IconTask):
+            exc = "IconTask not implemented yet."
+            raise NotImplementedError(exc)
+        else:
+            exc = f"Task: {task.name} not implemented yet."
+            raise NotImplementedError(exc)
+
+    def _link_wait_on_to_task(self, task: graph_items.Task):
+        # TODO: to be done
         msg = ""
         raise NotImplementedError(msg)
         label = AiidaWorkGraph.get_aiida_label_from_unrolled_task(task)
@@ -202,7 +229,7 @@ class AiidaWorkGraph:
             for output in task.outputs:
                 self._link_output_to_task(task, output)
 
-    def _link_input_to_task(self, task: core.Task, input_: core.UnrolledData):
+    def _link_input_to_task(self, task: graph_items.Task, input_: graph_items.Data):
         """
         task: the task corresponding to the input
         input: ...
@@ -229,12 +256,14 @@ class AiidaWorkGraph:
         if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
             msg = f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph before linking. This is a bug in the code, please contact devevlopers."
             raise ValueError(msg)
-        # TODO think about that the yaml file should have aiida valid labels
-        if (arg_option := task.input_arg_options.get(input_.name, None)) is not None:
-            workgraph_task_arguments.value.append(f"{arg_option}")
-        workgraph_task_arguments.value.append(f"{{{input_label}}}")
+        # TODO: think about that the yaml file should have aiida valid labels
 
-    def _link_output_to_task(self, task: core.Task, output: core.UnrolledData):
+        # Avoid appending the same argument twice
+        argument_placeholder = f"{{{input_label}}}"
+        if argument_placeholder not in workgraph_task_arguments.value:
+            workgraph_task_arguments.value.append()
+
+    def _link_output_to_task(self, task: graph_items.Task, output: graph_items.Data):
         """
         task: the task corresponding to the output
         output: ...
