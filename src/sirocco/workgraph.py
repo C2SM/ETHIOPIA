@@ -20,8 +20,7 @@ if TYPE_CHECKING:
 
 # This is hack to aiida-workgraph, merging this into aiida-workgraph properly would require
 # some major refactor see issue https://github.com/aiidateam/aiida-workgraph/issues/168
-# It might be better to give up on the graph like construction and just create the task
-# directly with inputs, arguments and outputs
+# The function is  mostly a copy of the original function in aiida-workgraph. The modifications are marked.
 def _prepare_for_shell_task(task: dict, kwargs: dict) -> dict:
     """Prepare the inputs for ShellTask"""
     from aiida.common import lang
@@ -46,10 +45,15 @@ def _prepare_for_shell_task(task: dict, kwargs: dict) -> dict:
             nodes[key[6:]] = kwargs.pop(key)
     metadata.update({"call_link_label": task["name"]})
 
+    # Workaround starts here
+    # This part is part of the workaround. We need to manually add the outputs from the task.
+    # Because kwargs are not populated with outputs
     default_outputs = {"remote_folder", "remote_stash", "retrieved", "_outputs", "_wait", "stdout", "stderr"}
-    task_outputs = {task["outputs"][i]["name"] for i in range(len(task["outputs"]))}
+    task_outputs = set(task["outputs"].keys())
     task_outputs = task_outputs.union(set(kwargs.pop("outputs", [])))
     missing_outputs = task_outputs.difference(default_outputs)
+    # Workaround ends here
+
     return {
         "code": code,
         "nodes": nodes,
@@ -197,11 +201,12 @@ class AiidaWorkGraph:
             # NOTE: We don't pass the `nodes` dictionary here, as then we would need to have the sockets available when
             # we create the task. Instead, they are being updated via the WG internals when linking inputs/outputs to
             # tasks
-            workgraph_task = self._workgraph.tasks.new(
+            workgraph_task = self._workgraph.add_task(
                 "ShellJob",
                 name=label,
                 command=command,
                 arguments=[],
+                outputs=[],
                 metadata={"options": {"prepend_text": prepend_text}},
             )
 
@@ -228,20 +233,16 @@ class AiidaWorkGraph:
         task_label = AiidaWorkGraph.get_aiida_label_from_graph_item(task)
         input_label = AiidaWorkGraph.get_aiida_label_from_graph_item(input_)
         workgraph_task = self._aiida_task_nodes[task_label]
-        workgraph_task.inputs.new("Any", f"nodes.{input_label}")
-        workgraph_task.kwargs.append(f"nodes.{input_label}")
+        workgraph_task.add_input("workgraph.any", f"nodes.{input_label}")
 
         # resolve data
         if (data_node := self._aiida_data_nodes.get(input_label)) is not None:
-            if (nodes := workgraph_task.inputs.get("nodes")) is None:
-                msg = (
-                    f"Workgraph task {workgraph_task.name!r} did not initialize input nodes in the workgraph "
-                    f"before linking. This is a bug in the code, please contact the developers by making an issue."
-                )
+            if (socket := workgraph_task.inputs.nodes._sockets.get(f"{input_label}", None)) is None:  #  noqa: SLF001
+                msg = f"Socket {input_label!r} was not found in workgraph. Please contact a developer."
                 raise ValueError(msg)
-            nodes.value.update({f"{input_label}": data_node})
+            socket.value = data_node
         elif (output_socket := self._aiida_socket_nodes.get(input_label)) is not None:
-            self._workgraph.links.new(output_socket, workgraph_task.inputs[f"nodes.{input_label}"])
+            self._workgraph.add_link(output_socket, workgraph_task.inputs[f"nodes.{input_label}"])
         else:
             msg = (
                 f"Input data node {input_label!r} was neither found in socket nodes nor in data nodes. The task "
@@ -257,7 +258,7 @@ class AiidaWorkGraph:
         """
         task_label = AiidaWorkGraph.get_aiida_label_from_graph_item(task)
         workgraph_task = self._aiida_task_nodes[task_label]
-        if (workgraph_task_arguments := workgraph_task.inputs.get("arguments")) is None:
+        if (workgraph_task_arguments := workgraph_task.inputs.arguments) is None:
             msg = (
                 f"Workgraph task {workgraph_task.name!r} did not initialize arguments nodes in the workgraph "
                 f"before linking. This is a bug in the code, please contact developers."
@@ -290,9 +291,10 @@ class AiidaWorkGraph:
 
     def _link_output_nodes_to_task(self, task: graph_items.Task, output: graph_items.Data):
         """Links the output to the workgraph task."""
+
         workgraph_task = self._aiida_task_nodes[AiidaWorkGraph.get_aiida_label_from_graph_item(task)]
         output_label = AiidaWorkGraph.get_aiida_label_from_graph_item(output)
-        output_socket = workgraph_task.outputs.new("Any", output.src)
+        output_socket = workgraph_task.add_output("workgraph.any", output.src)
         self._aiida_socket_nodes[output_label] = output_socket
 
     def run(
