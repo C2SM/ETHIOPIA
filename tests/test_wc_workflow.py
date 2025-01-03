@@ -76,7 +76,10 @@ def test_vizgraph(config_paths):
         "tests/cases/parameters/config/test_config_parameters.yml",
     ],
 )
-def test_run_workgraph(config_path):
+def test_run_workgraph(config_path, aiida_computer):
+    # some configs reference computer "localhost" which we need to create beforehand
+    aiida_computer("localhost").store()
+
     core_workflow = Workflow.from_yaml(config_path)
     aiida_workflow = AiidaWorkGraph(core_workflow)
     out = aiida_workflow.run()
