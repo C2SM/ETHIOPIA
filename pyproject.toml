@@ -55,6 +55,7 @@ dependencies = [
   "types-PyYAML",
   "coverage",
   "isodate",
+  "dotenv"
 ]
 license = {file = "LICENSE"}
 
