@@ -3,12 +3,12 @@ from __future__ import annotations
 import enum
 import logging
 import os
-import re
-import shlex
 import subprocess
 from datetime import datetime
 from itertools import chain, product
 from pathlib import Path
+from dotenv import dotenv_values
+from io import StringIO
 from typing import TYPE_CHECKING, Any, Literal, Self
 
 from ruamel.yaml import YAML
@@ -461,40 +461,18 @@ class Workflow:
     def set_base_env() -> dict[str, str]:
         """Set the base env from which to potentially submit tasks"""
 
-        env_dict: dict[str, str] = {}
-
-        # Execute `env -i HOME=${HOME} USER=${USER} bash --login -c 'export -p'` from current process
         home = os.environ.get("HOME", "")
         user = os.environ.get("USER", "")
-        cmd = ["env", "-i", f"HOME={home}", f"USER={user}", "bash", "--login", "-c", "export -p"]
+        cmd = ["env", "-i", f"HOME={home}", f"USER={user}", "bash", "--login", "-c", "printenv"]
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         except subprocess.CalledProcessError as e:
             msg = f"During set_base_env, command {cmd} failed with the following error:\n {e.stderr}"
             raise RuntimeError(msg) from e
-
-        # Parse env into a dict
-        # Strip out "declare -xyz" or "export" from the beginning of the line
-        pattern = re.compile(r"^(declare -\S+|export)(?P<spec>.*)$")
-        for line in result.stdout.split("\n"):
-            spec = line.strip()
-            # Skip empty lines or comments
-            if not spec or spec.startswith("#"):
-                continue
-            if (m := pattern.match(spec)) is None:
-                msg = f"unrcognized pattern in the following line of the environment:\n{line}"
-                raise RuntimeError(msg)
-            spec = m.group("spec").strip()
-
-            # Use shlex to safely parse KEY="VALUE" considering internal quotes
-            try:
-                parsed = shlex.split(spec)
-                if parsed and "=" in parsed[0]:
-                    key, value = parsed[0].split("=", 1)
-                    env_dict[key] = value
-            except ValueError:
-                continue  # Skip malformed lines
-        return env_dict
+        # Silence warnings from dotenv_values ("cannot parse line ...")
+        logging.getLogger("dotenv.main").setLevel(logging.ERROR)
+        base_env = dotenv_values(stream=StringIO(result.stdout))
+        return {k: v for k, v in base_env.items() if v is not None}
 
     @classmethod
     def from_config_file(
