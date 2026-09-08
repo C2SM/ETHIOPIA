@@ -1,5 +1,6 @@
 import io
 import logging
+import os
 import shutil
 import sys
 from datetime import UTC, datetime
@@ -69,6 +70,16 @@ app = typer.Typer(
     help="Sirocco Climate and Weather Workflow Management Tool.",
     add_completion=True,
 )
+
+
+# Enable or disable ANSI escape codes
+@app.callback()
+def no_ansi(*, ansi: bool = True):
+    if ansi:
+        os.environ["FORCE_COLOR"] = "1"
+    else:
+        os.environ["NO_COLOR"] = "1"
+
 
 # Create a Rich console instance for printing
 console = Console()

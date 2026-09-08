@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass, field
 from typing import ClassVar, Literal
 
@@ -34,7 +35,8 @@ class SiroccoContinueTask(models.ConfigSiroccoTaskSpecs, Task):
         lines: list[str] = []
         if self.venv is not None:
             lines.append(f"source {self.venv}/bin/activate")
-        lines.append(f"sirocco continue --from_wf {self.config_filename} || exit")
+        no_ansi = " --no-ansi" if os.environ.get("NO_COLOR") == "1" else ""
+        lines.append(f"sirocco {no_ansi} continue --from_wf {self.config_filename} || exit")
         (self.run_dir / self.CMD_FILENAME).write_text("\n".join(lines))
         (self.run_dir / self.CMD_FILENAME).chmod(0o755)
 
