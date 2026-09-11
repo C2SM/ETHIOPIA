@@ -65,7 +65,7 @@ def log_console(wf: core.Workflow) -> Console:
     # Create file first, otherwise the first few lines are missing from the log
     logfile = wf.config_rootdir / core.SiroccoContinueTask.STDOUTERR_FILENAME
     if not logfile.exists():
-        logfile.touch() 
+        logfile.touch()
     return Console(
         file=TeeStream(wf.config_rootdir / core.SiroccoContinueTask.STDOUTERR_FILENAME),  # type: ignore
         force_terminal=True,
