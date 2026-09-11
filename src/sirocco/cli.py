@@ -175,10 +175,15 @@ def create_aiida_workflow(
         raise typer.Exit(code=1) from e
 
 
+def rich_colored(text: str, rgb: tuple[int, int, int]) -> str:
+    rgb_str = ",".join(map(str, rgb))
+    return f"[rgb({rgb_str})]{text}[/rgb({rgb_str})]"
+
+
 class CmdStatus:
-    PLAY: str = "[rgb(255,159,64)]▶[/rgb(255,159,64)]"
-    SUCCESS: str = "[rgb(67,165,65)]✔[/rgb(67,165,65)]"
-    FAIL: str = "[rgb(255,87,87)]✖[/rgb(255,87,87)]"
+    PLAY: str = rich_colored("▶", (255, 159, 64))
+    SUCCESS: str = rich_colored("✔", core.workflow.StatusPoint.COLOR_COMPLETED)
+    FAIL: str = rich_colored("✖", core.workflow.StatusPoint.COLOR_FAILED)
 
 
 # --- CLI main Commands ---

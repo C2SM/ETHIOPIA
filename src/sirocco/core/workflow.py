@@ -4,6 +4,7 @@ import enum
 import logging
 import os
 import subprocess
+from colorsys import hls_to_rgb
 from datetime import datetime
 from io import StringIO
 from itertools import chain, product
@@ -48,10 +49,7 @@ class WorkflowStatus(enum.Enum):
 
 class StatusPoint:
     BASE = "⬤"
-    COLOR_RANK_0 = (109, 168, 255)
-    COLOR_RANK_1 = (76, 125, 204)
-    COLOR_RANK_2 = (44, 84, 155)
-    COLOR_RANK_3 = (3, 46, 109)
+    HUE_FRONT = 216
     COLOR_COMPLETED = (0, 191, 91)
     COLOR_FAILED = (255, 87, 87)
 
@@ -69,15 +67,10 @@ class StatusPoint:
                 if rank is None:
                     msg = "rank is required when asking for a 'FRONT' StatusPoint"
                     raise ValueError(msg)
-                match rank:
-                    case _ if rank == 0:
-                        return colored(cls.BASE, cls.COLOR_RANK_0)  # type: ignore
-                    case _ if rank == 1:
-                        return colored(cls.BASE, cls.COLOR_RANK_1)  # type: ignore
-                    case _ if rank == 2:  # noqa: PLR2004
-                        return colored(cls.BASE, cls.COLOR_RANK_2)  # type: ignore
-                    case _:
-                        return colored(cls.BASE, cls.COLOR_RANK_3)  # type: ignore
+                # lightness between 0.7 and 0.3
+                lightness = 0.7 - min(rank, 3) / 3 * 0.4
+                rgb_norm = hls_to_rgb(cls.HUE_FRONT / 360, lightness, 1)
+                return colored(cls.BASE, tuple(round(v * 255) for v in rgb_norm))  # type: ignore
             case _:
                 assert_never(status)
 
