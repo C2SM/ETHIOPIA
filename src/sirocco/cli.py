@@ -181,7 +181,7 @@ def rich_colored(text: str, rgb: tuple[int, int, int]) -> str:
 
 
 class CmdStatus:
-    PLAY: str = rich_colored("▶", (255, 159, 64))
+    PLAY: str = rich_colored("⮞", (255, 159, 64))
     SUCCESS: str = rich_colored("✔", core.workflow.StatusPoint.COLOR_COMPLETED)
     FAIL: str = rich_colored("✖", core.workflow.StatusPoint.COLOR_FAILED)
 
