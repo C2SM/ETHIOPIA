@@ -389,7 +389,7 @@ class Workflow:
         to_promote: list[Task] = []
         for task in self.front[0]:
             if (status := self.scheduler.get_status(task)) == TaskStatus.FAILED:
-                msg = f"{StatusPoint.FAILED} {task.label} ({task.jobid}) FAILED"
+                msg = f"{StatusPoint.from_status("FAILED")} {task.label} ({task.jobid}) FAILED"
                 logger.info(msg)
                 self.cancel_all_tasks(mode="cancel", logger=logger)
                 msg = f"All workflow tasks canceled because {task.label} failed"
