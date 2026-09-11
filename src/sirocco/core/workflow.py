@@ -2,16 +2,22 @@ from __future__ import annotations
 
 import enum
 import logging
+import os
+import subprocess
+from colorsys import hls_to_rgb
 from datetime import datetime
+from io import StringIO
 from itertools import chain, product
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Literal, Self
+from typing import TYPE_CHECKING, Any, Literal, Self, assert_never
 
+from dotenv import dotenv_values
 from ruamel.yaml import YAML
+from termcolor import colored
 
 from sirocco.core._tasks.sirocco_task import SiroccoContinueTask
 from sirocco.core.graph_items import Cycle, Data, Store, Task, TaskStatus
-from sirocco.core.scheduler import Scheduler
+from sirocco.core.scheduler import UENV_MACHINES, Scheduler
 from sirocco.parsing.cycling import DateCyclePoint, OneOffPoint
 from sirocco.parsing.yaml_data_models import (
     ConfigBaseData,
@@ -39,6 +45,34 @@ class WorkflowStatus(enum.Enum):
     STOPPED = 4
     STOPPING = 5
     RESTART_FAILED = 6
+
+
+class StatusPoint:
+    BASE = "⬤"
+    HUE_FRONT = 216
+    COLOR_COMPLETED = (0, 191, 91)
+    COLOR_FAILED = (255, 87, 87)
+
+    @classmethod
+    def from_status(cls, status: Literal["COMPLETED", "FRONT", "FAILED"], rank: int | None = None) -> str:
+        # We generate the colored point in this classmethod and not as class variables otherwise
+        # they are defined at import time so that termcolor wiould not take into account the controlling
+        # environment variables FORCE_COLOR and NO_COLOR
+        match status:
+            case "COMPLETED":
+                return colored(cls.BASE, cls.COLOR_COMPLETED)  # type: ignore
+            case "FAILED":
+                return colored(cls.BASE, cls.COLOR_FAILED)  # type: ignore
+            case "FRONT":
+                if rank is None:
+                    msg = "rank is required when asking for a 'FRONT' StatusPoint"
+                    raise ValueError(msg)
+                # lightness between 0.7 and 0.3
+                lightness = 0.7 - min(rank, 3) / 3 * 0.4
+                rgb_norm = hls_to_rgb(cls.HUE_FRONT / 360, lightness, 1)
+                return colored(cls.BASE, tuple(round(v * 255) for v in rgb_norm))  # type: ignore
+            case _:
+                assert_never(status)
 
 
 class Workflow:
@@ -75,6 +109,7 @@ class Workflow:
         self.data: Store[Data] = Store()
         self.cycles: Store[Cycle] = Store()
         self.status: WorkflowStatus = WorkflowStatus.INIT
+        self.base_env: dict[str, str] = self.set_base_env()
 
         config_data_dict: dict[str, ConfigBaseData] = {
             data.name: data for data in chain(config_data.available, config_data.generated)
@@ -97,7 +132,7 @@ class Workflow:
         for cycle_config in config_cycles:
             for cycle_point in cycle_config.cycling.iter_cycle_points():
                 for task_ref in cycle_config.tasks:
-                    for data_ref in chain(*task_ref.outputs.values()):
+                    for data_ref in chain(*chain(*(comp.outputs.values() for comp in task_ref.components.values()))):
                         data_config = config_data_dict[data_ref.name]
                         for coordinates in iter_coordinates(cycle_point, data_config.parameters):
                             self.data.add(Data.from_config(config=data_config, coordinates=coordinates))
@@ -121,6 +156,8 @@ class Workflow:
                             coordinates=coordinates,
                             datastore=self.data,
                             graph_spec=task_graph_spec,
+                            # NOTE: If hte computer becomes a workflow attribute instead of a task one we can simplify this
+                            base_env=self.base_env if task_config.computer in UENV_MACHINES else None,
                         )
                         task.rank = self.front_depth
                         self.tasks.add(task)
@@ -312,16 +349,16 @@ class Workflow:
                 task.rank = 0
                 self.scheduler.submit(task)
                 self.front[0].append(task)
-                msg = f"{task.label} ({task.jobid}) SUBMITTED to rank {task.rank}"
+                msg = f"{StatusPoint.from_status('FRONT', task.rank)} {task.label} ({task.jobid}) SUBMITTED to rank {task.rank}"
                 logger.info(msg)
         for k in range(self.front_depth - 1):
             for task in self.front[k]:
                 for child in task.children:
-                    if max(parent.rank for parent in child.parents) == k:
+                    if (max(parent.rank for parent in child.parents) == k) and (child.rank == self.front_depth):
                         self.scheduler.submit(child)
                         child.rank = k + 1
                         self.front[k + 1].append(child)
-                        msg = f"{child.label} ({child.jobid}) SUBMITTED to rank {child.rank}"
+                        msg = f"{StatusPoint.from_status('FRONT', child.rank)} {child.label} ({child.jobid}) SUBMITTED to rank {child.rank}"
                         logger.info(msg)
 
     def restart_front(self, logger: logging.Logger) -> None:
@@ -337,12 +374,12 @@ class Workflow:
                     in (TaskStatus.COMPLETED, TaskStatus.RUNNING, TaskStatus.WAITING)
                 ):
                     self.cool_down_tasks.remove(task)
-                    msg = f"{task.label} ({task.jobid}) CONTINUED as rank 0 from cool-down"
+                    msg = f"{StatusPoint.from_status('FRONT', task.rank)} {task.label} ({task.jobid}) CONTINUED as rank 0 from cool-down"
                     logger.info(msg)
                 else:
                     self.scheduler.cancel(task)
                     self.scheduler.submit(task)
-                    msg = f"{task.label} ({task.jobid}) SUBMITTED to rank {task.rank}"
+                    msg = f"{StatusPoint.from_status('FRONT', task.rank)} {task.label} ({task.jobid}) SUBMITTED to rank {task.rank}"
                     logger.info(msg)
 
     def propagate_front(self, logger: logging.Logger) -> None:
@@ -352,7 +389,7 @@ class Workflow:
         to_promote: list[Task] = []
         for task in self.front[0]:
             if (status := self.scheduler.get_status(task)) == TaskStatus.FAILED:
-                msg = f"{task.label} ({task.jobid}) FAILED"
+                msg = f"{StatusPoint.from_status('FAILED')} {task.label} ({task.jobid}) FAILED"
                 logger.info(msg)
                 self.cancel_all_tasks(mode="cancel", logger=logger)
                 msg = f"All workflow tasks canceled because {task.label} failed"
@@ -365,7 +402,7 @@ class Workflow:
             task.rank = -1
             self.front[0].remove(task)
             self.completed_tasks.append(task)
-            msg = f"{task.label} ({task.jobid}) COMPLETED"
+            msg = f"{StatusPoint.from_status('COMPLETED')} {task.label} ({task.jobid}) COMPLETED"
             logger.info(msg)
 
         # Update front rank of tasks currently in the front after the first generation
@@ -374,8 +411,8 @@ class Workflow:
             for task in to_promote:
                 task.rank = k - 1
                 self.front[k].remove(task)
+                msg = f"{StatusPoint.from_status('FRONT', task.rank)} {task.label} ({task.jobid}) PROMOTED from rank {k} to {k - 1}"
                 self.front[k - 1].append(task)
-                msg = f"{task.label} ({task.jobid}) PROMOTED from rank {k} to {k - 1}"
                 logger.info(msg)
 
         # Add new tasks to the last generation of the front
@@ -389,7 +426,7 @@ class Workflow:
                     self.scheduler.submit(child)
                     child.rank = self.front_depth - 1
                     self.front[-1].append(child)
-                    msg = f"{child.label} ({child.jobid}) SUBMITTED to rank {child.rank}"
+                    msg = f"{StatusPoint.from_status('FRONT', child.rank)} {child.label} ({child.jobid}) SUBMITTED to rank {child.rank}"
                     logger.info(msg)
 
     def cancel_all_tasks(self, mode: Literal["cancel", "cool-down"], logger: logging.Logger) -> None:
@@ -403,11 +440,11 @@ class Workflow:
                     and self.scheduler.get_status(task) in (TaskStatus.COMPLETED, TaskStatus.RUNNING)
                 ):
                     self.cool_down_tasks.append(task)
-                    msg = f"{task.label} ({task.jobid}) COOLING DOWN"
+                    msg = f"{StatusPoint.from_status('FRONT', task.rank)} {task.label} ({task.jobid}) COOLING DOWN"
                     logger.info(msg)
                 else:
                     self.scheduler.cancel(task)
-                    msg = f"{task.label} ({task.jobid}) CANCELED"
+                    msg = f"{StatusPoint.from_status('FAILED')} {task.label} ({task.jobid}) CANCELED"
                     logger.info(msg)
 
     def auto_submit(self) -> None:
@@ -422,6 +459,23 @@ class Workflow:
         else:
             self.sirocco_continue_task.jobid = "_NO_ID_"
             self.status = WorkflowStatus.COMPLETED
+
+    @staticmethod
+    def set_base_env() -> dict[str, str]:
+        """Set the base env from which to potentially submit tasks"""
+
+        home = os.environ.get("HOME", "")
+        user = os.environ.get("USER", "")
+        cmd = ["env", "-i", f"HOME={home}", f"USER={user}", "bash", "--login", "-c", "printenv"]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        except subprocess.CalledProcessError as e:
+            msg = f"During set_base_env, command {cmd} failed with the following error:\n {e.stderr}"
+            raise RuntimeError(msg) from e
+        # Silence warnings from dotenv_values ("cannot parse line ...")
+        logging.getLogger("dotenv.main").setLevel(logging.ERROR)
+        base_env = dotenv_values(stream=StringIO(result.stdout))
+        return {k: v for k, v in base_env.items() if v is not None}
 
     @classmethod
     def from_config_file(
