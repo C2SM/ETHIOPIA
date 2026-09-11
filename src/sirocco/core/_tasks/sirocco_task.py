@@ -32,13 +32,15 @@ class SiroccoContinueTask(models.ConfigSiroccoTaskSpecs, Task):
         pass
 
     def prepare_for_submission(self) -> None:
+        pass
+
+    def runscript_lines(self) -> list[str]:
         lines: list[str] = []
         if self.venv is not None:
             lines.append(f"source {self.venv}/bin/activate")
-        no_ansi = " --no-ansi" if os.environ.get("NO_COLOR") == "1" else ""
-        lines.append(f"sirocco {no_ansi} continue --from_wf {self.config_filename} || exit")
-        (self.run_dir / self.CMD_FILENAME).write_text("\n".join(lines))
-        (self.run_dir / self.CMD_FILENAME).chmod(0o755)
-
-    def runscript_lines(self) -> list[str]:
-        return [f"./{self.CMD_FILENAME}"]
+        cmd: list[str] = ["sirocco"]
+        if os.environ.get("NO_COLOR") == "1":
+            cmd.append("--no-ansi")
+        cmd.append(f"continue --from_wf {self.config_filename} || exit")
+        lines.append(" ".join(cmd))
+        return lines
