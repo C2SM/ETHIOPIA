@@ -102,7 +102,9 @@ jobs:
         pip install .
         verdi presto
     - name: Run formatter and linter
-      run: hatch fmt --check
+      run: |
+        hatch check fmt
+        hatch check code
 
   typechecking:
     runs-on: ubuntu-latest
