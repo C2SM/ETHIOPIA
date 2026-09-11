@@ -37,22 +37,35 @@ class TeeStream(io.TextIOBase):
 
     def __init__(self, logfile: Path, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.logfile = logfile
+        # Open the file handle once and keep it alive with the stream
+        self.file_handle = logfile.open("a", encoding="utf-8")
 
     def write(self, data: str) -> int:
+        # Write to stdout
         bytes_written = sys.stdout.write(data)
-        with self.logfile.open("a", encoding="utf-8") as f:
-            f.write(data)
+        # Write to the open file handle
+        self.file_handle.write(data)
         return bytes_written
 
-    # Unused but might be useful at some point
     def flush(self) -> None:
         sys.stdout.flush()
-        with self.logfile.open("a", encoding="utf-8") as f:
-            f.flush()
+        # Only flush if the file handle exists and isn't already closed
+        if hasattr(self, "file_handle") and not self.file_handle.closed:
+            self.file_handle.flush()
+
+    def close(self) -> None:
+        # Safely close the handle first
+        if hasattr(self, "file_handle") and not self.file_handle.closed:
+            self.file_handle.close()
+        # Call the base class cleanup safely
+        super().close()
 
 
 def log_console(wf: core.Workflow) -> Console:
+    # Create file first, otherwise the first few lines are missing from the log
+    logfile = wf.config_rootdir / core.SiroccoContinueTask.STDOUTERR_FILENAME
+    if not logfile.exists():
+        logfile.touch() 
     return Console(
         file=TeeStream(wf.config_rootdir / core.SiroccoContinueTask.STDOUTERR_FILENAME),  # type: ignore
         force_terminal=True,
@@ -454,6 +467,9 @@ def start(
     ] = False,
 ):
     wf = core.Workflow.from_config_file(workflow_file)
+    if cleanup:
+        # Do it here oterwise the first few lines disappear from the log
+        (wf.config_rootdir / SiroccoContinueTask.STDOUTERR_FILENAME).unlink(missing_ok=True)
     tee_console = log_console(wf)
     tee_console.print(add_now())
     if cleanup:
@@ -461,7 +477,6 @@ def start(
         if (run_dir := wf.config_rootdir / wf.RUN_ROOT).exists():
             shutil.rmtree(run_dir)
         (wf.config_rootdir / SiroccoContinueTask.SUBMIT_FILENAME).unlink(missing_ok=True)
-        (wf.config_rootdir / SiroccoContinueTask.STDOUTERR_FILENAME).unlink(missing_ok=True)
     if (wf.config_rootdir / wf.RUN_ROOT).exists():
         msg = "Workflow already exists, cannot start. Use --cleanup to clean up before starting."
         raise ValueError(msg)
